@@ -77,8 +77,14 @@ WSGI_APPLICATION = 'buzzit.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'sn',
+        'USER': 'sn',
+        'PASSWORD': 'NXgXKshqycEICozd8LOxsYkpqXDg5dgY',
+        'HOST': 'vps146949.ovh.net',  # Or an IP Address that your DB is hosted on
+        'PORT': '3306',
     }
 }
 
@@ -103,5 +109,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR,  'templates'),
+    os.path.join(BASE_DIR, 'templates'),
 )
