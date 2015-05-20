@@ -1,0 +1,45 @@
+<!doctype html>
+
+<html ng-app="searchList">
+<head>
+	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+	
+	
+       <script type="text/javascript" src="angular.min.js"></script>
+	 
+	 <script type="text/javascript" src="app.js"></script>
+
+  <title>Liste</title>
+
+
+
+</head>
+
+ <body class="container" ng-controller="PersonController as list">
+  
+	
+	
+      <table class="table table-bordered" ng-repeat="user in list.persons">
+   
+    {% for user in object_list %}
+        <tr>
+            <td>Name: {{ user.name }}{{ user.profile_picture }}</td>
+           
+			<td>{{ user.description }}</td>
+			<td>{{ user.gender }}</td>
+            
+        </tr>
+    {% endfor %}
+</table>
+
+      
+
+      </div><!-- /.row -->
+
+    </div><!-- /.container -->
+ 
+</body>
+</html>
