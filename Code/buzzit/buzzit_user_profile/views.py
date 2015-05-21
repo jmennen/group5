@@ -1,5 +1,4 @@
-from django.core import serializers
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from buzzit_models.models import Profile
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
