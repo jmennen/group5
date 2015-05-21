@@ -58,6 +58,7 @@ def update_profile_info(request):
     """
     if not request.user.is_authenticated():
         error = {"ok": False, "error": "login first"}
+        return JsonResponse(error)
     if request.method == "POST":
         if not request.POST:
             error = {"ok": False, "error": "no update data given", "post": request.POST}
