@@ -8,4 +8,5 @@ urlpatterns = [
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^profile/', include("buzzit_user_profile.urls")),
+    url(r'^find/', include("buzzit_find_users.urls")),
 ]
