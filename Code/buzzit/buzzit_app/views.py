@@ -126,6 +126,11 @@ class EditProfileView(UpdateView):
             return False
 
     def form_valid(self, form):
+        """
+        Handles the Image upload, verify, saving, etc.
+        :param form:
+        :return:
+        """
         instance = form.save(commit=False)
         instance.user = self.request.user
         image_file = self.request.FILES.get('image_file', False)
@@ -159,6 +164,10 @@ class EditProfileView(UpdateView):
 
 
 class EditUserdataView(UpdateView):
+    """
+    View to edit user data.
+    Template is "edit_own_userdata.html"
+    """
     model = User
     template_name = "logged_in/edit_own_userdata.html"
     fields = ["first_name", "last_name", "email"]
@@ -172,6 +181,9 @@ class EditUserdataView(UpdateView):
 
 
 class UserSearchResultsView(ListView):
+    """
+    Handles the results of a user search.
+    """
     model = User
     template_name = "logged_in/usersearch_results.html"
 
@@ -185,6 +197,11 @@ class UserSearchResultsView(ListView):
 
 
 def register(request):
+    """
+    Handles user registering and saving in DB.
+    :param request:
+    :return:
+    """
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -202,12 +219,21 @@ def register(request):
 
 @login_required
 def logout(request):
+    """
+    Logout the current user.
+    :param request:
+    :return:
+    """
     authlogout(request)
     return HttpResponseRedirect(reverse("start"))
 
 
 def __create_dummy_pic_response__():
-    red = Image.new('RGBA', (64, 64), (255, 0, 0, 0))
+    """
+    Creates a red dummy image, if read from disk fails, but image should be available.
+    :return:
+    """
+    red = Image.new('RGBA', (128, 128), (255, 0, 0, 0))
     response = HttpResponse(content_type="image/jpeg")
     red.save(response, "JPEG")
     return response
@@ -215,6 +241,12 @@ def __create_dummy_pic_response__():
 
 @login_required
 def profilepicture_full(request, slug):
+    """
+    Returns the full size profile image or the dummy, if not present/on IOError.
+    :param request:
+    :param slug:
+    :return:
+    """
     try:
         username = User.objects.get(pk=slug).username
     except ObjectDoesNotExist:
@@ -229,6 +261,12 @@ def profilepicture_full(request, slug):
 
 @login_required
 def profilepicture_small(request, slug):
+    """
+    Returns the standard 128x128 profile image or the dummy if not present/on IO error.
+    :param request:
+    :param slug:
+    :return:
+    """
     try:
         username = User.objects.get(pk=slug).username
     except ObjectDoesNotExist:
