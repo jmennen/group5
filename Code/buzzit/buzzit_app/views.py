@@ -15,6 +15,7 @@ import logging
 from django.forms.fields import FileField
 from django.core.exceptions import ObjectDoesNotExist
 from PIL import Image
+import imghdr
 
 
 def start(request):
@@ -63,6 +64,10 @@ def home(request):
 
 
 class ProfileView(DetailView):
+    """
+    Controls the behaviour, if a logged in user wants to show a users profile.
+    Returns the view_profile.html template rendered with a "profile" object.
+    """
     model = Profile
     template_name = "logged_in/view_profile.html"
     slug_field = "user"
@@ -73,6 +78,11 @@ class ProfileView(DetailView):
 
 
 class EditProfileView(UpdateView):
+    """
+    Controls the behaviour if a logged in user want to edit his profile.
+    If an image is uploaded, then a smaller version of this is created.
+    Returns the edit_own_profile.html rendered with a profile object.
+    """
     model = Profile
     template_name = "logged_in/edit_own_profile.html"
     fields = ["gender", "description"]
@@ -91,7 +101,7 @@ class EditProfileView(UpdateView):
             im.thumbnail((128,128))
             im.save(outfile, "JPEG")
         except IOError:
-            logging.error("Nope")
+            logging.error("Fehler beim speichern des thumbnails")
 
     def form_valid(self, form):
         instance = form.save(commit=False)
@@ -99,6 +109,8 @@ class EditProfileView(UpdateView):
         image_file = self.request.FILES.get('image_file', False)
         image_file_name = "pp/pp_" + self.request.user.username
         if image_file:
+            imgtype = imghdr.what(image_file)
+            logging.error(imgtype)
             try:
                 f = open(image_file_name, "xb")
             except FileExistsError:
