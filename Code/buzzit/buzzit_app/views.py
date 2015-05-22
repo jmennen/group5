@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
+from django.forms.utils import ErrorList
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
@@ -12,10 +13,11 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.urlresolvers import reverse
 from django.contrib.auth import login, logout as authlogout
 import logging
-from django.forms.fields import FileField
+from django.forms.fields import FileField, ClearableFileInput
 from django.core.exceptions import ObjectDoesNotExist
 from PIL import Image
 import imghdr
+import os
 
 
 def start(request):
@@ -89,19 +91,39 @@ class EditProfileView(UpdateView):
     success_url = "/updateprofile"
 
     def get_form(self, form_class=None):
+        """
+        Normal form, just with an added File Upload for a picture
+        :param form_class:
+        :return:
+        """
         form = super(EditProfileView, self).get_form(form_class)
-        form.fields['image_file'] = FileField()
+        form.fields['image_file'] = FileField(widget=ClearableFileInput(attrs={"accept":"image/*"}))
         form.fields['image_file'].required = False
         return form
 
     def __create_small_picture__(request, o_image_filename):
+        """
+        Generates a smaller, standard size (128x128) picture of original image with filename <o_o_image_filename>.
+        Filename of smaller file is <o_o_image_filename>_sm
+        If this fails, the smaller file will we removed!
+        :param request:  the originial request object
+        :param o_image_filename: the filename of original image
+        :return: True on success, False else
+        """
         outfile = o_image_filename + "_sm"
         try:
             im = Image.open(o_image_filename)
-            im.thumbnail((128,128))
+            im.thumbnail((128, 128))
             im.save(outfile, "JPEG")
+            im.close()
+            return True
         except IOError:
             logging.error("Fehler beim speichern des thumbnails")
+            try:
+                os.remove(outfile)
+            except IOError:
+                pass
+            return False
 
     def form_valid(self, form):
         instance = form.save(commit=False)
@@ -110,18 +132,22 @@ class EditProfileView(UpdateView):
         image_file_name = "pp/pp_" + self.request.user.username
         if image_file:
             imgtype = imghdr.what(image_file)
-            logging.error(imgtype)
-            try:
-                f = open(image_file_name, "xb")
-            except FileExistsError:
-                f = open(image_file_name, "wb")
-            for chunk in image_file.chunks():
-                f.write(chunk)
-            f.close()
-            EditProfileView.__create_small_picture__(self.request, image_file_name)
-            instance.profile_picture = reverse("profile_picture_small", kwargs={"slug": self.request.user.pk})
-            instance.save()
-            # TODO: datei speichern und public path in instance speichern
+            if imgtype in ["jpeg", "png", "gif"]:
+                try:
+                    f = open(image_file_name, "xb")
+                except FileExistsError:
+                    f = open(image_file_name, "wb")
+                for chunk in image_file.chunks():
+                    f.write(chunk)
+                f.close()
+                if not EditProfileView.__create_small_picture__(self.request, image_file_name):
+                    os.remove(image_file_name)
+                    errors = form._errors.setdefault('image_file', ErrorList())
+                    errors.append("Das Thumbnail konnte nicht erzeugt werden; benutzen Sie ein anderes (jpg,png,gif(nicht animiert)) Bild.")
+                    return super(EditProfileView, self).form_invalid(form)
+                else:
+                    instance.profile_picture = reverse("profile_picture_small", kwargs={"slug": self.request.user.pk})
+                    instance.save()
         return super(EditProfileView, self).form_valid(form)
 
     def get_object(self, queryset=None):
@@ -166,7 +192,7 @@ def register(request):
             # erzeuge profil:
             profile = Profile()
             profile.user = new_user
-            profile.profile_picture = "http://placehold.it/128x128" # dummy pic
+            profile.profile_picture = "http://placehold.it/128x128"  # dummy pic
             profile.save()
             return HttpResponseRedirect(reverse('home'))
     else:
