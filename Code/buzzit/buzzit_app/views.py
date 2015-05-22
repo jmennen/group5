@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.core.files.storage import FileSystemStorage
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.utils.http import is_safe_url
@@ -11,6 +12,9 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.urlresolvers import reverse
 from django.contrib.auth import login, logout as authlogout
 import logging
+from django.forms.fields import FileField
+from django.core.exceptions import ObjectDoesNotExist
+from PIL import Image
 
 
 def start(request):
@@ -25,7 +29,7 @@ def start(request):
             if user:
                 login(request, user)
                 if not request.user.is_active:
-                    pass # TODO: dann?
+                    pass  # TODO: dann?
                 redirect_to = request.REQUEST.get("next", False)
                 if (redirect_to):
                     if not is_safe_url(url=redirect_to, host=request.get_host()):
@@ -58,6 +62,41 @@ class EditProfileView(UpdateView):
     model = Profile
     template_name = "logged_in/edit_own_profile.html"
     fields = ["gender", "description"]
+    success_url = "/updateprofile"
+
+    def get_form(self, form_class=None):
+        form = super(EditProfileView, self).get_form(form_class)
+        form.fields['image_file'] = FileField()
+        form.fields['image_file'].required = False
+        return form
+
+    def __create_small_picture__(request, o_image_filename):
+        outfile = o_image_filename + "_sm"
+        try:
+            im = Image.open(o_image_filename)
+            im.thumbnail((128,128))
+            im.save(outfile, "JPEG")
+        except IOError:
+            logging.error("Nope")
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.user = self.request.user
+        image_file = self.request.FILES.get('image_file', False)
+        image_file_name = "pp/pp_" + self.request.user.username
+        if image_file:
+            try:
+                f = open(image_file_name, "xb")
+            except FileExistsError:
+                f = open(image_file_name, "wb")
+            for chunk in image_file.chunks():
+                f.write(chunk)
+            f.close()
+            EditProfileView.__create_small_picture__(self.request, image_file_name)
+            instance.profile_picture = reverse("profile_picture_small", kwargs={"slug": self.request.user.pk})
+            instance.save()
+            # TODO: datei speichern und public path in instance speichern
+        return super(EditProfileView, self).form_valid(form)
 
     def get_object(self, queryset=None):
         return Profile.objects.get(user=self.request.user)
@@ -97,13 +136,53 @@ def register(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
+            new_user = form.save()
+            # erzeuge profil:
+            profile = Profile()
+            profile.user = new_user
+            profile.save()
             return HttpResponseRedirect(reverse('home'))
     else:
         form = UserCreationForm()
     return render(request, "guest/register.html", {'form': form})
 
 
+@login_required
 def logout(request):
     authlogout(request)
     return HttpResponseRedirect(reverse("start"))
+
+
+def __create_dummy_pic_response__():
+    red = Image.new('RGBA', (64, 64), (255, 0, 0, 0))
+    response = HttpResponse(content_type="image/jpeg")
+    red.save(response, "JPEG")
+    return response
+
+
+@login_required
+def profilepicture_full(request, slug):
+    try:
+        username = User.objects.get(pk=slug).username
+    except ObjectDoesNotExist:
+        return __create_dummy_pic_response__()
+    image = "pp/pp_" + username
+    try:
+        with open(image, "rb") as f:
+            return HttpResponse(f.read(), content_type="image/jpeg")
+    except IOError:
+        return __create_dummy_pic_response__()
+
+
+@login_required
+def profilepicture_small(request, slug):
+    try:
+        username = User.objects.get(pk=slug).username
+    except ObjectDoesNotExist:
+        return __create_dummy_pic_response__()
+    image = "pp/pp_" + username + "_sm"
+    try:
+        with open(image, "rb") as f:
+            return HttpResponse(f.read(), content_type="image/jpeg")
+    except IOError:
+        return __create_dummy_pic_response__()
