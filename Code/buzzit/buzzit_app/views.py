@@ -140,6 +140,7 @@ def register(request):
             # erzeuge profil:
             profile = Profile()
             profile.user = new_user
+            profile.profile_picture = "http://placehold.it/128x128" # dummy pic
             profile.save()
             return HttpResponseRedirect(reverse('home'))
     else:
