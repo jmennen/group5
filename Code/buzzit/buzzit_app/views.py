@@ -18,6 +18,14 @@ from PIL import Image
 
 
 def start(request):
+    """
+    Controls the behaviour of guests visiting the page and the login procedure.
+    If a user is already authenticated he gets redirected to his home.
+    Else a login form is provided.
+
+    :param request: The request object
+    :return: start.html template rendered with a login form element "form"
+    """
     if request.user.is_authenticated():
         if not request.user.is_active:
             pass  # TODO: was passiert dann?
@@ -45,7 +53,13 @@ def start(request):
 
 @login_required
 def home(request):
-    return render(request, "logged_in/home.html", {"user": request.user})
+    """
+    The start page of logged in users.
+    :param request: The request object.
+    :return: the home.html template rendered with a user object "user" and a profile object "profile"
+    """
+    return render(request, "logged_in/home.html", {"user": request.user,
+                                                   "profile": Profile.objects.get(user=request.user)})
 
 
 class ProfileView(DetailView):
