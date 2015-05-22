@@ -12,3 +12,6 @@ Jan Mennen
 
 Gruppenleiter:
 Jan Mennen
+
+Requirements & Documentation: 
+https://docs.google.com/spreadsheets/d/1N_UW9WGyGDWDz0Np6o5HEIzIVfv1p_poOpYCRMQkPLY/edit?usp=sharing
