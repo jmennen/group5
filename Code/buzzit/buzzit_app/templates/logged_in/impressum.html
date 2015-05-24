@@ -1,22 +1,27 @@
-{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
- <meta charset="utf-8">
+<head>
+
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+
+    <title>Impressum</title>
 	
-	<link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+  
+    <link href="../css/base.css" rel="stylesheet">
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-	 
-  </head>
-  
+
+
+</head>
 <body>
- 
+    
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
 	<div class="navbar-header">
@@ -55,40 +60,113 @@
     </div>
   </div>
 </nav>
+	
+	
+	<div class="container">
+  	<h2>Impressum</h2>
+			<div class="col-lg-4">
+    		<address>
+				<strong>Cheng Chen</strong><br>
+				hehe 91<br>
+				1012378 Berlin<br>
+				<abbr title="Phone">P:</abbr> (123) 4567890
+			</address>
 
+			<address>
+				<strong>Problems and Feedback</strong><br>
+				<a href="mailto:#">chengchen@example.com</a>
+			</address>
+			<hr>
+			</div>
+			
+			
+			<div class="col-lg-4">
+    		<address>
+				<strong>placeh</strong><br>
+				heheh<br>
+				11111 Berlin<br>
+				<abbr title="Phone">P:</abbr> (123) 4567890
+			</address>
 
-    <div class="container">
-<h3>Ihre Suche ergab folgendes Ergebnis...</h3>
-      <table class="table table-bordered">
-    <tr>
-        <th>Name</th>
-        <th>Picture</th>
-        <th>Description</th>
-        <th>gender</th>
-   
-    </tr>
-    {% for user in object_list %}
-        <tr>
-            <td>{{ user.name }}</td>
-            <td>{{ user.profile_picture }}</td>
-			<td>{{ user.description }}</td>
-			<td>{{ user.gender }}</td>
-            
-        </tr>
-    {% endfor %}
-</table>
+			<address>
+				<strong>Problems and Feedback</strong><br>
+				<a href="mailto:#">@example.com</a>
+			</address>
+			<hr>
+			</div>
+			
+			<div class="col-lg-4">
+    		<address>
+				<strong>placeh</strong><br>
+				heheh<br>
+				11111 Berlin<br>
+				<abbr title="Phone">P:</abbr> (123) 4567890
+			</address>
 
+			<address>
+				<strong>Problems and Feedback</strong><br>
+				<a href="mailto:#">@example.com</a>
+			</address>
+			<hr>
+			</div>
+			
+			<div class="col-lg-4">
+    		<address>
+				<strong>placeh</strong><br>
+				heheh<br>
+				11111 Berlin<br>
+				<abbr title="Phone">P:</abbr> (123) 4567890
+			</address>
+
+			<address>
+				<strong>Problems and Feedback</strong><br>
+				<a href="mailto:#">@example.com</a>
+			</address>
+			</div>
+			
+			<div class="col-lg-4">
+    		<address>
+				<strong>placeh</strong><br>
+				heheh<br>
+				11111 Berlin<br>
+				<abbr title="Phone">P:</abbr> (123) 4567890
+			</address>
+
+			<address>
+				<strong>Problems and Feedback</strong><br>
+				<a href="mailto:#">@example.com</a>
+			</address>
+			</div>
+			<div class="col-lg-4">
+    		<address>
+				<strong>placeh</strong><br>
+				heheh<br>
+				11111 Berlin<br>
+				<abbr title="Phone">P:</abbr> (123) 4567890
+			</address>
+
+			<address>
+				<strong>Problems and Feedback</strong><br>
+				<a href="mailto:#">@example.com</a>
+			</address>
+			</div>
+			
+	</div>
+	
+	
+	
+	
  <footer>
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <ul class="list-inline">
                         <li>
-                         <a href="home.html">Home</a>
+                            <a href="../logged_in/home.html">Home</a>
                         </li>
                         <li class="footer-menu-divider">&sdot;</li>
                         <li>
-                            <a href="impressum.html">Impressum</a>
+                            <a href="../guest/impressum.html">Impressum</a>
                         </li>
                              
                     </ul>
@@ -96,9 +174,7 @@
                 </div>
             </div>
         </div>
-    </footer>
+    </footer>  
 
-
-     
 </body>
 </html>
