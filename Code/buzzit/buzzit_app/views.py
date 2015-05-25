@@ -195,7 +195,11 @@ class UserSearchResultsView(ListView):
     template_name = "logged_in/usersearch_results.html"
 
     def get_queryset(self):
-        userset = User.objects.filter(username__contains=self.request.GET.get("q", ""))
+        usrname = self.request.GET.get("q", False)
+        if usrname and len(usrname) > 0:
+            userset = User.objects.filter(username__contains=usrname)
+        else:
+            userset = User.objects.all()
         for user in userset:
             user.profile = Profile.objects.get(user=user)
         return userset
@@ -305,6 +309,7 @@ def password_change(request):
     return _pw_change_(request,
                        template_name='logged_in/change_password.html',
                        post_change_redirect=reverse("home"))
+
 
 def impressum(request):
     if request.user.is_authenticated():
