@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^register', views.register, name="register"),
     url(r'^$', views.start, name="start"),
     url(r'^home$', views.home, name="home"),
+    url(r'^impressum', views.impressum, name="impressum"),
     url(r'^accounts/login', views.start, name="login"),
     url(r'^logout', views.logout, name="logout"),
 ]
