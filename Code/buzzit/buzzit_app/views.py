@@ -1,19 +1,24 @@
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
+from django.db.models import QuerySet
 from django.forms.utils import ErrorList
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
+from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.utils.http import is_safe_url
+from django.views.decorators.csrf import csrf_protect
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
+from buzzit_app.forms import RegistrationForm
 from buzzit_models.models import *
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.urlresolvers import reverse
 from django.contrib.auth import login, logout as authlogout
+from django.contrib.auth.views import password_change as _pw_change_
 import logging
-from django.forms.fields import FileField, ClearableFileInput
+from django.forms.fields import FileField, ClearableFileInput, CharField, EmailField
 from django.core.exceptions import ObjectDoesNotExist
 from PIL import Image
 import imghdr
@@ -97,7 +102,7 @@ class EditProfileView(UpdateView):
         :return:
         """
         form = super(EditProfileView, self).get_form(form_class)
-        form.fields['image_file'] = FileField(widget=ClearableFileInput(attrs={"accept":"image/*"}))
+        form.fields['image_file'] = FileField(widget=ClearableFileInput(attrs={"accept": "image/*"}))
         form.fields['image_file'].required = False
         return form
 
@@ -148,7 +153,8 @@ class EditProfileView(UpdateView):
                 if not EditProfileView.__create_small_picture__(self.request, image_file_name):
                     os.remove(image_file_name)
                     errors = form._errors.setdefault('image_file', ErrorList())
-                    errors.append("Das Thumbnail konnte nicht erzeugt werden; benutzen Sie ein anderes (jpg,png,gif(nicht animiert)) Bild.")
+                    errors.append(
+                        "Das Thumbnail konnte nicht erzeugt werden; benutzen Sie ein anderes (jpg,png,gif(nicht animiert)) Bild.")
                     return super(EditProfileView, self).form_invalid(form)
                 else:
                     instance.profile_picture = reverse("profile_picture_small", kwargs={"slug": self.request.user.pk})
@@ -171,6 +177,7 @@ class EditUserdataView(UpdateView):
     model = User
     template_name = "logged_in/edit_own_userdata.html"
     fields = ["first_name", "last_name", "email"]
+    success_url = "/updateuser"
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -187,34 +194,49 @@ class UserSearchResultsView(ListView):
     model = User
     template_name = "logged_in/usersearch_results.html"
 
-
     def get_queryset(self):
-        return User.objects.filter(username__contains=self.kwargs.get("slug", ""))
+        userset = User.objects.filter(username__contains=self.request.GET.get("q", ""))
+        for user in userset:
+            user.profile = Profile.objects.get(user=user)
+        return userset
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(UserSearchResultsView, self).dispatch(request, *args, **kwargs)
 
 
+@csrf_protect
 def register(request):
-    """
-    Handles user registering and saving in DB.
-    :param request:
-    :return:
-    """
-    if request.method == "POST":
-        form = UserCreationForm(request.POST)
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
         if form.is_valid():
-            new_user = form.save()
-            # erzeuge profil:
-            profile = Profile()
-            profile.user = new_user
-            profile.profile_picture = "http://placehold.it/128x128"  # dummy pic
-            profile.save()
-            return HttpResponseRedirect(reverse('home'))
+            user = User.objects.create_user(
+                username=form.cleaned_data['username'],
+                password=form.cleaned_data['password1'],
+                email=form.cleaned_data['email'],
+                first_name=form.cleaned_data.get('first_name', ''),
+                last_name=form.cleaned_data.get('last_name', ''),
+            )
+            new_profile = Profile()
+            new_profile.user = user
+            new_profile.save()
+            return HttpResponseRedirect(reverse("start"))
     else:
-        form = UserCreationForm()
-    return render(request, "guest/register.html", {'form': form})
+        form = RegistrationForm()
+    variables = RequestContext(request, {
+        'form': form
+    })
+
+    return render_to_response(
+        'guest/register.html',
+        variables,
+    )
+
+
+def register_success(request):
+    return render_to_response(
+        'registration/success.html',
+    )
 
 
 @login_required
@@ -277,3 +299,9 @@ def profilepicture_small(request, slug):
             return HttpResponse(f.read(), content_type="image/jpeg")
     except IOError:
         return __create_dummy_pic_response__()
+
+
+def password_change(request):
+    return _pw_change_(request,
+                       template_name='logged_in/change_password.html',
+                       post_change_redirect=reverse("home"))

@@ -3,50 +3,54 @@
 {% block content %}
     {% include "includes/navbar.html" %}
 
-    <p class="lead">{{ user.username }}</p>
-
     <div class="container">
 
-        <p>Geschlecht auswählen:</p>
+        <p class="lead">{{ user.username }}</p>
 
-        <form role="form">
-            <label class="checkbox-inline">
-                <input type="checkbox" name="male">männlich
+        <form role="form" method="post" enctype="multipart/form-data" action="{% url "update_profile" %}">
+
+            {% csrf_token %}
+            <p>Geschlecht auswählen:</p>
+
+            <label class="radio-inline">
+                <input type="radio" name="gender" value="m" {% if profile.gender == "m" %}checked{% endif %}>männlich
             </label>
-            <label class="checkbox-inline">
-                <input type="checkbox" name="female">weiblich
+            <label class="radio-inline">
+                <input type="radio" name="gender" value="f" {% if profile.gender == "f" %}checked{% endif %}>weiblich
             </label>
+
+            <p></p>
+
+            <div class="col-md-5">
+
+                <label>Profilbild ändern:</label>
+
+                <div class="thumbnail">
+                    <img class="img-responsive" height="128" style="width: auto;" src="{{ profile.profile_picture }}" alt="">
+                </div>
+
+                <div class="input-group">
+
+                    <input type="file" class="form-control" name="image_file" placeholder="Datei hochladen" accept="image/*">
+                    {% if form.image_file.errors %}
+                        {{ form.image_file.errors }}
+                    {% endif %}
+                </div>
+
+
+                <p></p>
+            </div>
+
+            <div class="col-md-7">
+                <div class="form-group">
+                    <label for="comment">Description:</label>
+                    <textarea class="form-control" rows="6" name="description" id="comment">{{ profile.description }}</textarea>
+                </div>
+
+                <button type="submit" class="btn btn-info">Änderung speichern</button>
+
+            </div>
         </form>
-    </div>
-    <p></p>
-    <div class="col-md-5">
-
-        <label>Profilbild ändern:</label>
-
-        <div class="thumbnail">
-            <img class="img-responsive" src="http://placehold.it/100x100" alt="">
-        </div>
-
-        <div class="input-group">
-
-            <input type="text" class="form-control" placeholder="Datei hochladen">
-					<span class="input-group-btn">
-						<button class="btn btn-primary" type="button">upload</button>
-					</span>
-
-        </div>
-
-
-        <p></p>
-    </div>
-
-    <div class="col-md-7">
-        <div class="form-group">
-            <label for="comment">Description:</label>
-            <textarea class="form-control" rows="6" id="comment"></textarea>
-        </div>
-
-        <button type="button" class="btn btn-info">Änderung speichern</button>
 
     </div>
 {% endblock %}

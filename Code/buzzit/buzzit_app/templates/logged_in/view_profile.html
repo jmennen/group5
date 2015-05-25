@@ -3,7 +3,7 @@
 {% block content %}
     {% include "includes/navbar.html" %}
 
-    <p class="lead">{{ user.username }} {{ profile.gender }}
+    <p class="lead">{{ user.username }}
         <button type="button" class="btn btn-primary">Diesem Benutzer eine Nachricht senden</button>
     </p>
 
@@ -16,7 +16,7 @@
         <div class="well">
             <p>{{ user.first_name }}</p>
             <hr>
-            <p>{{ user._last_name }}</p>
+            <p>{{ user.last_name }}</p>
             <hr>
             <p>{{ profile.description }}</p>
             <hr>
