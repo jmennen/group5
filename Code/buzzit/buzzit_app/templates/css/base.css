@@ -1,0 +1,20 @@
+body {
+    padding-top: 70px;
+}
+
+.thumbnail img {
+    width: 75%;
+}
+
+.thumbnail {
+    padding: 33px;
+}
+
+.thumbnail .caption-full {
+    padding: 9px;
+    color: #333;
+}
+
+footer {
+    margin: 50px 0;
+}

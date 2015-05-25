@@ -1,10 +1,194 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>buzzit - base</title>
+
+   
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+  
+    <link href="../css/base.css" rel="stylesheet">
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+
 </head>
-<body>
+
+<body class="container">
+ 
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>                        
+		</button>
+			<a class="navbar-brand" href="#">buzzit!</a>
+	</div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+	
+			<form class="navbar-form navbar-left" role="search">
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="find user...">
+					<span class="input-group-btn">
+						<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>Search</button>
+					</span>
+
+				</div>		
+			</form>
+	
+	
+		<ul class="nav navbar-nav">
+                <li><a href="home.html">Profil</a></li>
+                <li><a href="#">Kreise</a></li>
+				<li><a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Nachrichten</a></li>	
+				
+		</ul>
+			
+		<ul class="nav navbar-nav navbar-right">
+			
+			<li><a href="edit_own_userdata.html"><span class="glyphicon glyphicon-wrench"></span> </a></li>
+			<li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+		</ul>
+	  
+	  	
+    </div>
+  </div>
+</nav>
+
+   
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-3">
+                <p class="lead">Eingeloggt als...</p>
+                <div class="thumbnail">
+                    <img class="img-responsive" src="http://placehold.it/100x100" alt={{profile.profile_picture}}>
+                    <hr>
+					<p>{{user.first_name}}</p>
+					<hr>
+					<p>{{user.last_name}}</p>
+					<hr>
+					<p>{{profile.description}}</p>
+					<hr>
+					<p>{{user.email}}</p>
+					<hr>
+					<p>{{profile.gender}}</p>
+					<hr>
+                                  
+                    <p><a href="edit_own_profile.html">edit profile</a></p>
+             
+               
+                </div>
+            </div>
+
+            <div class="col-md-9">
+			   <div class="thumbnail">
+			   </div>
+			<div class="well">
+				
+                <h3>Öffentliche Nachrichten</h3>
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="write public message...">
+					<span class="input-group-btn">
+						<button class="btn btn-info" type="button">Send</button>
+					</span>
+				</div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                    <hr>
+					<div class="row">
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                    <hr>
+					<div class="row">
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                    <hr><div class="row">
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                    <hr>
+					<div class="row">
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                    <hr>
+					
+
+
+               
+
+                </div>
+			
+
+       
+
+                    <div class="well">
+                     <h3>Kreisnachrichten</h3>  
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Kreisnachricht...">
+					<span class="input-group-btn">
+						<button class="btn btn-info" type="button">Send</button>
+					</span>
+
+				</div>
+                    <hr>
+                    </div>
+                    
+                </div>
+
+                
+            </div>
+        </div>
+
+    <div class="container">
+
+        <hr>
+
+        <!-- Footer -->
+ <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="list-inline">
+                        <li>
+                         <a href="home.html">Home</a>
+                        </li>
+                        <li class="footer-menu-divider">&sdot;</li>
+                        <li>
+                            <a href="impressum.html">Impressum</a>
+                        </li>
+                             
+                    </ul>
+                    <p class="copyright text-muted small">Copyright &copy; buzzit. All Rights Reserved</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    </div>
+
+
 
 </body>
+
 </html>
