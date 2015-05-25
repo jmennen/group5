@@ -1,168 +1,129 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% block title %}Profil anzeigen{% endblock %}
+{% block content %}
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">buzzit!</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
 
-<head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Profil anzeigen</title>
-	
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
-
-  
-    <link href="../css/base.css" rel="stylesheet">
-	
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-</head>
-
-<body class="container">
- 
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container">
-	<div class="navbar-header">
-		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>                        
-		</button>
-			<a class="navbar-brand" href="#">buzzit!</a>
-	</div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-	
-			<form class="navbar-form navbar-left" role="search">
-				<div class="input-group">
-					<input type="text" class="form-control" placeholder="find user...">
+                <form class="navbar-form navbar-left" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="find user...">
 					<span class="input-group-btn">
-						<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>Search</button>
+						<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-search"
+                                                                         aria-hidden="true"></span>Search
+                        </button>
 					</span>
 
-				</div>		
-			</form>
-	
-	
-		<ul class="nav navbar-nav">
-                <li><a href="home.html">Profil</a></li>
-                <li><a href="#">Kreise</a></li>
-				<li><a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Nachrichten</a></li>	
-				
-		</ul>
-			
-		<ul class="nav navbar-nav navbar-right">
-			
-			<li><a href="edit_own_userdata.html"><span class="glyphicon glyphicon-wrench"></span> </a></li>
-			<li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-		</ul>
-	  
-	  	
-    </div>
-  </div>
-</nav>
-	
-			<p class="lead">{{user.username}} {{profile.gender}}  <button type="button" class="btn btn-primary">Diesem Benutzer eine Nachricht senden</button></p>
-				
-			<div class="col-md-5">
-               
-                <div class="thumbnail">
-                    <img class="img-responsive" src="http://placehold.it/100x100" alt={{profile.profile_picture}}>              
-                </div>
-				
-				<div class="well">
-				<p>{{user.first_name}}</p>
-				<hr>
-				<p>{{user._last_name}}</p>
-				<hr>
-				<p>{{profile.description}}</p>
-				<hr>
-				</div>
-				
-	
-				
-			</div>
-			
-			
-			<div class="col-md-7">
-			  
-			<div class="well">
-				
-                <h3>Öffentliche Nachrichten</h3>
-				<div class="row">
-                        <div class="col-md-12">
-                        </div>
                     </div>
-                    
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-12">
-                        </div>
-                    </div>
-                    <hr>
-					<div class="row">
-                        <div class="col-md-12">
-                        </div>
-                    </div>
-                    <hr>
-					<div class="row">
-                        <div class="col-md-12">
-                        </div>
-                    </div>
-                    <hr><div class="row">
-                        <div class="col-md-12">
-                        </div>
-                    </div>
-                    <hr>
-					<div class="row">
-                        <div class="col-md-12">
-                        </div>
-                    </div>
-                    <hr>
-					<div class="row">
-                        <div class="col-md-12">
-                        </div>
-                    </div>
-                    <hr>
-					<div class="row">
-                        <div class="col-md-12">
-                        </div>
-                    </div>
-                    <hr>
-					<div class="row">
-                        <div class="col-md-12">
-                        </div>
-                    </div>
-                   
-					
-					</div>
-			
-			</div>
-	
-			
- <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <ul class="list-inline">
-                        <li>
-                         <a href="home.html">Home</a>
-                        </li>
-                        <li class="footer-menu-divider">&sdot;</li>
-                        <li>
-                            <a href="impressum.html">Impressum</a>
-                        </li>
-                             
-                    </ul>
-                    <p class="copyright text-muted small">Copyright &copy; buzzit. All Rights Reserved</p>
-                </div>
+                </form>
+
+
+                <ul class="nav navbar-nav">
+                    <li><a href="home.html">Profil</a></li>
+                    <li><a href="#">Kreise</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+                        Nachrichten</a></li>
+
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li><a href="edit_own_userdata.html"><span class="glyphicon glyphicon-wrench"></span> </a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                </ul>
+
+
             </div>
         </div>
-    </footer>
+    </nav>
+
+    <p class="lead">{{ user.username }} {{ profile.gender }}
+        <button type="button" class="btn btn-primary">Diesem Benutzer eine Nachricht senden</button>
+    </p>
+
+    <div class="col-md-5">
+
+        <div class="thumbnail">
+            <img class="img-responsive" src="{{ profile.profile_picture }}" alt="Profilbild">
+        </div>
+
+        <div class="well">
+            <p>{{ user.first_name }}</p>
+            <hr>
+            <p>{{ user._last_name }}</p>
+            <hr>
+            <p>{{ profile.description }}</p>
+            <hr>
+        </div>
 
 
+    </div>
 
 
-</body>
-</html>
+    <div class="col-md-7">
+
+        <div class="well">
+
+            <h3>Öffentliche Nachrichten</h3>
+
+            <div class="row">
+                <div class="col-md-12">
+                </div>
+            </div>
+
+            <hr>
+            <!-- dummy placeholder for content -->
+            <div class="row">
+                <div class="col-md-12">
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+{% endblock %}

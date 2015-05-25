@@ -1,181 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+{% extends "base.html" %}
+{% block title %}Impressum{% endblock %}
+{% block  content %}
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">buzzit!</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Impressum</title>
-	
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
-
-  
-    <link href="../css/base.css" rel="stylesheet">
-	
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-
-
-</head>
-<body>
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container">
-	<div class="navbar-header">
-		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>                        
-		</button>
-			<a class="navbar-brand" href="#">buzzit!</a>
-	</div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-	
-			<form class="navbar-form navbar-left" role="search">
-				<div class="input-group">
-					<input type="text" class="form-control" placeholder="find user...">
+                <form class="navbar-form navbar-left" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="find user...">
 					<span class="input-group-btn">
-						<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>Search</button>
+						<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-search"
+                                                                         aria-hidden="true"></span>Search
+                        </button>
 					</span>
 
-				</div>		
-			</form>
-	
-	
-		<ul class="nav navbar-nav">
-                <li><a href="home.html">Profil</a></li>
-                <li><a href="#">Kreise</a></li>
-				<li><a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Nachrichten</a></li>	
-				
-		</ul>
-			
-		<ul class="nav navbar-nav navbar-right">
-			
-			<li><a href="edit_own_userdata.html"><span class="glyphicon glyphicon-wrench"></span> </a></li>
-			<li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-		</ul>
-	  
-	  	
-    </div>
-  </div>
-</nav>
-	
-	
-	<div class="container">
-  	<h2>Impressum</h2>
-			<div class="col-lg-4">
-    		<address>
-				<strong>Cheng Chen</strong><br>
-				hehe 91<br>
-				1012378 Berlin<br>
-				<abbr title="Phone">P:</abbr> (123) 4567890
-			</address>
+                    </div>
+                </form>
 
-			<address>
-				<strong>Problems and Feedback</strong><br>
-				<a href="mailto:#">chengchen@example.com</a>
-			</address>
-			<hr>
-			</div>
-			
-			
-			<div class="col-lg-4">
-    		<address>
-				<strong>placeh</strong><br>
-				heheh<br>
-				11111 Berlin<br>
-				<abbr title="Phone">P:</abbr> (123) 4567890
-			</address>
 
-			<address>
-				<strong>Problems and Feedback</strong><br>
-				<a href="mailto:#">@example.com</a>
-			</address>
-			<hr>
-			</div>
-			
-			<div class="col-lg-4">
-    		<address>
-				<strong>placeh</strong><br>
-				heheh<br>
-				11111 Berlin<br>
-				<abbr title="Phone">P:</abbr> (123) 4567890
-			</address>
+                <ul class="nav navbar-nav">
+                    <li><a href="home.html">Profil</a></li>
+                    <li><a href="#">Kreise</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+                        Nachrichten</a></li>
 
-			<address>
-				<strong>Problems and Feedback</strong><br>
-				<a href="mailto:#">@example.com</a>
-			</address>
-			<hr>
-			</div>
-			
-			<div class="col-lg-4">
-    		<address>
-				<strong>placeh</strong><br>
-				heheh<br>
-				11111 Berlin<br>
-				<abbr title="Phone">P:</abbr> (123) 4567890
-			</address>
+                </ul>
 
-			<address>
-				<strong>Problems and Feedback</strong><br>
-				<a href="mailto:#">@example.com</a>
-			</address>
-			</div>
-			
-			<div class="col-lg-4">
-    		<address>
-				<strong>placeh</strong><br>
-				heheh<br>
-				11111 Berlin<br>
-				<abbr title="Phone">P:</abbr> (123) 4567890
-			</address>
+                <ul class="nav navbar-nav navbar-right">
 
-			<address>
-				<strong>Problems and Feedback</strong><br>
-				<a href="mailto:#">@example.com</a>
-			</address>
-			</div>
-			<div class="col-lg-4">
-    		<address>
-				<strong>placeh</strong><br>
-				heheh<br>
-				11111 Berlin<br>
-				<abbr title="Phone">P:</abbr> (123) 4567890
-			</address>
+                    <li><a href="edit_own_userdata.html"><span class="glyphicon glyphicon-wrench"></span> </a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                </ul>
 
-			<address>
-				<strong>Problems and Feedback</strong><br>
-				<a href="mailto:#">@example.com</a>
-			</address>
-			</div>
-			
-	</div>
-	
-	
-	
-	
- <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <ul class="list-inline">
-                        <li>
-                            <a href="../logged_in/home.html">Home</a>
-                        </li>
-                        <li class="footer-menu-divider">&sdot;</li>
-                        <li>
-                            <a href="../guest/impressum.html">Impressum</a>
-                        </li>
-                             
-                    </ul>
-                    <p class="copyright text-muted small">Copyright &copy; buzzit. All Rights Reserved</p>
-                </div>
+
             </div>
         </div>
-    </footer>  
-
-</body>
-</html>
+    </nav>
+    {% include "includes/impressum_content.html" %}
+{% endblock %}
