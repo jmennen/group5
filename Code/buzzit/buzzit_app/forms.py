@@ -16,6 +16,7 @@ class RegistrationForm(forms.Form):
     password2 = forms.CharField(widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)), label=_("Password (again)"))
 
     def clean_username(self):
+        # cleaning method that operates on the form field username
         # check if the given username exists already, in this case throw a message, when not, store the username
         try:
             user = User.objects.get(username__iexact=self.cleaned_data['username'])
@@ -24,6 +25,7 @@ class RegistrationForm(forms.Form):
         raise forms.ValidationError(_("Der Benutzername existiert bereits. versuch bitte einen Anderen."))
 
     def clean(self):
+        # cleaning method that operates on the form fields password and password again
         # check if the passwords valid are, when the given passwords don't match, throw a error
         if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
             if self.cleaned_data['password1'] != self.cleaned_data['password2']:
