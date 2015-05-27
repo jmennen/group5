@@ -1,3 +1,4 @@
+<!--the navigation bar which is included in the templates of the logged_in user -->
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -39,7 +40,7 @@
 				<!--leads to edit_own_userdata site -->
                 <li><a href="{% url "update_userdata" %}"><span class="glyphicon glyphicon-wrench"></span> Einstellungen</a>
                 </li>
-				<!--log out -->
+				<!-- logs out the user -->
                 <li><a href="{% url "logout" %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
 

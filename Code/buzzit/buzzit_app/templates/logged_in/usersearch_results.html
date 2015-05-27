@@ -4,7 +4,8 @@
 <!--imports the navigation bar-->
 {% include "includes/navbar.html" %}
 
-	<!--table for the searchlist-->
+	<!-- Page Content -->
+	<!--table for the results from the search. displays the name, picture, description and the gender-->
     <div class="container">
         <h3>Ihre Suche ergab folgendes Ergebnis...</h3>
         <table class="table table-bordered">
@@ -17,7 +18,9 @@
             </tr>
             {% for user in user_list %}
                 <tr>
+				<!--the name links to the user's profile-->
                     <td><a href="{% url "view_profile" user.pk %}">{{ user.username }}</a></td>
+				<!--profile_picture is resized-->
                     <td><img src="{{ user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
                     <td>{{ user.profile.description }}</td>
                     <td>{{ user.profile.gender }}</td>

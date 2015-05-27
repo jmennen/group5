@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block title %}Impressum{% endblock %}
 {% block  content %}
+<!-- impressum for the guest -->
+	<!-- small navigation bar with buzzit as brand -->
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container">
 
@@ -10,5 +12,6 @@
 
         </div>
     </div>
+	<!-- uses the impressum_content.html for the adresses -->
     {% include "includes/impressum_content.html" %}
 {% endblock %}

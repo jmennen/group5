@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
+	<!-- startpage for guests which allows you to register or log in -->
     <title>Landing Page - Start Bootstrap Theme</title>
 
     {% load staticfiles %}
@@ -49,7 +49,7 @@
                                 </div>
                             {% endif %}
 							
-							<!-- login button  -->
+							<!-- logs in the user after successful account information authentification  -->
                             <div class="login">
 
                                 <form method="post" action="{% url "start" %}" class="form-inline">
@@ -63,7 +63,7 @@
                             </div>
                         </li>
 						
-						<!--registration button  -->
+						<!-- leads to the user registration -->
                         <li>
                             <a href="{% url "register" %}" class="btn btn-success btn-lg"> <span class="network-name"><span
                                     class="glyphicon glyphicon-user" aria-hidden="true"></span> Register</span></a>

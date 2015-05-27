@@ -1,5 +1,6 @@
 {% load staticfiles %}
 <!DOCTYPE html>
+	<!-- this is our base for mostly all the templates for the logged_in user. It includes the static files, a footer and it is linked to the bootstrap.min.css, jquery.min.js and bootstrap.min.js-->
 <html lang="en">
 <head>
 
@@ -20,6 +21,7 @@
     <link href="{% static "css/base.css" %}" rel="stylesheet">
 </head>
 <body>
+	<!-- other templates are embedded here -->
     {% block content %}
     {% endblock %} 
 	
@@ -35,7 +37,7 @@
                         </li>
                         <li class="footer-menu-divider">&sdot;</li>
                         <li>
-							<!--leads to impressum -->
+							<!-- leads to the impressum -->
                             <a href="{% url "impressum" %}">Impressum</a>
                         </li>
                              
