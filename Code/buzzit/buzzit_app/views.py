@@ -211,6 +211,10 @@ class UserSearchResultsView(ListView):
 
 @csrf_protect
 def register(request):
+    """"
+    Handle user registration and create profile for the user.
+    
+    """"
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
