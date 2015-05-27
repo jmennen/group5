@@ -3,6 +3,7 @@
     {% block title %}buzzit - base{% endblock %}
 
     {% block content %}
+	<!--imports the navigation bar-->
     {% include "includes/navbar.html" %}
 
    
@@ -10,7 +11,7 @@
     <div class="container">
 
         <div class="row">
-
+			<!--information and picture of this profile-->
             <div class="col-md-3">
                 <p class="lead">Eingeloggt als...</p>
                 <div class="thumbnail">
@@ -27,6 +28,7 @@
 					<p>{{profile.gender}}</p>
 					<hr>
                                   
+					<!--leads to edit_profile-->			  
                     <p><a href="{% url "update_profile" %}">edit profile</a></p>
              
                
@@ -37,7 +39,7 @@
 			   <div class="thumbnail">
 			   </div>
 			<div class="well">
-				
+				<!--space for public messages-->
                 <h3>Öffentliche Nachrichten</h3>
 				<div class="input-group">
 					<input type="text" class="form-control" placeholder="write public message...">
@@ -81,7 +83,8 @@
        
 
                     <div class="well">
-                     <h3>Kreisnachrichten</h3>  
+                     <h3>Kreisnachrichten</h3>
+				<!--space for circle messages-->
 				<div class="input-group">
 					<input type="text" class="form-control" placeholder="Kreisnachricht...">
 					<span class="input-group-btn">

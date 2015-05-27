@@ -1,18 +1,21 @@
 {% extends "base.html" %}
 {% block title %}Profil anzeigen{% endblock %}
 {% block content %}
-    {% include "includes/navbar.html" %}
+<!--imports the navigation bar-->
+{% include "includes/navbar.html" %}
 
     <p class="lead">{{ user.username }}
+		<!--button for sending a message to this user-->
         <button type="button" class="btn btn-primary">Diesem Benutzer eine Nachricht senden</button>
     </p>
-
+	
+	<!--information and picture of this profile-->
     <div class="col-md-5">
 
         <div class="thumbnail">
             <img class="img-responsive" src="{{ profile.profile_picture }}" alt="Profilbild">
         </div>
-
+		
         <div class="well">
             <p>{{ user.first_name }}</p>
             <hr>
@@ -29,7 +32,7 @@
     <div class="col-md-7">
 
         <div class="well">
-
+			<!--space for public messages-->
             <h3>Öffentliche Nachrichten</h3>
 
             <div class="row">

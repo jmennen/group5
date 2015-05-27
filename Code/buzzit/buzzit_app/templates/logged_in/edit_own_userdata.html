@@ -1,14 +1,15 @@
 {% extends "base.html" %}
 {% block title %}Kontodaten ändern{% endblock %}
 {% block content %}
-    {% include "includes/navbar.html" %}
+<!--imports the navigation bar-->
+{% include "includes/navbar.html" %}
 
 
     <!-- Page Content -->
     <div class="container">
-
+		<!--form for changing the userdata-->
         <h2>Kontodaten bearbeiten</h2>
-
+			
         <div class="well">
 
             <form class="form-horizontal" role="form" action="{% url "update_userdata" %}" method="post">
@@ -41,8 +42,11 @@
 
 
                 <p></p>
-
+				
+				<!--button for saving the changes-->
                 <button class="btn btn-info" type="submit">Änderung speichern</button>
+				
+				<!--leads to the change_password site-->
                 <a class="btn btn-info" href="{% url "change_password" %}">Passwort &auml;ndern</a>
 
             </form>
