@@ -223,15 +223,18 @@ def register(request):
             )
             new_profile = Profile()
             new_profile.user = user
+            new_profile.profile_picture = "https://placehold.it/128x128"
+            new_profile.gender = ""
+            new_profile.description = ""
             new_profile.save()
             return HttpResponseRedirect(reverse("start"))
     else:
         form = RegistrationForm()
-    variables = RequestContext(request, {
+    variables = {
         'form': form
-    })
+    }
 
-    return render_to_response(
+    return render(request,
         'guest/register.html',
         variables,
     )
