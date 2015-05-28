@@ -4,6 +4,12 @@ from django import template
 register = template.Library()
 
 def beautifulNone(val):
+    """
+    If the filtered object is equal to None "-nicht angegeben-" is returned.
+    Else the object.
+    :param val:
+    :return:
+    """
     if val == None or val == "":
         return "-nicht angegeben-"
     return val
@@ -11,6 +17,11 @@ def beautifulNone(val):
 register.filter('beautifulNone', beautifulNone)
 
 def emptyNone(val):
+    """
+    If the filtered object is equal to None, an empty string is returned.
+    :param val:
+    :return:
+    """
     if val == None:
         return ""
     return val
@@ -18,6 +29,12 @@ def emptyNone(val):
 register.filter('emptyNone', emptyNone)
 
 def addcssclass(input, cssclass):
+    """
+    Add the CSS class <cssclass> to the input FormField.
+    :param input:
+    :param cssclass:
+    :return:
+    """
     return input.as_widget(attrs={'class': cssclass})
 
 register.filter('addcssclass', addcssclass)
