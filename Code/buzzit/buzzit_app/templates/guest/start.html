@@ -8,17 +8,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
+	<!-- startpage for guests which allows you to register or log in -->
     <title>Landing Page - Start Bootstrap Theme</title>
 
     {% load staticfiles %}
     <!-- Bootstrap Core CSS -->
     <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom CSS -->
+    <!-- Custom CSS - http://startbootstrap.com/template-overviews/landing-page/ -->
     <link href="{% static "css/landing-page.css" %}" rel="stylesheet">
 
-    <!-- Custom Fonts -->
+    <!-- Custom Fonts http://startbootstrap.com/template-overviews/landing-page/ -->
     <link href="{% static "font-awesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet"
           type="text/css">
@@ -41,13 +41,15 @@
                     <hr class="intro-divider">
                     <ul class="intro-social-buttons">
 
-
+						<!-- error message, if password or username is not correct  -->
                         <li style="margin-bottom: 20px;">
                             {% if form.errors %}
                                 <div class="panel panel-danger">
                                     <div class="panel-heading">Falsche Daten!</div>
                                 </div>
                             {% endif %}
+							
+							<!-- logs in the user after successful account information authentification  -->
                             <div class="login">
 
                                 <form method="post" action="{% url "start" %}" class="form-inline">
@@ -60,7 +62,8 @@
                                 </form>
                             </div>
                         </li>
-
+						
+						<!-- leads to the user registration -->
                         <li>
                             <a href="{% url "register" %}" class="btn btn-success btn-lg"> <span class="network-name"><span
                                     class="glyphicon glyphicon-user" aria-hidden="true"></span> Register</span></a>

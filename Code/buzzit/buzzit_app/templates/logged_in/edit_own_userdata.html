@@ -1,14 +1,16 @@
-{% extends "base.html" %}
+{% extends "base.html" %} 
 {% block title %}Kontodaten ändern{% endblock %}
 {% block content %}
-    {% include "includes/navbar.html" %}
+<!--imports the navigation bar-->
+{% include "includes/navbar.html" %}
 
 
     <!-- Page Content -->
+
     <div class="container">
-
+		<!-- form for changing the userdata - change first_name, last_name, email -->
         <h2>Kontodaten bearbeiten</h2>
-
+			
         <div class="well">
 
             <form class="form-horizontal" role="form" action="{% url "update_userdata" %}" method="post">
@@ -18,6 +20,7 @@
                     <label class="control-label col-sm-2" for="last_name">Name:</label>
 
                     <div class="col-sm-10">
+					<!-- new last_name value will be put in this textfield -->
                         <input type="last_name" class="form-control" id="last_name" name="last_name" placeholder="Nachname" value="{{ user.last_name }}">
                     </div>
                 </div>
@@ -26,6 +29,7 @@
                     <label class="control-label col-sm-2" for="first_name">Vorname:</label>
 
                     <div class="col-sm-10">
+					<!-- new first_name value will be put in this textfield -->
                         <input type="first_name" class="form-control" id="first_name"
                                placeholder="Vorname" value="{{ user.first_name }}" name="first_name">
                     </div>
@@ -35,14 +39,18 @@
                     <label class="control-label col-sm-2" for="email">E-Mail:</label>
 
                     <div class="col-sm-10">
+					<!-- new email value will be put in this textfield -->
                         <input type="email" class="form-control" id="email" placeholder="E-Mail" name="email" value="{{ user.email }}">
                     </div>
                 </div>
 
 
                 <p></p>
-
+				
+				<!-- button for saving the changes -->
                 <button class="btn btn-info" type="submit">Änderung speichern</button>
+				
+				<!-- leads to the change_password site -->
                 <a class="btn btn-info" href="{% url "change_password" %}">Passwort &auml;ndern</a>
 
             </form>

@@ -3,14 +3,16 @@
     {% block title %}buzzit - base{% endblock %}
 
     {% block content %}
+	<!--imports the navigation bar-->
     {% include "includes/navbar.html" %}
 
    
     <!-- Page Content -->
+	<!-- site being shown with logging in. serves as the profile of the logged_in user  -->
     <div class="container">
 
         <div class="row">
-
+			<!--picture of this profile and information e.g. description, first_name, last_name, email, gender-->
             <div class="col-md-3">
                 <p class="lead">Eingeloggt als...</p>
                 <div class="thumbnail">
@@ -27,6 +29,7 @@
 					<p>{{profile.gender}}</p>
 					<hr>
                                   
+					<!--leads to edit_own_profile site-->			  
                     <p><a href="{% url "update_profile" %}">edit profile</a></p>
              
                
@@ -37,7 +40,7 @@
 			   <div class="thumbnail">
 			   </div>
 			<div class="well">
-				
+				<!--space for public messages-->
                 <h3>Öffentliche Nachrichten</h3>
 				<div class="input-group">
 					<input type="text" class="form-control" placeholder="write public message...">
@@ -46,6 +49,7 @@
 					</span>
 				</div>
                     <hr>
+					<!-- dummy placeholder for content -->
                     <div class="row">
                         <div class="col-md-12">
                         </div>
@@ -81,13 +85,14 @@
        
 
                     <div class="well">
-                     <h3>Kreisnachrichten</h3>  
+                     <h3>Kreisnachrichten</h3>
+				<!--space for circle messages-->
 				<div class="input-group">
 					<input type="text" class="form-control" placeholder="Kreisnachricht...">
 					<span class="input-group-btn">
 						<button class="btn btn-info" type="button">Send</button>
 					</span>
-
+				<!-- dummy placeholder for content -->
 				</div>
                     <hr>
                     </div>

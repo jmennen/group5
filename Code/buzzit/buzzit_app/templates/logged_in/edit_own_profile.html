@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 {% block title %}Profil bearbeiten{% endblock %}
 {% block content %}
-    {% include "includes/navbar.html" %}
+<!--imports the navigation bar-->
+{% include "includes/navbar.html" %}
 
+	<!-- Page Content -->
+	
+	<!-- template to edit your profile -->
     <div class="container">
 
         <p class="lead">{{ user.username }}</p>
@@ -10,6 +14,8 @@
         <form role="form" method="post" enctype="multipart/form-data" action="{% url "update_profile" %}">
 
             {% csrf_token %}
+			
+			<!--radio buttons for choosing the gender-->
             <p>Geschlecht auswählen:</p>
 
             <label class="radio-inline">
@@ -22,7 +28,8 @@
             <p></p>
 
             <div class="col-md-5">
-
+				
+				<!--current profile picture and input field for uploading the new profile picture-->
                 <label>Profilbild ändern:</label>
 
                 <div class="thumbnail">
@@ -40,13 +47,15 @@
 
                 <p></p>
             </div>
-
+			
+			<!--textarea for changing the description with old being shown-->
             <div class="col-md-7">
                 <div class="form-group">
                     <label for="comment">Description:</label>
                     <textarea class="form-control" rows="6" name="description" id="comment">{{ profile.description }}</textarea>
                 </div>
-
+			
+				<!--button for saving the changes-->
                 <button type="submit" class="btn btn-info">Änderung speichern</button>
 
             </div>

@@ -1,3 +1,4 @@
+<!--the navigation bar which is included in the templates of the logged_in user -->
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -9,31 +10,37 @@
             <a class="navbar-brand" href="{% url "start" %}">buzzit!</a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
-
+			<!--search field for user profiles -->
             <form class="navbar-form navbar-left" role="search" method="get" action="{% url "search_user" %}">
                 <div class="input-group">
                     <input name="q" type="text" class="form-control" placeholder="find user...">
 					<span class="input-group-btn">
 						<button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search"
-                                                                         aria-hidden="true"></span>Search
+                                                                         aria-hidden="true"></span> Search
                         </button>
 					</span>
                     </input>
                 </div>
             </form>
 
-
+			
             <ul class="nav navbar-nav">
+				<!--leads to home site -->
                 <li><a href="{% url "home" %}">Profil</a></li>
+				<!--leads to circle site -->
                 <li><a href="#">Kreise</a></li>
+				<!--leads to messages site -->
                 <li><a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Nachrichten</a>
                 </li>
 
             </ul>
-
+			
+			
             <ul class="nav navbar-nav navbar-right">
+				<!--leads to edit_own_userdata site -->
                 <li><a href="{% url "update_userdata" %}"><span class="glyphicon glyphicon-wrench"></span> Einstellungen</a>
                 </li>
+				<!-- logs out the user -->
                 <li><a href="{% url "logout" %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
 

@@ -15,7 +15,8 @@
     <!-- Page Content -->
     <div class="container">
 
-
+		<!-- registration form, username and password are required - first_name, last_name and email are optional -->
+		
         <h2>Registrierung</h2>
 
         <div class="well">
@@ -23,6 +24,7 @@
 
                 {% csrf_token %}
                 <div class="form-group">
+					<!-- textfield for username -->
                     <label class="control-label col-sm-2" for="benutzername">Benutzername:</label>
 
                     <div class="col-sm-10">
@@ -32,6 +34,7 @@
                 </div>
 
                 <div class="form-group">
+					<!-- textfield for password, password will not be shown -->
                     <label class="control-label col-sm-2" for="passwort">Passwort:</label>
 
                     <div class="col-sm-10">
@@ -41,6 +44,7 @@
                 </div>
 
                 <div class="form-group">
+					<!-- it is required to repeat the password for safety reasons -->
                     <label class="control-label col-sm-2" for="passwort_wiederholen">Passwort wiederholen:</label>
 
                     <div class="col-sm-10">
@@ -50,6 +54,7 @@
                 </div>
 
                 <div class="form-group">
+					<!-- optionally for last_name -->
                     <label class="control-label col-sm-2" for="last_name">Name:</label>
 
                     <div class="col-sm-10">
@@ -58,6 +63,7 @@
                 </div>
 
                 <div class="form-group">
+					<!-- optionally for first_name -->
                     <label class="control-label col-sm-2" for="first_name">Vorname:</label>
 
                     <div class="col-sm-10">
@@ -66,6 +72,7 @@
                 </div>
 
                 <div class="form-group">
+					<!-- optionally for email -->
                     <label class="control-label col-sm-2" for="email">E-Mail:</label>
 
                     <div class="col-sm-10">
@@ -76,9 +83,10 @@
 
                 <p></p>
 
-
+				<!--the button for submitting the registration information, a user with the credentials will be created -->
                 <button class="btn btn-info" type="submit">registrieren</button>
-
+				
+			
 
             </form>
         </div>
