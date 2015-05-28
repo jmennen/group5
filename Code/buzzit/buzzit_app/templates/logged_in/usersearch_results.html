@@ -3,6 +3,7 @@
 {% block content %}
 <!--imports the navigation bar-->
 {% include "includes/navbar.html" %}
+{% load filters %}
 
 	<!-- Page Content -->
 	<!--table for the results from the search. displays the name, picture, description and the gender-->
@@ -22,8 +23,8 @@
                     <td><a href="{% url "view_profile" user.pk %}">{{ user.username }}</a></td>
 				<!--profile_picture is resized-->
                     <td><img src="{{ user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
-                    <td>{{ user.profile.description }}</td>
-                    <td>{{ user.profile.gender }}</td>
+                    <td>{{ user.profile.description | beautifulNone }}</td>
+                    <td>{{ user.profile.gender | beautifulNone }}</td>
 
                 </tr>
             {% endfor %}
