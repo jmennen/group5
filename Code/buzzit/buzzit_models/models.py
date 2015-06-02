@@ -21,4 +21,4 @@ class Circle(models.Model):
 
 
 class Circle_message(Message):
-    answer_to = models.ForeignKey("self", blank=True, null=True, related_name="answer_to") # ist Antwort auf Kreisnachricht
+    answer_to = models.ForeignKey("self", blank=True, null=True) # ist Antwort auf Kreisnachricht
