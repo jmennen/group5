@@ -61,7 +61,7 @@
 				v:shadowOffsetY="-8.50394"/>
 		<v:layer v:name="Verbinder" v:index="0"/>
 		<v:layer v:name="Beschriftung" v:index="1"/>
-		<g id="group9-1" transform="translate(337.323,-420.92)" v:mID="9" v:groupContext="group">
+		<g id="group9-1" transform="translate(337.323,-408.916)" v:mID="9" v:groupContext="group">
 			<v:userDefs>
 				<v:ud v:nameU="msvStructureType" v:prompt="" v:val="VT4(List)"/>
 				<v:ud v:nameU="msvSDContainerResize" v:prompt="" v:val="VT0(2):26"/>
@@ -102,11 +102,11 @@
 				</v:userDefs>
 				<g id="shadow10-3" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
 						transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
-					<path d="M0 841.89 L184.25 841.89 L184.25 773.37 L0 773.37 L0 841.89 Z" class="st2"/>
+					<path d="M0 841.89 L184.25 841.89 L184.25 761.37 L0 761.37 L0 841.89 Z" class="st2"/>
 				</g>
-				<path d="M0 841.89 L184.25 841.89 L184.25 773.37 L0 773.37 L0 841.89 Z" class="st3"/>
+				<path d="M0 841.89 L184.25 841.89 L184.25 761.37 L0 761.37 L0 841.89 Z" class="st3"/>
 			</g>
-			<g id="shape11-7" v:mID="11" v:groupContext="shape" transform="translate(0,-68.5185)">
+			<g id="shape11-7" v:mID="11" v:groupContext="shape" transform="translate(0,-80.5221)">
 				<title>Tabelle.11</title>
 				<v:userDefs>
 					<v:ud v:nameU="msvStructureType" v:prompt="" v:val="VT4(Heading)"/>
@@ -123,7 +123,7 @@
 				</v:userDefs>
 				<path d="M0 841.89 L184.25 841.89 L184.25 810.49 L0 810.49 L0 841.89 Z" class="st4"/>
 			</g>
-			<g id="shape13-9" v:mID="13" v:groupContext="shape" transform="translate(175.748,-99.9222)">
+			<g id="shape13-9" v:mID="13" v:groupContext="shape" transform="translate(175.748,-111.926)">
 				<title>Tabelle.13</title>
 				<desc>Parameter</desc>
 				<v:userDefs>
@@ -139,12 +139,12 @@
 			</g>
 			<g id="shape9-11" v:mID="9" v:groupContext="groupContent">
 				<v:textBlock v:margins="rect(8.5,4,8.5,4)" v:tabSpace="42.5197"/>
-				<v:textRect cx="92.126" cy="757.669" width="184.26" height="31.4037"/>
+				<v:textRect cx="92.126" cy="745.666" width="184.26" height="31.4037"/>
 				<g id="shadow9-12" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
 						transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1"/>
-				<text x="4" y="761.27" class="st5" v:langID="1031"><v:paragraph/><v:tabList/>Profile</text>			</g>
+				<text x="4" y="749.27" class="st5" v:langID="1031"><v:paragraph/><v:tabList/>Profile</text>			</g>
 		</g>
-		<g id="shape15-14" v:mID="15" v:groupContext="shape" transform="translate(340.157,-435.755)">
+		<g id="shape15-14" v:mID="15" v:groupContext="shape" transform="translate(340.157,-423.751)">
 			<title>Trennzeichen.15</title>
 			<v:userDefs>
 				<v:ud v:nameU="msvShapeCategories" v:prompt="" v:val="VT4(Separator)"/>
@@ -152,12 +152,12 @@
 				<v:ud v:nameU="ItemIndex" v:prompt="" v:val="VT0(-1):26"/>
 				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
 				<v:ud v:nameU="ContainerMargin" v:prompt="" v:val="VT0(0.039370078740157):24"/>
-				<v:ud v:nameU="ItemIndex" v:prompt="" v:val="VT0(5):26"/>
+				<v:ud v:nameU="ItemIndex" v:prompt="" v:val="VT0(6):26"/>
 			</v:userDefs>
 			<path d="M0 840.47 L178.58 840.47 L0 840.47 Z" class="st6"/>
 			<path d="M0 840.47 L178.58 840.47" class="st7"/>
 		</g>
-		<g id="shape16-17" v:mID="16" v:groupContext="shape" transform="translate(340.157,-423.755)">
+		<g id="shape16-17" v:mID="16" v:groupContext="shape" transform="translate(340.157,-411.751)">
 			<title>Mitglied.16</title>
 			<v:userDefs>
 				<v:ud v:nameU="msvShapeCategories" v:prompt="" v:val="VT4(Member)"/>
@@ -1398,7 +1398,41 @@
 				<path d="M7.09 841.89 L7.09 880.8" class="st13"/>
 			</g>
 		</g>
-		<g id="group390-283" transform="translate(160.157,-670.394)" v:mID="390" v:groupContext="group">
+		<g id="shape453-283" v:mID="453" v:groupContext="shape" transform="translate(340.157,-426.586)">
+			<title>Mitglied.453</title>
+			<desc>follows (opt) : List&#60;Profile&#62;</desc>
+			<v:userDefs>
+				<v:ud v:nameU="msvShapeCategories" v:prompt="" v:val="VT4(Member)"/>
+				<v:ud v:nameU="MemberName" v:prompt="" v:val="VT4(-Mitgliedsname)"/>
+				<v:ud v:nameU="ContainerMargin" v:prompt="" v:val="VT0(0):26"/>
+				<v:ud v:nameU="WidthMin" v:prompt="" v:val="VT0(0):26"/>
+				<v:ud v:nameU="UserWidth" v:prompt="" v:val="VT0(1.8897637795276):24"/>
+				<v:ud v:nameU="DarkerColor" v:prompt="" v:val="VT0(0):26"/>
+				<v:ud v:nameU="DarkColor" v:prompt="" v:val="VT0(0):26"/>
+				<v:ud v:nameU="BackFillColor" v:prompt="" v:val="VT0(1):26"/>
+				<v:ud v:nameU="BackLineColor" v:prompt="" v:val="VT0(0):26"/>
+				<v:ud v:nameU="IsInstance" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="MemberName" v:prompt="" v:val="VT4(follows (opt) : List&#60;Profile&#62;)"/>
+				<v:ud v:nameU="ContainerMargin" v:prompt="" v:val="VT0(0.039370078740157):24"/>
+				<v:ud v:nameU="WidthMin" v:prompt="" v:val="VT0(0):26"/>
+				<v:ud v:nameU="DarkerColor" v:prompt="" v:val="VT5(#5b9bd5)"/>
+				<v:ud v:nameU="DarkColor" v:prompt="" v:val="VT5(#c8c8c8)"/>
+				<v:ud v:nameU="BackFillColor" v:prompt="" v:val="VT5(#f2f2f2)"/>
+				<v:ud v:nameU="BackLineColor" v:prompt="" v:val="VT5(#c8c8c8)"/>
+				<v:ud v:nameU="IsInstance" v:prompt="" v:val="VT0(1):5"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(0,0,0,8.50394)" v:tabSpace="42.5197"/>
+			<v:textRect cx="89.2913" cy="835.888" width="178.59" height="12.0036"/>
+			<g id="shadow453-284" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<rect x="0" y="829.886" width="178.583" height="12.0036" class="st8"/>
+				<rect x="0" y="829.886" width="178.583" height="12.0036" class="st9"/>
+			</g>
+			<rect x="0" y="829.886" width="178.583" height="12.0036" class="st10"/>
+			<rect x="0" y="829.886" width="178.583" height="12.0036" class="st11"/>
+			<text x="8.5" y="838.89" class="st12" v:langID="1031"><v:paragraph/><v:tabList/>follows (opt) : List&#60;Profile&#62;</text>		</g>
+		<g id="group390-291" transform="translate(160.157,-670.394)" v:mID="390" v:groupContext="group">
 			<v:userDefs>
 				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
 				<v:ud v:nameU="msvStructureType" v:prompt="" v:val="VT4(Callout)"/>
@@ -1416,10 +1450,10 @@
 			</v:userDefs>
 			<title>Hinweis.390</title>
 			<desc>(https://docs.djangoproject.com/en/1.8/ref/contrib/auth/#)</desc>
-			<g id="shape390-284" v:mID="390" v:groupContext="groupContent">
+			<g id="shape390-292" v:mID="390" v:groupContext="groupContent">
 				<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
 				<v:textRect cx="77.9528" cy="822.756" width="155.91" height="34.4037"/>
-				<g id="shadow390-285" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279"
+				<g id="shadow390-293" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279"
 						v:shadowType="1" transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
 					<path d="M0 841.89 L155.91 841.89 L155.91 812.13 L147.4 803.62 L0 803.62 L0 841.89 Z" class="st15"/>
 					<path d="M155.91 841.89 L177.17 852.15" class="st16"/>
@@ -1430,12 +1464,12 @@
 				<path d="M0 841.89 L155.91 841.89 L155.91 812.13 L147.4 803.62 L0 803.62 L0 841.89" class="st18"/>
 				<text x="15.65" y="818.56" class="st19" v:langID="1031"><v:paragraph v:horizAlign="2"/><v:tabList/>(https://docs.djangoproject.com/<tspan
 							x="42.39" dy="1.38em" class="st20">en</tspan>/1.8/ref/contrib/auth/#)</text>			</g>
-			<g id="shape391-296" v:mID="391" v:groupContext="shape" transform="translate(147.402,-29.7638)">
+			<g id="shape391-304" v:mID="391" v:groupContext="shape" transform="translate(147.402,-29.7638)">
 				<title>Tabelle.391</title>
 				<v:userDefs>
 					<v:ud v:nameU="FoldSize" v:prompt="" v:val="VT0(0.11811023622047):24"/>
 				</v:userDefs>
-				<g id="shadow391-297" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279"
+				<g id="shadow391-305" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279"
 						v:shadowType="1" transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
 					<path d="M0 841.89 L8.5 841.89 L8.5 842.74 L8.5 841.89 L0 833.39 L-0.85 833.39 L0 833.39 L0 841.89 Z"
 							class="st21"/>
