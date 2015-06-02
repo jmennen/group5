@@ -217,7 +217,7 @@ def register(request):
     all the attributes 
     param: request
     return object of httpresponse 
-    """"
+    """
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
