@@ -8,16 +8,16 @@ class Profile(models.Model):
     gender = models.CharField(blank=True, null=True, max_length=1)
 
 
-class Circle(models.Model):
-    owner = models.ForeignKey(Profile, blank=False, null=False) # User erstellt Kreis
-    messages = models.ManyToManyField(Message, blank=True, null=True) # Kreis enthält Nachrichten
-    members = models.ManyToManyField(User, blank=True, null=True) # Kreis enthält User
-
-
 class Message(models.Model):
     creator = models.ForeignKey(User, blank=False, null=False)
     created = models.DateTimeField(blank=False, null=False)
     text = models.CharField(blank=False, null=False, max_length=140)
+
+
+class Circle(models.Model):
+    owner = models.ForeignKey(User, blank=False, null=False) # User erstellt Kreis
+    messages = models.ManyToManyField(Message, blank=True, null=True) # Kreis enthält Nachrichten
+    members = models.ManyToManyField(User, blank=True, null=True) # Kreis enthält User
 
 
 class Circle_message(Message):
