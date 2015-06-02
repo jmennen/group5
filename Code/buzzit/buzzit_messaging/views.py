@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils.datetime_safe import datetime
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, UpdateView, CreateView
+from django.views.generic import ListView, UpdateView, CreateView, DeleteView
 from buzzit_models.models import *
 
 
@@ -46,7 +46,7 @@ class CircleOverviewView(ListView):
 
 
 @login_required
-def followers(request):
+def listfollowers(request):
     profile = Profile.objects.get(user=request.user)
     return render(request, "buzzit_messaging/logged_in/following_userlist.html", {"profile": profile})
 
@@ -59,3 +59,21 @@ class PostCirclemessageView(CreateView):
         form.creator = self.request.user
         form.created = datetime.now()
         return super(PostCirclemessageView, self).form_valid(form)
+
+
+class DeleteCirclemessageView(DeleteView):
+    model = Circle_message
+
+
+class RemoveCircle(DeleteView):
+    model = Circle
+
+
+@login_required()
+def follow(request, user_id):
+    pass
+
+
+@login_required()
+def unfollow(request, user_id):
+    pass
