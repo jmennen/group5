@@ -90,7 +90,7 @@
             <!--{% for user in user_list %}-->
                  <tr>
 				<!--the name links to the user's profile-->
-                    <td><a href="{% url "view_profile" user.pk %}">{{ user.username }}</a></td>
+                    <td><a href="{% url "view_profile" user.pk %}">{{ profile.follows }}</a></td>
 				<!--profile_picture is resized-->
                     <td><img src="{{ user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
                     <td>{{ user.profile.description | beautifulNone }}</td>
@@ -103,7 +103,7 @@
 				
 			    <tr>
 				<!--the name links to the user's profile-->
-                    <td><a href="{% url "view_profile" user.pk %}">{{ user.username }}</a></td>
+                    <td><a href="{% url "view_profile" user.pk %}">{{ profile.follows }}</a></td>
 				<!--profile_picture is resized-->
                     <td><img src="{{ user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
                     <td>{{ user.profile.description | beautifulNone }}</td>

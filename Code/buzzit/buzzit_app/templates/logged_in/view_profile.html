@@ -27,6 +27,11 @@
             <hr>
             <p>{{ profile.description }}</p>
             <hr>
+			<p>
+				<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-envelope"></span></button>
+				<button class="btn btn-info" type="button">Folgen</button>
+				<button class="btn btn-danger" type="button">Entfolgen</button>				
+			</p>
         </div>
 
 
@@ -37,54 +42,25 @@
 
         <div class="well">
 			<!--space for public messages-->
-            <h3>Öffentliche Nachrichten</h3>
+            <h3>Kreisnachrichten</h3>
 
             <div class="row">
                 <div class="col-md-12">
                 </div>
             </div>
-
+			<hr>
+					{{message.creator}} schrieb hier am {{message.created}}:
+				<p>
+					{{message.text}}
+				</p>
             <hr>
             <!-- dummy placeholder for content -->
             <div class="row">
                 <div class="col-md-12">
                 </div>
             </div>
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                </div>
-            </div>
+
+      
 
 
         </div>
