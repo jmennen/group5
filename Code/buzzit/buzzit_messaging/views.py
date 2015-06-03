@@ -5,7 +5,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView
 from django.http import HttpResponseRedirect
 from buzzit_models.models import *
-
+from django.core.exceptions import ObjectDoesNotExist
 
 class BeingFollowedByView(ListView):
     model = Profile
@@ -76,14 +76,23 @@ class RemoveCircle(DeleteView):
 
 @login_required()
 def follow(request, user_id):
-    follow_user = Profile.objects.get(pk=user_id)
-    my_profile = Profile.objects.get(pk=request.user)
+    try:
+        follow_user = Profile.objects.get(pk=user_id)
+    except ObjectDoesNotExist:
+        # user to follow does not exist
+        return HttpResponseRedirect('home')
+    try:
+        my_profile = Profile.objects.get(pk=request.user)
+    except ObjectDoesNotExist:
+        # logged nin user has no profile
+        return HttpResponseRedirect('home')
     my_profile.follows.add(follow_user)
     return HttpResponseRedirect('home')
 
 
 @login_required()
 def unfollow(request, user_id):
+    # TODO: exceptions für nicht gefundene user usw (wie follow())
     unfollow_user = Profile.objects.get(pk=user_id)
     my_profile = Profile.objects.get(pk=request.user)
     my_profile.follows.remove(unfollow_user)
