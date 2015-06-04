@@ -21,13 +21,13 @@
             <div class="thumbnail col-md-3">
                 <img class="img-responsive" src="{{ profile.profile_picture }}" alt="Profilbild">
                 <hr>
-                <p>{{ user.first_name | beautifulNone }}</p>
+                <p>Vorname: {{ user.first_name | beautifulNone }}</p>
                 <hr>
-                <p>{{ user.last_name | beautifulNone }}</p>
+                <p>Nachname: {{ user.last_name | beautifulNone }}</p>
                 <hr>
-                <p>{{ user.email }}</p>
+                <p>Email: {{ user.email }}</p>
                 <hr>
-                <p>{{ profile.gender | beautifulNone }}</p>
+                <p>Geschlecht: {{ profile.gender | beautifulNone }}</p>
                 <hr>
 
                 <!--leads to edit_own_profile site-->
@@ -35,70 +35,47 @@
             </div>
             <div class="col-md-9">
                 <div class="thumbnail">
-                    <p>{{ profile.description | beautifulNone }}</p>
+                    <p>Beschreibung: {{ profile.description | beautifulNone }}</p>
                 </div>
-                <div class="well">
-                    <!--space for public messages-->
-                    <h3>Öffentliche Nachrichten</h3>
-
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="write public message...">
-					<span class="input-group-btn">
-						<button class="btn btn-info" type="button">Send</button>
-					</span>
-                    </div>
-                    <hr>
-                    <!-- dummy placeholder for content -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-                            invidunt ut labore et dolore magna aliquyam erat, sed
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-12">
-                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-                            invidunt ut labore et dolore magna aliquyam erat, sed
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-12">
-                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-                            invidunt ut labore et dolore magna aliquyam erat, sed
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-12">
-                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-                            invidunt ut labore et dolore magna aliquyam erat, sed
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-12">
-                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-                            invidunt ut labore et dolore magna aliquyam erat, sed
-                        </div>
-                    </div>
-                    <hr>
-                </div>
-                <div class="well">
+				
+      
+                 {% csrf_token %}
+                 <div class="well">
                     <h3>Kreisnachrichten</h3>
                     <!--space for circle messages-->
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Kreisnachricht...">
-					<span class="input-group-btn">
-						<button class="btn btn-info" type="button">Send</button>
-					</span>
-                    </div>
+					<form>
+						<p>Wähle ein Kreis aus:
+						<select align="left">
+									<option>Public</option>
+									<option>TU-Berlin</option>
+									<option>Gruppe 5</option>
+									<option>SN</option>
+						</select>
+						</p>
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="Kreisnachricht...">
+							
+						<div class="input-group-btn">
+							<button class="btn btn-info" type="button">Senden</button>
+						</div>
+						
+						</div>
+					</form>
+					<hr>
+					{{message.creator}} schrieb am {{message.created}}:
+				<p>
+					{{message.text}}
+				</p>
                     <hr>
                     <!-- dummy placeholder for content -->
+					{{message.creator}} schrieb am {{message.created}}:
+					<p>
                     Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
                     labore et dolore magna aliquyam erat, sed
+					</p>
                 </div>
+				
+				
             </div>
         </div>
     </div>
