@@ -211,7 +211,7 @@ class UserSearchResultsView(ListView):
 
 @csrf_protect
 def register(request):
-    """"
+    """
     Handle user registration and create profile for the user.
     use the registration form and check all the fields , with valid infos create object user and store 
     all the attributes 
