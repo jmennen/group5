@@ -36,6 +36,10 @@ class CircleDetailsView(UpdateView):
 class CreateCircleView(CreateView):
     model = Circle
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(CreateCircleView, self).dispatch(request, *args, **kwargs)
+
 
 class CircleOverviewView(ListView):
     model = Circle
@@ -52,8 +56,10 @@ class CircleOverviewView(ListView):
 
 @login_required
 def listfollows(request):
-    profile = Profile.objects.get(user=request.user)
-    return render(request, "buzzit_messaging/logged_in/following_userlist.html", {"profile": profile})
+    # list of profile
+    profiles_ids = Profile.objects.get(user=request.user).follows
+    profiles = Profile.objects.filter(pk__in = profiles_ids)
+    return render(request, "buzzit_messaging/logged_in/following_userlist.html", {"profile": profiles})
 
 
 class PostCirclemessageView(CreateView):
@@ -65,6 +71,10 @@ class PostCirclemessageView(CreateView):
         form.created = datetime.now()
         return super(PostCirclemessageView, self).form_valid(form)
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(PostCirclemessageView, self).dispatch(request, *args, **kwargs)
+
 
 class DeleteCirclemessageView(DeleteView):
     model = Circle_message
@@ -72,6 +82,16 @@ class DeleteCirclemessageView(DeleteView):
 
 class RemoveCircle(DeleteView):
     model = Circle
+
+
+@login_required
+def add_user_to_circle(request, user_id, circle_id):
+    pass
+
+
+@login_required
+def remove_user_from_circle(request, user_id, circle_id):
+    pass
 
 
 @login_required()
@@ -84,7 +104,7 @@ def follow(request, user_id):
     try:
         my_profile = Profile.objects.get(pk=request.user)
     except ObjectDoesNotExist:
-        # logged nin user has no profile
+        # logged in user has no profile
         return HttpResponseRedirect('home')
     my_profile.follows.add(follow_user)
     return HttpResponseRedirect('home')
@@ -95,5 +115,8 @@ def unfollow(request, user_id):
     # TODO: exceptions für nicht gefundene user usw (wie follow())
     unfollow_user = Profile.objects.get(pk=user_id)
     my_profile = Profile.objects.get(pk=request.user)
+    circles_of_unfollowed_user = Circle.objects.filter(owner=unfollow_user, members=my_profile)
+    for circle in circles_of_unfollowed_user:
+        circle.members.remove(my_profile)
     my_profile.follows.remove(unfollow_user)
     return HttpResponseRedirect('home')
