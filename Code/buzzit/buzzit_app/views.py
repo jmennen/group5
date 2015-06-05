@@ -332,8 +332,6 @@ class circleOverView(ListView):
     model = Circle
     template_name = "logged_in/circle_overview.html"
 
-    #def circle(self):
-     #   return Circle.objects.all()
 
 class createCircleView(CreateView,SuccessMessageMixin):
     """
@@ -345,6 +343,7 @@ class createCircleView(CreateView,SuccessMessageMixin):
     fields = ['name']
     success_message = "%(name)s die Kreise erfolgreich erstellt"
     success_url = reverse_lazy("createcircle")
+
     #ob man kreise mit selbem Name erstellen darf
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -356,24 +355,11 @@ class createCircleView(CreateView,SuccessMessageMixin):
 #            raise V
         form.instance.owner = self.request.user
         form.save()
-        # Another computing etc
+
         self.object.save()
         return super(createCircleView, self).form_valid(form)
-    """
-    success_message = "%(name)s die Kreise erfolgreich erstellt"
 
-    def clean_name(self):
-        name = self.cleaned_data['name']
-        if self.object.filter(name=name).exit():
-            raise ValidationError
-    def get_success_url(self):
-       # if self.request.form.is_valid():
-           # circle = Circle(Circle.owner = self.request.user, Circle.name = self.request.form.cleaned.data['name'])
 
-        return reverse("createcircle", kwargs={'pk': self.object.owner} )
-    #def dispatch(self, request, *args, **kwargs):
-        #return super(createCircle, self).dispatch(request, *args, **kwargs)
-    """
 class deleteCircleView(DeleteView,SuccessMessageMixin):
     """
     wenn Kreis user und Nachricte enthaelt, was passiert?
