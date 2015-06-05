@@ -332,8 +332,8 @@ class circleOverView(ListView):
     model = Circle
     template_name = "logged_in/circle_overview.html"
 
-    def cirlcle(self):
-        return Circle.objects.all()
+    #def circle(self):
+     #   return Circle.objects.all()
 
 class createCircleView(CreateView,SuccessMessageMixin):
     """

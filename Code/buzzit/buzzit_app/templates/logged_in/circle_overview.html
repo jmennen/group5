@@ -77,14 +77,23 @@
 
         <hr>
         <hr>
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+        <div>
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+
         <h3>Your Circles</h3>
+
+        <ul>
+            {% for circle in object_list %}
+                <li>{{ circle.name }}</li>
+            {% endfor %}
+        </ul>
 
         <table class="table table-bordered">
             <tr>
@@ -94,10 +103,6 @@
             </tr>
 
             <tr>
-
-                {% for circle in view.circle %}
-                    <li>{{ circle }}</li>
-                {% endfor %}
 
             </tr>
             <tr>
