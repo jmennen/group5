@@ -23,7 +23,8 @@
     <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet"
           type="text/css">
 
-    <!-- noty.js for messages -->
+    <!-- noty.js and jQuery for messages -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="{% static "js/noty/packaged/jquery.noty.packaged.min.js" %}"></script>
 
 
@@ -116,6 +117,7 @@
                 {% elif message.tags == "warning" %}
                     noty({type: "warning", text: "{{ message }}", timeout: 4000});
                 {%  else %}
+                    noty({type: "info", text: "{{ message }}</br>Klicken zum ausblenden"});
                 {% endif %}
             {% else %}
                 noty({text: "{{ message }}"});

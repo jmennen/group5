@@ -64,6 +64,7 @@
                 {% elif message.tags == "warning" %}
                     noty({type: "warning", text: "{{ message }}", timeout: 4000});
                 {%  else %}
+                    noty({type: "info", text: "{{ message }}</br>Klicken zum ausblenden"});
                 {% endif %}
             {% else %}
                 noty({text: "{{ message }}"});
