@@ -1,1 +1,149 @@
 <!--a site which contains your circles. you are able to create a new circle.-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>buzzit - base</title>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+	
+
+
+
+
+
+
+</head>
+<div class="container">
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url "start" %}">buzzit!</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+			<!--search field for user profiles -->
+            <form class="navbar-form navbar-left" role="search" method="get" action="{% url "search_user" %}">
+                <div class="input-group">
+                    <input name="q" type="text" class="form-control" placeholder="find user...">
+					<span class="input-group-btn">
+						<button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search"
+                                                                         aria-hidden="true"></span> Search
+                        </button>
+					</span>
+                    </input>
+                </div>
+            </form>
+
+			
+            <ul class="nav navbar-nav">
+				<!--leads to home site -->
+                <li><a href="{% url "home" %}">Profil</a></li>
+				<!--leads to circle site -->
+                <li><a href="#">Kreise</a></li>
+				<!--leads to messages site -->
+                <li><a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Nachrichten</a>
+                </li>
+
+            </ul>
+			
+			
+            <ul class="nav navbar-nav navbar-right">
+				<!--leads to edit_own_userdata site -->
+                <li><a href="{% url "update_userdata" %}"><span class="glyphicon glyphicon-wrench"></span> Einstellungen</a>
+                </li>
+				<!-- logs out the user -->
+                <li><a href="{% url "logout" %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            </ul>
+
+
+        </div>
+    </div>
+</nav>
+</div>
+
+ <div class="container">
+
+ <hr>
+ <hr>
+        <h3>Your Circles</h3>
+        <table class="table table-bordered">
+            <tr>
+                <th>Name</th>
+                <th>Follower<h6>wähle mehrere Follower mit "strg" aus</h6></th>
+                <th>Actions</th>
+			</tr>
+			
+            
+			<tr>
+				<form role="form" method="post">
+				<!--the name links to the user's profile-->
+                    <td>
+						<input></input>
+					</td>
+
+                    <td>  
+								<select class="form-control" name="follower" size="3" multiple>
+									<option>{{ user.username }}</option>
+									<option>Jan</option>
+									<option>Dong</option>
+									<option>David</option>
+									<option>Florian</option>
+									<option>Cheng</option>
+									<option>Qi</option>
+								</select>					
+					</td>
+						
+					<td>
+						<button class="btn btn-default" type="submit">Erstellen</button>
+					</td>
+					</form>
+            </tr>
+			
+				<!--{% for user in user_list %}-->
+                <tr>
+				<!--the name links to the user's profile-->
+                    <td><a href="{% url "view_profile" user.pk %}">{{ circle.name }}</a></td>
+
+                    <td>   
+						<form>
+								<select class="form-control" name="follower" size="3" multiple>
+									<option>{{ user.username }}</option>
+									<option>Jan</option>
+									<option>Dong</option>
+									<option>David</option>
+									<option>Florian</option>
+									<option>Cheng</option>
+									<option>Qi</option>
+								</select>
+								<input type="submit" value="save" class="btn btn-default">
+						</form>
+					</td>
+					<td><button class="btn btn-danger" type="button">Löschen</button></td>
+						
+					
+                </tr>
+				
+
+           <!-- {% endfor %} -->
+        </table>
+    </div>   
+	
+	
+   
+</body>
+
+</html>

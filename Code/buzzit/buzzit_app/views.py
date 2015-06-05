@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 from django.db.models import QuerySet
+from django.contrib.messages.views import SuccessMessageMixin
 from django.forms.utils import ErrorList
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, render_to_response
@@ -9,9 +10,9 @@ from django.utils.decorators import method_decorator
 from django.utils.http import is_safe_url
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView,DeleteView,CreateView
 from django.views.generic.list import ListView
-from buzzit_app.forms import RegistrationForm
+from .forms import RegistrationForm
 from buzzit_models.models import *
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.urlresolvers import reverse
@@ -211,7 +212,7 @@ class UserSearchResultsView(ListView):
 
 @csrf_protect
 def register(request):
-    """"
+    """
     Handle user registration and create profile for the user.
     use the registration form and check all the fields , with valid infos create object user and store 
     all the attributes 
@@ -326,3 +327,24 @@ def impressum(request):
         return render(request, "logged_in/impressum.html")
     else:
         return render(request, "guest/impressum.html")
+
+class createCircle(CreateView):
+    """
+    erstellt neue Kreise,dies passiert wie deletecircle auch auf der Seite circleoverview
+
+    """
+    model = Circle
+    template_name = "templates/circle_overview.html"
+    fields = ['name']
+    success_url = "/circleoverview"
+
+class deleteCircleView(DeleteView,SuccessMessageMixin):
+    """
+    wenn Kreis user und Nachricte enthaelt, was passiert?
+    wenn nicht, einfach loeschen
+
+    Nachdem loeschen sind Nachrichte noetig ?
+    """
+    model = Circle
+    success_message = "%(name)s die Kreise erfolgreich geloescht"
+    success_url = "/deletecircle"  #url anpassen
