@@ -10,12 +10,12 @@ from django.utils.decorators import method_decorator
 from django.utils.http import is_safe_url
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import UpdateView,DeleteView,CreateView
+from django.views.generic.edit import UpdateView,DeleteView,CreateView,FormView
 from django.views.generic.list import ListView
 from .forms import RegistrationForm
 from buzzit_models.models import *
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse,reverse_lazy
 from django.contrib.auth import login, logout as authlogout
 from django.contrib.auth.views import password_change as _pw_change_
 import logging
@@ -328,7 +328,14 @@ def impressum(request):
     else:
         return render(request, "guest/impressum.html")
 
-class createCircle(CreateView):
+class circleOverView(ListView):
+    model = Circle
+    template_name = "logged_in/circle_overview.html"
+
+    def cirlcle(self):
+        return Circle.objects.all()
+
+class createCircleView(CreateView,SuccessMessageMixin):
     """
     erstellt neue Kreise,dies passiert wie deletecircle auch auf der Seite circleoverview
 
@@ -336,8 +343,37 @@ class createCircle(CreateView):
     model = Circle
     template_name = "logged_in/circle_overview.html"
     fields = ['name']
-    success_url = "circleoverview"
+    success_message = "%(name)s die Kreise erfolgreich erstellt"
+    success_url = reverse_lazy("createcircle")
+    #ob man kreise mit selbem Name erstellen darf
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        #form.instance.owner = self.request.user
+  #      try:
+   #         form.instance.name = self.cleand_data['name']
+    #    except self.cleaned_data['name']
 
+#            raise V
+        form.instance.owner = self.request.user
+        form.save()
+        # Another computing etc
+        self.object.save()
+        return super(createCircleView, self).form_valid(form)
+    """
+    success_message = "%(name)s die Kreise erfolgreich erstellt"
+
+    def clean_name(self):
+        name = self.cleaned_data['name']
+        if self.object.filter(name=name).exit():
+            raise ValidationError
+    def get_success_url(self):
+       # if self.request.form.is_valid():
+           # circle = Circle(Circle.owner = self.request.user, Circle.name = self.request.form.cleaned.data['name'])
+
+        return reverse("createcircle", kwargs={'pk': self.object.owner} )
+    #def dispatch(self, request, *args, **kwargs):
+        #return super(createCircle, self).dispatch(request, *args, **kwargs)
+    """
 class deleteCircleView(DeleteView,SuccessMessageMixin):
     """
     wenn Kreis user und Nachricte enthaelt, was passiert?
@@ -347,4 +383,4 @@ class deleteCircleView(DeleteView,SuccessMessageMixin):
     """
     model = Circle
     success_message = "%(name)s die Kreise erfolgreich geloescht"
-    success_url = "/deletecircle"  #url anpassen
+    success_url = reverse_lazy("circle-list")  #url anpassen
