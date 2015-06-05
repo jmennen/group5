@@ -39,6 +39,9 @@ class CreateCircleView(CreateView, SuccessMessageMixin):
     model = Circle
     success_message = "Kreis %(name)s erfolgreich erstellt"
 
+    def form_valid(self, form):
+        form.owner = self.request.user.pk
+
     def get_success_url(self):
         reverse("circle_details", {"slug" : self.object.pk})
 
