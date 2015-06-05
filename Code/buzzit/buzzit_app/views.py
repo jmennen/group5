@@ -334,9 +334,9 @@ class createCircle(CreateView):
 
     """
     model = Circle
-    template_name = "templates/circle_overview.html"
+    template_name = "logged_in/circle_overview.html"
     fields = ['name']
-    success_url = "/circleoverview"
+    success_url = "circleoverview"
 
 class deleteCircleView(DeleteView,SuccessMessageMixin):
     """
