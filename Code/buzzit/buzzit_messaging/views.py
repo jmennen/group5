@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render
 from django.utils.datetime_safe import datetime
 from django.utils.decorators import method_decorator
@@ -6,6 +7,7 @@ from django.views.generic import ListView, UpdateView, CreateView, DeleteView
 from django.http import HttpResponseRedirect
 from buzzit_models.models import *
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.urlresolvers import reverse
 
 class BeingFollowedByView(ListView):
     model = Profile
@@ -33,8 +35,12 @@ class CircleDetailsView(UpdateView):
         return super(CircleDetailsView, self).dispatch(request, *args, **kwargs)
 
 
-class CreateCircleView(CreateView):
+class CreateCircleView(CreateView, SuccessMessageMixin):
     model = Circle
+    success_message = "Kreis %(name)s erfolgreich erstellt"
+
+    def get_success_url(self):
+        reverse("circle_details", {"slug" : self.object})
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -62,9 +68,11 @@ def listfollows(request):
     return render(request, "buzzit_messaging/logged_in/following_userlist.html", {"profile": profiles})
 
 
-class PostCirclemessageView(CreateView):
+class PostCirclemessageView(CreateView, SuccessMessageMixin):
     model = Circle_message
     fields = ["text"]
+    success_message = "Kreisnachricht gespeichert"
+    success_url = reverse("home")
 
     def form_valid(self, form):
         form.creator = self.request.user
