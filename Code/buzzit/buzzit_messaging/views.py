@@ -7,7 +7,7 @@ from django.views.generic import ListView, UpdateView, CreateView, DeleteView
 from django.http import HttpResponseRedirect
 from buzzit_models.models import *
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 
 class BeingFollowedByView(ListView):
     model = Profile
@@ -15,7 +15,7 @@ class BeingFollowedByView(ListView):
 
     def get_queryset(self):
         logged_in_user = self.request.user
-        return Profile.objects.filter(follows=logged_in_user)
+        return Profile.objects.filter(follows=logged_in_user.pk)
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -72,7 +72,7 @@ class PostCirclemessageView(CreateView, SuccessMessageMixin):
     model = Circle_message
     fields = ["text"]
     success_message = "Kreisnachricht gespeichert"
-    success_url = reverse("home")
+    success_url = reverse_lazy("home")
 
     def form_valid(self, form):
         form.creator = self.request.user
@@ -108,14 +108,14 @@ def follow(request, user_id):
         follow_user = Profile.objects.get(pk=user_id)
     except ObjectDoesNotExist:
         # user to follow does not exist
-        return HttpResponseRedirect('home')
+        return HttpResponseRedirect(reverse_lazy('home'))
     try:
         my_profile = Profile.objects.get(pk=request.user)
     except ObjectDoesNotExist:
         # logged in user has no profile
-        return HttpResponseRedirect('home')
+        return HttpResponseRedirect(reverse_lazy('home'))
     my_profile.follows.add(follow_user)
-    return HttpResponseRedirect('home')
+    return HttpResponseRedirect(reverse_lazy('home'))
 
 
 @login_required()

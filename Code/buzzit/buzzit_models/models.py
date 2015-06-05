@@ -7,7 +7,7 @@ class Profile(models.Model):
     profile_picture = models.URLField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     gender = models.CharField(blank=True, null=True, max_length=1)
-    follows = models.ManyToManyField("self")
+    follows = models.ManyToManyField("self", symmetrical=False)
 
 
 class Message(models.Model):
