@@ -54,8 +54,8 @@ def start(request):
                         return HttpResponseRedirect(reverse("home"))
                     return HttpResponseRedirect(redirect_to)
                 return HttpResponseRedirect(reverse("home"))
-            else:
-                messages.error(request, "Benutzername/Passwort falsch!")
+        else:
+            messages.error(request, "Benutzername/Passwort falsch!")
     else:
         form = AuthenticationForm()
     return render(request, "guest/start.html", {"form": form})
