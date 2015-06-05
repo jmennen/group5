@@ -1,10 +1,8 @@
 from django.contrib.auth.decorators import login_required
-from django.core.files.storage import FileSystemStorage
-from django.db.models import QuerySet
+from django.contrib.messages.views import SuccessMessageMixin
 from django.forms.utils import ErrorList
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, render_to_response
-from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.utils.http import is_safe_url
 from django.views.decorators.csrf import csrf_protect
@@ -13,16 +11,17 @@ from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from buzzit_app.forms import RegistrationForm
 from buzzit_models.models import *
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.core.urlresolvers import reverse
 from django.contrib.auth import login, logout as authlogout
 from django.contrib.auth.views import password_change as _pw_change_
 import logging
-from django.forms.fields import FileField, ClearableFileInput, CharField, EmailField
+from django.forms.fields import FileField, ClearableFileInput
 from django.core.exceptions import ObjectDoesNotExist
 from PIL import Image
 import imghdr
 import os
+from django.contrib import messages
 
 
 def start(request):
@@ -36,16 +35,19 @@ def start(request):
     """
     if request.user.is_authenticated():
         if not request.user.is_active:
-            pass  # TODO: was passiert dann?
+            messages.error(request, "Sie sind deaktiviert!")
+            return render(request, "guest/start.html", {"form": AuthenticationForm()})
         return HttpResponseRedirect(reverse("home"))
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             user = form.get_user()
             if user:
+                if not user.is_active:
+                    messages.error(request, "Sie sind deaktiviert!")
+                    return render(request, "guest/start.html", {"form": AuthenticationForm()})
                 login(request, user)
-                if not request.user.is_active:
-                    pass  # TODO: dann?
+                messages.success(request, "Sie wurden eingeloggt!")
                 redirect_to = request.REQUEST.get("next", False)
                 if (redirect_to):
                     if not is_safe_url(url=redirect_to, host=request.get_host()):
@@ -53,7 +55,7 @@ def start(request):
                     return HttpResponseRedirect(redirect_to)
                 return HttpResponseRedirect(reverse("home"))
             else:
-                pass  # TODO: fehler beim login melden
+                messages.error(request, "Benutzername/Passwort falsch!")
     else:
         form = AuthenticationForm()
     return render(request, "guest/start.html", {"form": form})
@@ -84,7 +86,7 @@ class ProfileView(DetailView):
         return super(ProfileView, self).dispatch(request, *args, **kwargs)
 
 
-class EditProfileView(UpdateView):
+class EditProfileView(UpdateView, SuccessMessageMixin):
     """
     Controls the behaviour if a logged in user want to edit his profile.
     If an image is uploaded, then a smaller version of this is created.
@@ -94,6 +96,7 @@ class EditProfileView(UpdateView):
     template_name = "logged_in/edit_own_profile.html"
     fields = ["gender", "description"]
     success_url = "/updateprofile"
+    success_message = "Profil wurde gespeichert"
 
     def get_form(self, form_class=None):
         """
@@ -153,6 +156,7 @@ class EditProfileView(UpdateView):
                 if not EditProfileView.__create_small_picture__(self.request, image_file_name):
                     os.remove(image_file_name)
                     errors = form._errors.setdefault('image_file', ErrorList())
+                    messages.warning(self.request, u"Bild nicht gespeichert - altes Bild wurde gelöscht")
                     errors.append(
                         "Das Thumbnail konnte nicht erzeugt werden; benutzen Sie ein anderes (jpg,png,gif(nicht animiert)) Bild.")
                     return super(EditProfileView, self).form_invalid(form)
@@ -169,7 +173,7 @@ class EditProfileView(UpdateView):
         return super(EditProfileView, self).dispatch(request, *args, **kwargs)
 
 
-class EditUserdataView(UpdateView):
+class EditUserdataView(UpdateView, SuccessMessageMixin):
     """
     View to edit user data.
     Template is "edit_own_userdata.html"
@@ -178,6 +182,7 @@ class EditUserdataView(UpdateView):
     template_name = "logged_in/edit_own_userdata.html"
     fields = ["first_name", "last_name", "email"]
     success_url = "/updateuser"
+    success_message = "Daten gespeichert!"
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -234,7 +239,10 @@ def register(request):
             new_profile.gender = ""
             new_profile.description = ""
             new_profile.save()
+            messages.success(request, u"Sie sind registriert und können sich nun einloggen!")
             return HttpResponseRedirect(reverse("start"))
+        else:
+            messages.error(request, u"Sie haben ungültige Daten angegeben!")
     else:
         form = RegistrationForm()
     variables = {
@@ -242,9 +250,9 @@ def register(request):
     }
 
     return render(request,
-        'guest/register.html',
-        variables,
-    )
+                  'guest/register.html',
+                  variables,
+                  )
 
 
 def register_success(request):
@@ -261,6 +269,7 @@ def logout(request):
     :return:
     """
     authlogout(request)
+    messages.success(request, "Sie sind ausgeloggt!")
     return HttpResponseRedirect(reverse("start"))
 
 

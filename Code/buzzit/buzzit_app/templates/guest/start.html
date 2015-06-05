@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-	<!-- startpage for guests which allows you to register or log in -->
+    <!-- startpage for guests which allows you to register or log in -->
     <title>Landing Page - Start Bootstrap Theme</title>
 
     {% load staticfiles %}
@@ -41,15 +41,15 @@
                     <hr class="intro-divider">
                     <ul class="intro-social-buttons">
 
-						<!-- error message, if password or username is not correct  -->
+                        <!-- error message, if password or username is not correct  -->
                         <li style="margin-bottom: 20px;">
                             {% if form.errors %}
                                 <div class="panel panel-danger">
                                     <div class="panel-heading">Falsche Daten!</div>
                                 </div>
                             {% endif %}
-							
-							<!-- logs in the user after successful account information authentification  -->
+
+                            <!-- logs in the user after successful account information authentification  -->
                             <div class="login">
 
                                 <form method="post" action="{% url "start" %}" class="form-inline">
@@ -62,10 +62,11 @@
                                 </form>
                             </div>
                         </li>
-						
-						<!-- leads to the user registration -->
+
+                        <!-- leads to the user registration -->
                         <li>
-                            <a href="{% url "register" %}" class="btn btn-success btn-lg"> <span class="network-name"><span
+                            <a href="{% url "register" %}" class="btn btn-success btn-lg"> <span
+                                    class="network-name"><span
                                     class="glyphicon glyphicon-user" aria-hidden="true"></span> Register</span></a>
                         </li>
                     </ul>
@@ -99,6 +100,26 @@
     </div>
 </footer>
 
+{% if messages %}
+    <script>
+        {% for message in messages %}
+            {% if message.tags %}
+                {% if message.tags == "info" %}
+                    noty({type: "info", text: "{{ message }}", timeout: 4000});
+                {% elif message.tags == "error" %}
+                    noty({type: "error", text: "{{ message }}</br>Klicken zum ausblenden"});
+                {% elif message.tags == "success" %}
+                    noty({type: "success", text: "{{ message }}", timeout: 1000});
+                {% elif message.tags == "warning" %}
+                    noty({type: "warning", text: "{{ message }}", timeout: 4000});
+                {%  else %}
+                {% endif %}
+            {% else %}
+                noty({text: "{{ message }}"});
+            {% endif %}
+        {% endfor %}
+    </script>
+{% endif %}
 
 </body>
 
