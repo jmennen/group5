@@ -329,14 +329,19 @@ def impressum(request):
         return render(request, "guest/impressum.html")
 
 class circleOverView(ListView):
+
+    """
+    view to show circle which belongs to current user
+    display in the same site where create circle occurs
+    """
     model = Circle
     template_name = "logged_in/circle_overview.html"
 
 
 class createCircleView(CreateView,SuccessMessageMixin):
     """
-    erstellt neue Kreise,dies passiert wie deletecircle auch auf der Seite circleoverview
-
+    create circle for the current user, override form_valid to sign user to the circle owner
+    not for sure check if the circle name is already taken
     """
     model = Circle
     template_name = "logged_in/circle_overview.html"
@@ -344,7 +349,6 @@ class createCircleView(CreateView,SuccessMessageMixin):
     success_message = "%(name)s die Kreise erfolgreich erstellt"
     success_url = reverse_lazy("createcircle")
 
-    #ob man kreise mit selbem Name erstellen darf
     def form_valid(self, form):
         self.object = form.save(commit=False)
         #form.instance.owner = self.request.user
