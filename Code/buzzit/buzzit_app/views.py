@@ -156,7 +156,7 @@ class EditProfileView(UpdateView, SuccessMessageMixin):
                 if not EditProfileView.__create_small_picture__(self.request, image_file_name):
                     os.remove(image_file_name)
                     errors = form._errors.setdefault('image_file', ErrorList())
-                    messages.warning(self.request, u"Bild nicht gespeichert - altes Bild wurde gelöscht")
+                    messages.warning(self.request, "Bild nicht gespeichert - altes Bild wurde geloescht")
                     errors.append(
                         "Das Thumbnail konnte nicht erzeugt werden; benutzen Sie ein anderes (jpg,png,gif(nicht animiert)) Bild.")
                     return super(EditProfileView, self).form_invalid(form)
@@ -239,10 +239,10 @@ def register(request):
             new_profile.gender = ""
             new_profile.description = ""
             new_profile.save()
-            messages.success(request, u"Sie sind registriert und können sich nun einloggen!")
+            messages.success(request, "Sie sind registriert und koennen sich nun einloggen!")
             return HttpResponseRedirect(reverse("start"))
         else:
-            messages.error(request, u"Sie haben ungültige Daten angegeben!")
+            messages.error(request, "Sie haben ungueltige Daten angegeben!")
     else:
         form = RegistrationForm()
     variables = {
