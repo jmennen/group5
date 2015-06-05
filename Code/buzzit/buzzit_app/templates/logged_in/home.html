@@ -37,13 +37,12 @@
                 <div class="thumbnail">
                     <p>Beschreibung: {{ profile.description | beautifulNone }}</p>
                 </div>
-				
-      
-                 {% csrf_token %}
+	
                  <div class="well">
                     <h3>Kreisnachrichten</h3>
                     <!--space for circle messages-->
-					<form>
+					<form role="form" method="post">
+					 {% csrf_token %}
 						<p>Wähle ein Kreis aus:
 						<select align="left">
 									<option>Public</option>
@@ -53,10 +52,10 @@
 						</select>
 						</p>
 						<div class="input-group">
-							<input type="text" class="form-control" placeholder="Kreisnachricht...">
+							<input required type="text" name="message" id="" class="form-control" placeholder="Kreisnachricht...">
 							
 						<div class="input-group-btn">
-							<button class="btn btn-info" type="button">Senden</button>
+							<button class="btn btn-info" type="submit">Senden</button>
 						</div>
 						
 						</div>
