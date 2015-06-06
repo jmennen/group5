@@ -347,7 +347,7 @@ class createCircleView(CreateView,SuccessMessageMixin):
     template_name = "logged_in/circle_overview.html"
     fields = ['name']
     success_message = "%(name)s die Kreise erfolgreich erstellt"
-    success_url = reverse_lazy("createcircle")
+    success_url = reverse_lazy("circleoverview")
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
