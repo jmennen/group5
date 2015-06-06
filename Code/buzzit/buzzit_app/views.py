@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView,DeleteView,CreateView,FormView
 from django.views.generic.list import ListView
+from django.views.generic import RedirectView
 from .forms import RegistrationForm
 from buzzit_models.models import *
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -364,7 +365,7 @@ class createCircleView(CreateView,SuccessMessageMixin):
         return super(createCircleView, self).form_valid(form)
 
 
-class deleteCircleView(DeleteView,SuccessMessageMixin):
+class deleteCircleView(RedirectView,SuccessMessageMixin):
     """
     wenn Kreis user und Nachricte enthaelt, was passiert?
     wenn nicht, einfach loeschen
@@ -372,8 +373,8 @@ class deleteCircleView(DeleteView,SuccessMessageMixin):
     Nachdem loeschen sind Nachrichte noetig ?
     """
     model = Circle
-    slug_field = Circle
     success_message = "%(name)s die Kreise erfolgreich geloescht"
-    success_url = reverse_lazy("circleoverview")  #url anpassen
-    #def get_object(self, queryset=None):
-     #   return Circle
+    def get_redirect_url(self, pk=None):
+        if pk != None:
+            Circle.objects.get(pk=pk).delete()
+            return reverse_lazy('circleoverview')
