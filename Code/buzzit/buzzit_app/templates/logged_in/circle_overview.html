@@ -99,7 +99,7 @@
                     <a class="btn btn-primary">Bearbeiten</a>
                 </div>
                 <div class="col-xs-6 col-sm-2 col-lg-1">
-                    <a class="btn btn-danger">Löschen</a>
+                    <a class="btn btn-danger" href="{% url 'circleoverview' pk=circle %}">Löschen</a>
                 </div>
                 {% if not forloop.last %}
                     <div class="col-xs-12">

@@ -372,5 +372,8 @@ class deleteCircleView(DeleteView,SuccessMessageMixin):
     Nachdem loeschen sind Nachrichte noetig ?
     """
     model = Circle
+    slug_field = Circle
     success_message = "%(name)s die Kreise erfolgreich geloescht"
-    success_url = reverse_lazy("circle-list")  #url anpassen
+    success_url = reverse_lazy("circleoverview")  #url anpassen
+    #def get_object(self, queryset=None):
+     #   return Circle
