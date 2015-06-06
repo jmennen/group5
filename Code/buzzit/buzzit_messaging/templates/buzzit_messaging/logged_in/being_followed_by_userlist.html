@@ -1,0 +1,5 @@
+<!--a userlist which consists of users that are following you. you can arrange their circle status in this template-->
+
+{% for profile in profile_list %}
+    {{ profile.user.username }}
+{% endfor %}
