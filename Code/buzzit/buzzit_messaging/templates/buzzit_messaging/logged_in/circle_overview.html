@@ -25,7 +25,7 @@
 				{% csrf_token %}
 				<!--the name links to the user's profile-->
                     <td>
-						<input required type="text" name="circlename" value="{{ profile.circle.name}}"
+						<input required type="text" name="name" value="{{circle.name}}"
                                class="form-control" id="kreisname"
                                placeholder="erstelle einen Kreis">
 					</td>
@@ -43,7 +43,7 @@
                 <tr>
 				{% for circle in circle_list %}
 				<!--the name links to the user's profile-->
-                    <td><a href="{% url "view_profile" user.pk %}">{{ profile.circle.name }}</a></td>
+                    <td><a href="{% url "view_profile" user.pk %}">{{circle.name }}</a></td>
 
                     <td>   
 						<form>

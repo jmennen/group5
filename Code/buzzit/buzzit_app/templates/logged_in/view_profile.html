@@ -8,22 +8,23 @@
 
 	<!-- template to view your own or an other user's profile -->
 
-    <p class="lead">{{ user.username }}
-		<!--button for sending a message to this user-->
-        <button type="button" class="btn btn-primary">Diesem Benutzer eine Nachricht senden</button>
-    </p>
+
 	
 	<!--information and picture of this profile-->
     <div class="col-md-5">
+	<p class="lead">{{ profile.user.username }}
+		<!--button for sending a message to this user-->
+        <button type="button" class="btn btn-primary">Diesem Benutzer eine Nachricht senden</button>
+    </p>
 
         <div class="thumbnail">
             <img class="img-responsive" src="{{ profile.profile_picture }}" alt="Profilbild">
         </div>
 		
         <div class="well">
-            <p>{{ user.first_name }}</p>
+            <p>{{ profile.user.first_name }}</p>
             <hr>
-            <p>{{ user.last_name }}</p>
+            <p>{{ profile.user.last_name }}</p>
             <hr>
             <p>{{ profile.description }}</p>
             <hr>

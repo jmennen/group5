@@ -33,6 +33,7 @@
                 <!--leads to edit_own_profile site-->
                 <p><a href="{% url "update_profile" %}">edit profile</a></p>
                 <p><a href="{% url "list_follows" %}">wem folge ich?</a></p>
+				
             </div>
             <div class="col-md-9">
                 <div class="thumbnail">
@@ -42,7 +43,7 @@
                  <div class="well">
                     <h3>Kreisnachrichten</h3>
                     <!--space for circle messages-->
-					<form role="form" method="post">
+					<form role="form" method="post" action="{% url "new_circlemessage" %}">
 					 {% csrf_token %}					
 						<p>
 						  <select multiple="multiple" name="homecirlce" class="testselect1">
@@ -51,9 +52,9 @@
 								
 						</select>
 						</p>
-						<!--{ endfor %}-->
+				
 						<div class="input-group">
-							<input required type="text" name="message" id="" class="form-control" placeholder="Kreisnachricht...">
+							<input required type="text" name="text" id="text" class="form-control" placeholder="Kreisnachricht...">
 							
 						<div class="input-group-btn">
 							<button class="btn btn-info" type="submit">Senden</button>
