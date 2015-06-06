@@ -42,15 +42,15 @@
                     <h3>Kreisnachrichten</h3>
                     <!--space for circle messages-->
 					<form role="form" method="post">
-					 {% csrf_token %}
+					 {% csrf_token %}					
 						<p>
 						  <select multiple="multiple" name="homecirlce" class="testselect1">
+						   <!-- { for profile in profile_list %} -->
 									<option>Public</option>
-									<option>TU-Berlin</option>
-									<option>Gruppe 5</option>
-									<option>SN</option>
+								
 						</select>
 						</p>
+						<!--{ endfor %}-->
 						<div class="input-group">
 							<input required type="text" name="message" id="" class="form-control" placeholder="Kreisnachricht...">
 							

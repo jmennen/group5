@@ -1,1 +1,68 @@
 <!--a site which contains your circles. you are able to create a new circle.-->
+{% extends "base.html" %}
+
+{% block title %}buzzit - base{% endblock %}
+
+{% block content %}
+
+    {% include "includes/navbar.html" %}
+	
+	<div class="container">
+
+ <hr>
+ <hr>
+        <h3>Your Circles</h3>
+        <table class="table table-bordered">
+            <tr>
+                <th>Name</th>
+                <th>Follower<h6>wähle mehrere Follower mit "strg" aus</h6></th>
+                <th>Actions</th>
+			</tr>
+			
+            
+			<tr>
+				<form role="form" method="post">
+				<!--the name links to the user's profile-->
+                    <td>
+						<input></input>
+					</td>
+
+                    <td>  				
+					</td>
+						
+					<td>
+						<button class="btn btn-default" type="submit">Erstellen</button>
+					</td>
+					</form>
+            </tr>
+			
+				<!--{ for profile in profile_list %}-->
+                <tr>
+				<!--the name links to the user's profile-->
+                    <td><a href="{% url "view_profile" user.pk %}">{{ circle.name }}</a></td>
+
+                    <td>   
+						<form>
+								<select multiple="multiple" name="circlefollower" class="testselect2">
+									<option>{{ profile.user.username }}</option>
+									<option>Jan</option>
+									<option>Dong</option>
+									<option>David</option>
+									<option>Florian</option>
+									<option>Cheng</option>
+									<option>Qi</option>
+								</select>
+								<input type="submit" value="save" class="btn btn-default">
+						</form>
+					</td>
+					<td><button class="btn btn-danger" type="button">Löschen</button></td>
+						
+					
+                </tr>
+				
+
+          <!-- { endfor %} -->
+        </table>
+    </div>   
+	
+	{% endblock %}

@@ -95,16 +95,7 @@
 						<input></input>
 					</td>
 
-                    <td>  
-								<select class="form-control" name="follower" size="3" multiple>
-									<option>{{ user.username }}</option>
-									<option>Jan</option>
-									<option>Dong</option>
-									<option>David</option>
-									<option>Florian</option>
-									<option>Cheng</option>
-									<option>Qi</option>
-								</select>					
+                    <td>  				
 					</td>
 						
 					<td>
@@ -113,14 +104,14 @@
 					</form>
             </tr>
 			
-				<!--{% for user in user_list %}-->
+				<!--{ for user in user_list %}-->
                 <tr>
 				<!--the name links to the user's profile-->
                     <td><a href="{% url "view_profile" user.pk %}">{{ circle.name }}</a></td>
 
                     <td>   
 						<form>
-								<select class="form-control" name="follower" size="3" multiple>
+								<select multiple="multiple" name="circlefollower" class="testselect2">
 									<option>{{ user.username }}</option>
 									<option>Jan</option>
 									<option>Dong</option>
@@ -138,7 +129,7 @@
                 </tr>
 				
 
-           <!-- {% endfor %} -->
+           <!-- { endfor %} -->
         </table>
     </div>   
 	

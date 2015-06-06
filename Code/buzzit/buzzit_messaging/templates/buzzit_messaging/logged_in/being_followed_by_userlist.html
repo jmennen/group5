@@ -1,5 +1,68 @@
 <!--a userlist which consists of users that are following you. you can arrange their circle status in this template-->
+{% extends "base.html" %}
 
-{% for profile in profile_list %}
-    {{ profile.user.username }}
-{% endfor %}
+{% block title %}buzzit - base{% endblock %}
+
+{% block content %}
+
+    {% include "includes/navbar.html" %}
+
+
+	
+	
+	<div class="container">
+
+ <hr>
+ <hr>
+        <h3>User that are following you:</h3>
+        <table class="table table-bordered">
+            <tr>
+                <th>Name</th>
+                <th>Profilbild</th>
+                <th>Kreise<h6>wähle mehrere Kreise mit "strg" aus</h6></th>
+
+            </tr>
+			
+  {% for profile in profile_list %}
+                <tr>
+				<!--the name links to the user's profile-->
+                    <td><a href="{% url "view_profile" user.pk %}">{{ profile.user.username }}</a></td>
+				<!--profile_picture is resized-->
+                    <td><img src="{{ user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
+                    <td>   
+						<form action>
+								<select multiple="multiple" name="followercircle" class="testselect1">
+									<option>Public</option>
+									<option>TU-Berlin</option>
+									<option>Gruppe 5</option>
+									<option>SN</option>
+								</select>
+								<input type="submit" value="save" class="btn btn-default">
+						</form>
+					</td>
+					
+                </tr>
+				
+				<tr>
+				<!--the name links to the user's profile-->
+                    <td><a href="{% url "view_profile" user.pk %}">{{ user.username }}</a></td>
+				<!--profile_picture is resized-->
+                    <td><img src="{{ user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
+                    <td>   
+						<form action>
+								<select multiple="multiple" name="homecirlce" class="testselect2">
+									<option>Public</option>
+									<option>TU-Berlin</option>
+									<option>Gruppe 5</option>
+									<option>SN</option>
+								</select>
+								<input type="submit" value="save" class="btn btn-default">
+						</form>
+					</td>
+					
+                </tr>
+        {% endfor %}
+        </table>
+    </div>   
+
+{% endblock %}
