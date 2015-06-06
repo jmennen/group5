@@ -20,6 +20,19 @@
 
     <!-- custom css -->
     <link href="{% static "css/base.css" %}" rel="stylesheet">
+	
+	<!-- sumoselect by Hemant Negi -->
+	<script src="{% static "js/jquery.sumoselect.min.js" %}"></script>
+	<link href="{% static "css/sumoselect.css" %}"rel="stylesheet" />
+	
+	<script type="text/javascript">
+          $(document).ready(function () {
+
+              $('.testselect1').SumoSelect({ placeholder: 'wähle Kreise aus...' });
+              $('.testselect2').SumoSelect({ placeholder: 'wähle Follower aus...' });
+
+          });
+      </script>
 </head>
 <body>
 	<!-- other templates are embedded here -->
