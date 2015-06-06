@@ -17,46 +17,29 @@
             <tr>
                 <th>Name</th>
                 <th>Profilbild</th>
-                <th>Kreise<h6>wähle mehrere Kreise mit "strg" aus</h6></th>
+                <th>Kreise</th>
+                <th>Actions</th>
 
             </tr>
 			
   {% for profile in profile_list %}
-                <tr>
+				
+				<tr>
 				<!--the name links to the user's profile-->
                     <td><a href="{% url "view_profile" user.pk %}">{{ profile.user.username }}</a></td>
 				<!--profile_picture is resized-->
                     <td><img src="{{ user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
                     <td>   
 						<form action>
-								<select multiple="multiple" name="followercircle" class="testselect1">
+								<select multiple="multiple" name="homecirlce" class="testselect1">
 									<option>Public</option>
 									<option>TU-Berlin</option>
 									<option>Gruppe 5</option>
 									<option>SN</option>
-								</select>
-								<input type="submit" value="save" class="btn btn-default">
+								</select>		
 						</form>
 					</td>
-					
-                </tr>
-				
-				<tr>
-				<!--the name links to the user's profile-->
-                    <td><a href="{% url "view_profile" user.pk %}">{{ user.username }}</a></td>
-				<!--profile_picture is resized-->
-                    <td><img src="{{ user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
-                    <td>   
-						<form action>
-								<select multiple="multiple" name="homecirlce" class="testselect2">
-									<option>Public</option>
-									<option>TU-Berlin</option>
-									<option>Gruppe 5</option>
-									<option>SN</option>
-								</select>
-								<input type="submit" value="save" class="btn btn-default">
-						</form>
-					</td>
+					<td><input type="submit" value="save" class="btn btn-default"></td>
 					
                 </tr>
         {% endfor %}

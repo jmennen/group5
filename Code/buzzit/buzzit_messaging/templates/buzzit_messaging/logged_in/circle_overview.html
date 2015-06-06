@@ -20,10 +20,14 @@
 			
             
 			<tr>
-				<form role="form" method="post">
+			
+				<form role="form" method="post" action="{% url "new_circle" %}">
+				{% csrf_token %}
 				<!--the name links to the user's profile-->
                     <td>
-						<input></input>
+						<input required type="text" name="circlename" value="{{ profile.circle.name}}"
+                               class="form-control" id="kreisname"
+                               placeholder="erstelle einen Kreis">
 					</td>
 
                     <td>  				
@@ -35,32 +39,32 @@
 					</form>
             </tr>
 			
-				<!--{ for profile in profile_list %}-->
+				
                 <tr>
+				{% for circle in circle_list %}
 				<!--the name links to the user's profile-->
-                    <td><a href="{% url "view_profile" user.pk %}">{{ circle.name }}</a></td>
+                    <td><a href="{% url "view_profile" user.pk %}">{{ profile.circle.name }}</a></td>
 
                     <td>   
 						<form>
 								<select multiple="multiple" name="circlefollower" class="testselect2">
+								{% for profile in profile_list %}
 									<option>{{ profile.user.username }}</option>
-									<option>Jan</option>
-									<option>Dong</option>
-									<option>David</option>
-									<option>Florian</option>
-									<option>Cheng</option>
-									<option>Qi</option>
+								{% endfor %}
 								</select>
-								<input type="submit" value="save" class="btn btn-default">
+								
 						</form>
 					</td>
-					<td><button class="btn btn-danger" type="button">Löschen</button></td>
-						
+					<td>
+					<input type="submit" value="save" class="btn btn-default">
+					<button class="btn btn-danger" type="button">Löschen</button>
+					</td>
+				{% endfor %}	
 					
                 </tr>
 				
 
-          <!-- { endfor %} -->
+         
         </table>
     </div>   
 	

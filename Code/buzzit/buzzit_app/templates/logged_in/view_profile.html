@@ -27,11 +27,22 @@
             <hr>
             <p>{{ profile.description }}</p>
             <hr>
-			<p>
+			
+			
 				<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-envelope"></span></button>
-				<button class="btn btn-info" type="button">Folgen</button>
-				<button class="btn btn-danger" type="button">Entfolgen</button>				
-			</p>
+				<form method="post" action="{% url "follow" user.pk %}">
+               {% csrf_token %}
+					
+						<button class="btn btn-info" type="submit"> Folgen </button>
+			</form>
+			
+			<form method="post" action="{% url "unfollow" user.pk %}">
+               {% csrf_token %}
+					
+						<button class="btn btn-danger" type="submit">Entfolgen</button>	
+			</form>
+		
+       
         </div>
 
 
