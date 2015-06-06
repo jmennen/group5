@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'^accounts/login', views.start, name="login"),
     url(r'^logout', views.logout, name="logout"),
     url(r'^circleoverview(?P<pk>\d+)$', views.deleteCircleView.as_view(), name="deletecircle"), # add new delete circle
-    url(r'^circleoverview/createcircle', views.createCircleView.as_view(), name="circleoverview"),
+    url(r'^createcircle', views.createCircleView.as_view(), name="createcircle"),
     url(r'^circleoverview', views.circleOverView.as_view(), name="circleoverview"),
 
 

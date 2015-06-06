@@ -351,30 +351,33 @@ class createCircleView(CreateView,SuccessMessageMixin):
     success_url = reverse_lazy("circleoverview")
 
     def form_valid(self, form):
-        self.object = form.save(commit=False)
-        #form.instance.owner = self.request.user
-  #      try:
-   #         form.instance.name = self.cleand_data['name']
-    #    except self.cleaned_data['name']
 
-#            raise V
         form.instance.owner = self.request.user
-        form.save()
 
-        self.object.save()
         return super(createCircleView, self).form_valid(form)
 
 
 class deleteCircleView(RedirectView,SuccessMessageMixin):
     """
-    wenn Kreis user und Nachricte enthaelt, was passiert?
-    wenn nicht, einfach loeschen
 
-    Nachdem loeschen sind Nachrichte noetig ?
     """
     model = Circle
     success_message = "%(name)s die Kreise erfolgreich geloescht"
+
     def get_redirect_url(self, pk=None):
         if pk != None:
             Circle.objects.get(pk=pk).delete()
             return reverse_lazy('circleoverview')
+
+def follow(self,follower,userbeingfollowed,**kwargs):
+
+    follower = self.request.user
+
+    instance,create = self.objects.follow.get_or_create(from_profile_id =follower.id,to_profile_id=userbeingfollowed.id)
+
+    return instance
+
+def unfollow(self,follower,userbeingfollowed,**kwargs):
+
+    instance = self.objects.follow.filter(from_profile_id =follower.id,to_profile_id=userbeingfollowed.id).delete()
+
