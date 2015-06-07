@@ -14,7 +14,7 @@
         <table class="table table-bordered">
             <tr>
                 <th>Name</th>
-                <th>Follower<h6>wähle mehrere Follower mit "strg" aus</h6></th>
+                <th>Follower</th>
                 <th>Actions</th>
 			</tr>
 			
@@ -39,29 +39,27 @@
 					</form>
             </tr>
 			
-				
+				<form>
                 <tr>
-				{% for circle in circle_list %}
-				<!--the name links to the user's profile-->
-                    <td><a href="{% url "view_profile" user.pk %}">{{circle.name }}</a></td>
+				{% for circle in object_list %}
+				<!--the name links to the circle's details-->
+                    <td><a href="{% url "circle_details" pk=circle.pk %}">{{circle.name }}</a></td>
 
                     <td>   
-						<form>
-								<select multiple="multiple" name="circlefollower" class="testselect2">
-								{% for profile in profile_list %}
-									<option>{{ profile.user.username }}</option>
-								{% endfor %}
-								</select>
-								
-						</form>
+						<select multiple="multiple" name="circlefollower" class="testselect2">
+						{% for profile in profile_list %}
+							<option>{{ profile.user.username }}</option>
+						{% endfor %}
+						</select>
 					</td>
 					<td>
-					<input type="submit" value="save" class="btn btn-default">
-					<button class="btn btn-danger" type="button">Löschen</button>
+					<input type="submit" value="Speichern" class="btn btn-default">
+					<a class="btn btn-danger" href="{% url "delete_circle" pk=circle.pk %}">Löschen</a>
 					</td>
 				{% endfor %}	
 					
                 </tr>
+				</form>
 				
 
          

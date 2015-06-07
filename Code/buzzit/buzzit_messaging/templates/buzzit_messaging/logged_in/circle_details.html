@@ -22,11 +22,28 @@
 			</tr>
 			
             <!--{% for user in user_list %}-->
-			<tr>
-         
-                    <tr>
+			
+            <tr>
 				<!--the name links to the user's profile-->
-                    <td><a href="{% url "view_profile" user.pk %}">{{ circle.members }}</a></td>					
+                    <td>
+						<select multiple="multiple" name="circlefollower" class="testselect2">
+								{% for profile in profile_list %}
+									<option>{{ profile.user.username }}</option>
+								{% endfor %}
+						</select>
+					</td>					
+					<td>
+
+						<input type="submit" value="Speichern" class="btn btn-default">
+					</td>
+
+            </tr>
+		 
+            <tr>
+				<!--the name links to the user's profile-->
+                    <td>
+					<a href="{% url "view_profile" user.pk %}">{{ circle.members }}</a>
+					</td>					
 					<td>
 						<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-envelope"></span></button>
 						<button class="btn btn-default" type="submit">Entfernen</button>
@@ -43,28 +60,23 @@
 	 <div class="well col-md-7">
           <div class="row">
 	 <div class="col-md-12">
-                    <h3>Kreisnachrichten</h3>
+                <h3>Kreisnachrichten</h3>
                     <!--space for circle messages-->
 
-					<hr>
-					{{message.creator}} schrieb hier am {{message.created}}:
-				<p>
-					{{message.text}}
-				</p>
-				
-                    <!-- dummy placeholder for content -->
-					<hr>
-					{{message.creator}} schrieb hier am {{message.created}}:
-				<p>
-                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-                    labore et dolore magna aliquyam erat, sed
-				</p>
-				<hr>
-					{{message.creator}} schrieb hier am {{message.created}}:
-				<p>
-                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-                    labore et dolore magna aliquyam erat, sed
-				</p>
+				<div class="well col-md-5">
+					<div class="col-md-3">
+						<img src="{{ user.profile.profile_picture }}" height="48" alt="Profilbild">
+					</div>
+						{{message.creator}} schrieb hier am {{message.created}}:
+					<p>
+						{{message.text}} asssssssssssssssssssssss assssssssssssssssssssssss asdad
+					</p>
+				<div align="right">
+					<a class="btn btn-danger btn-xs" href="#">Löschen</a>
+				</div>
+				</div>
+				<div class="col-md-1">
+                </div>
 				
 				
     </div>

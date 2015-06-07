@@ -23,25 +23,24 @@
             </tr>
 			
   {% for profile in profile_list %}
-				
+				<form method="post" action="" role="form">
 				<tr>
 				<!--the name links to the user's profile-->
                     <td><a href="{% url "view_profile" user.pk %}">{{ user.username }}</a></td>
 				<!--profile_picture is resized-->
                     <td><img src="{{ user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
                     <td>   
-						<form action>
+						
 								<select multiple="multiple" name="homecirlce" class="testselect1">
+									<option>{{circle.name}}</option>
 									<option>Public</option>
-									<option>TU-Berlin</option>
-									<option>Gruppe 5</option>
-									<option>SN</option>
 								</select>		
-						</form>
+						
 					</td>
 					<td><input type="submit" value="save" class="btn btn-default"></td>
 					
                 </tr>
+				</form>
         {% endfor %}
         </table>
     </div>   
