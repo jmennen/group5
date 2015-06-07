@@ -345,7 +345,7 @@ class createCircleView(CreateView,SuccessMessageMixin):
     not for sure check if the circle name is already taken
     """
     model = Circle
-    template_name = "logged_in/circle_overview.html"
+    template_name = "logged_in/createcircle.html"
     fields = ['name']
     success_message = "%(name)s die Kreise erfolgreich erstellt"
     success_url = reverse_lazy("circleoverview")
@@ -369,15 +369,16 @@ class deleteCircleView(RedirectView,SuccessMessageMixin):
             Circle.objects.get(pk=pk).delete()
             return reverse_lazy('circleoverview')
 
-def follow(self,follower,userbeingfollowed,**kwargs):
+def follow(self,follower,**kwargs):
 
     follower = self.request.user
+    #userbeingfollowed = Profile.user
 
-    instance,create = self.objects.follow.get_or_create(from_profile_id =follower.id,to_profile_id=userbeingfollowed.id)
+    instance,create = Profile.objects.follows.get_or_create(from_profile_id =follower.pk,to_profile_id=Profile.user.pk)
 
     return instance
 
 def unfollow(self,follower,userbeingfollowed,**kwargs):
 
-    instance = self.objects.follow.filter(from_profile_id =follower.id,to_profile_id=userbeingfollowed.id).delete()
+    instance = Profile.objects.follows.filter(from_profile_id =follower.id,to_profile_id=userbeingfollowed.id).delete()
 
