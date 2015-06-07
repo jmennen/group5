@@ -23,7 +23,8 @@
 			
 				<form role="form" method="post" action="{% url "new_circle" %}">
 				{% csrf_token %}
-				<!--the name links to the user's profile-->
+				
+				<!--a required name is set for a new circle-->
                     <td>
 						<input required type="text" class="form-control" name="name" id="name" placeholder="erstelle einen Kreis">
 					</td>
@@ -39,22 +40,29 @@
 			
 				<form>
                 <tr>
-				{% for circle in circle_list %}
+				<!-- { for circle in circle_list %} -->
 				<!--the name links to the circle's details-->
-                    <td><a href="{% url "circle_details" pk=circle.pk %}">{{circle.name }}</a></td>
+                    <td><a href=""> <!--{ url "circle_details" pk=circle.pk %}"--> {{circle.name }}</a></td>
 
                     <td>   
-						<select multiple="multiple" name="circlefollower" class="testselect2">
-						{% for profile in profile_list %}
-							<option>{{ profile.user.username }}</option>
-						{% endfor %}
-						</select>
+						<div class="btn-group">					
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+						Zeige Follower an <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+					<!-- { for profile in profile_list %} -->
+						<li>{{ profile.user.username }}</li>
+						<li>asdasdsa</li>
+
+					<!-- { endfor %} -->
+					</ul>
+					</div>
 					</td>
 					<td>
-					<input type="submit" value="Speichern" class="btn btn-default">
-					<a class="btn btn-danger" href="{% url "delete_circle" pk=circle.pk %}">Löschen</a>
+
+					<a class="btn btn-danger" href=""> <!--{ url "delete_circle" pk=circle.pk %}--> Löschen</a>
 					</td>
-				{% endfor %}	
+				<!--{ endfor %}-->	
 					
                 </tr>
 				</form>
