@@ -14,7 +14,7 @@
                 <th>Name</th>
                 <th>Picture</th>
                 <th>Description</th>
-                <th>gender</th>
+                <th>Actions</th>
 
             </tr>
             {% for user in user_list %}
@@ -24,10 +24,23 @@
 				<!--profile_picture is resized-->
                     <td><img src="{{ user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
                     <td>{{ user.profile.description | beautifulNone }}</td>
-                    <td>{{ user.profile.gender | beautifulNone }}</td>
+                    <td>
+						<form class="form-inline" role="form">
+					
+						<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-envelope"></span></button>					
+						{% if not profile.follows %}
+						
+						<button class="btn btn-info" role="form-control" method="post" action="{% url "follow" user.pk %}" type="submit"> Folgen </button>				
+						{% endif %}
+						{% if profile.follows %}
+						<button class="btn btn-danger" role="form-control" method="post" action="{% url "unfollow" user.pk %}" type="submit">Entfolgen</button>	
+						{% endif %}
+						</form>
+					</td>
 
                 </tr>
             {% endfor %}
         </table>
     </div>
+
 {% endblock %}
