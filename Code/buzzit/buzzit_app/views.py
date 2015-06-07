@@ -359,7 +359,7 @@ class createCircleView(CreateView,SuccessMessageMixin):
 
 class deleteCircleView(RedirectView,SuccessMessageMixin):
     """
-
+    pick up the circle primary key from template and remove the circle with the given object
     """
     model = Circle
     success_message = "%(name)s die Kreise erfolgreich geloescht"
@@ -371,6 +371,12 @@ class deleteCircleView(RedirectView,SuccessMessageMixin):
 
 def follow(self,follower,**kwargs):
 
+    """
+    pick up current user and profile which the user like to follow as argument, and create follows relationship
+    :param follower:
+    :param kwargs:
+    :return:
+    """
     follower = self.request.user
     #userbeingfollowed = Profile.user
 
@@ -379,6 +385,12 @@ def follow(self,follower,**kwargs):
     return instance
 
 def unfollow(self,follower,userbeingfollowed,**kwargs):
-
+    """
+    remove the relationship in the database
+    :param follower:
+    :param userbeingfollowed:
+    :param kwargs:
+    :return:
+    """
     instance = Profile.objects.follows.filter(from_profile_id =follower.id,to_profile_id=userbeingfollowed.id).delete()
 
