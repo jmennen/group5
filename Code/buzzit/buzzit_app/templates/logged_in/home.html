@@ -72,9 +72,11 @@
 				<p>
 					{{message.text}} asssssssssssssssssssssss assssssssssssssssssssssss asdad asdasd asd asd asd asd asd as
 				</p>
+				{% if message.creator == user %}
 				<div align="right">
 					<a class="btn btn-danger btn-xs" href="#">Löschen</a>
 				</div>
+						{% endif %}
             </div>
 			<div class="col-md-1">
             </div>

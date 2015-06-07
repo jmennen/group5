@@ -24,6 +24,7 @@
 			
   {% for profile in profile_list %}
 				<form method="post" action="" role="form">
+				{% csrf_token %}
 				<tr>
 				<!--the name links to the user's profile-->
                     <td><a href="{% url "view_profile" user.pk %}">{{ user.username }}</a></td>

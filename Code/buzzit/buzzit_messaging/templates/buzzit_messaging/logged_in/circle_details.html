@@ -62,7 +62,7 @@
 	 <div class="col-md-12">
                 <h3>Kreisnachrichten</h3>
                     <!--space for circle messages-->
-
+				<!-- {{ for messages in circle_messages %}}-->
 				<div class="well col-md-5">
 					<div class="col-md-3">
 						<img src="{{ user.profile.profile_picture }}" height="48" alt="Profilbild">
@@ -71,10 +71,13 @@
 					<p>
 						{{message.text}} asssssssssssssssssssssss assssssssssssssssssssssss asdad
 					</p>
+						{% if message.creator == user %}
 				<div align="right">
 					<a class="btn btn-danger btn-xs" href="#">Löschen</a>
 				</div>
+						{% endif %}
 				</div>
+				<!-- {{ endfor %}} -->
 				<div class="col-md-1">
                 </div>
 				
