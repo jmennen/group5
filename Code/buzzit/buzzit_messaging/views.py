@@ -66,9 +66,11 @@ class CircleOverviewView(ListView):
 @login_required
 def listfollows(request):
     # list of profile
-    profiles_ids = Profile.objects.get(user=request.user.pk).follows
-    profiles = Profile.objects.filter(pk__in = profiles_ids)
-    return render(request, "buzzit_messaging/logged_in/following_userlist.html", {"profiles": profiles})
+    followed = Profile.objects.filter(pk=request.user.profile.follows)
+    return render(request,
+                  "buzzit_messaging/logged_in/following_userlist.html",
+                  {"profile": request.user.profile, "followed" : followed}
+                  )
 
 
 class PostCirclemessageView(CreateView, SuccessMessageMixin):

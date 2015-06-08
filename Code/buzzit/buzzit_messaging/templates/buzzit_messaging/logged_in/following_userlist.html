@@ -1,6 +1,8 @@
 <!--a site which contains the user you are following right now in a list. you are able to unfollow them via this template.-->
 {% extends "base.html" %}
 
+{% load filters %}
+
 {% block title %}du followst{% endblock %}
 
 {% block content %}
@@ -18,11 +20,10 @@
                 <th>Actions</th>
 
             </tr>
-			
-              {% for profile in profile_list %}
+              {% for followed_profile in profile.follows.values %}
                  <tr>
 				<!--the name links to the user's profile-->
-                    <td><a href="{% url "view_profile" user.pk %}">{{ profile.user.username }}</a></td>
+                    <td><a href="{% url "view_profile" user.pk %}">{{ followed_profile.user.username }}</a></td>
 				<!--profile_picture is resized-->
                     <td><img src="{{ user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
                     <td>{{ user.profile.description | beautifulNone }}</td>
@@ -35,7 +36,7 @@
 				
 			    <tr>
 				<!--the name links to the user's profile-->
-                    <td><a href="{% url "view_profile" user.pk %}">{{ profile.follows }}</a></td>
+                    <td><a href="{% url "view_profile" user.pk %}">{{ followed_profile.follows }}</a></td>
 				<!--profile_picture is resized-->
                     <td><img src="{{ user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
                     <td>{{ user.profile.description | beautifulNone }}</td>
