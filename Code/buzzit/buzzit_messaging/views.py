@@ -66,10 +66,10 @@ class CircleOverviewView(ListView):
 @login_required
 def listfollows(request):
     # list of profile
-    followed = Profile.objects.filter(pk=request.user.profile.follows)
+    my_profile = request.user.profile
     return render(request,
                   "buzzit_messaging/logged_in/following_userlist.html",
-                  {"profile": request.user.profile, "followed" : followed}
+                  {"profile": my_profile, "follows" : my_profile.follows.all()}
                   )
 
 
@@ -125,7 +125,7 @@ def follow(request, user_id):
 
 @login_required()
 def unfollow(request, user_id):
-    # TODO: exceptions für nicht gefundene user usw (wie follow())
+    # TODO: exceptions fuer nicht gefundene user usw (wie follow())
     unfollow_user = Profile.objects.get(pk=user_id)
     my_profile = Profile.objects.get(pk=request.user.pk)
     circles_of_unfollowed_user = Circle.objects.filter(owner=unfollow_user.pk, members=my_profile.pk)

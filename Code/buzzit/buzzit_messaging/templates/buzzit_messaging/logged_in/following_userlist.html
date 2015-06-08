@@ -11,7 +11,7 @@
 	
 	<div class="container">
 
-        <h3>User you are following:</h3>
+        <h3>Benutzer, denen Du folgst:</h3>
         <table class="table table-bordered">
             <tr>
                 <th>Name</th>
@@ -20,26 +20,14 @@
                 <th>Actions</th>
 
             </tr>
-              {% for followed_profile in profile.follows.values %}
-                 <tr>
-				<!--the name links to the user's profile-->
-                    <td><a href="{% url "view_profile" user.pk %}">{{ followed_profile.user.username }}</a></td>
-				<!--profile_picture is resized-->
-                    <td><img src="{{ user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
-                    <td>{{ user.profile.description | beautifulNone }}</td>
-                    <td>
-						<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-envelope"></span></button>
-						<button class="btn btn-danger" type="button">Entfolgen</button>
-					</td>
-
-                </tr>
+              {% for followed_profile in follows %}
 				
 			    <tr>
 				<!--the name links to the user's profile-->
-                    <td><a href="{% url "view_profile" user.pk %}">{{ followed_profile.follows }}</a></td>
+                    <td><a href="{% url "view_profile" followed_profile.user.pk %}">{{ followed_profile.user.username }}</a></td>
 				<!--profile_picture is resized-->
-                    <td><img src="{{ user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
-                    <td>{{ user.profile.description | beautifulNone }}</td>
+                    <td><img src="{{ followed_profile.user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
+                    <td>{{ followed_profile.user.profile.description | beautifulNone }}</td>
                     <td>
 						<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-envelope"></span></button>
 						<button class="btn btn-danger" type="button">Entfolgen</button>						
