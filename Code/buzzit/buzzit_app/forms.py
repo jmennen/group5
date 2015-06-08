@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from buzzit_models.models import Circle
 from django.utils.translation import ugettext_lazy as _
 
 #form to display user registration 
@@ -30,3 +31,5 @@ class RegistrationForm(forms.Form):
             if self.cleaned_data['password1'] != self.cleaned_data['password2']:
                 raise forms.ValidationError(_("Die Passworte stimmen leider nicht überein."))
         return self.cleaned_data
+
+

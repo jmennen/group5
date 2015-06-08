@@ -1,27 +1,30 @@
 from django.contrib.auth.decorators import login_required
+from django.core.files.storage import FileSystemStorage
+from django.db.models import QuerySet
 from django.contrib.messages.views import SuccessMessageMixin
 from django.forms.utils import ErrorList
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, render_to_response
+from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.utils.http import is_safe_url
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView,DeleteView,CreateView,FormView
 from django.views.generic.list import ListView
-from buzzit_app.forms import RegistrationForm
+from django.views.generic import RedirectView
+from .forms import RegistrationForm
 from buzzit_models.models import *
-from django.contrib.auth.forms import AuthenticationForm
-from django.core.urlresolvers import reverse
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.core.urlresolvers import reverse,reverse_lazy
 from django.contrib.auth import login, logout as authlogout
 from django.contrib.auth.views import password_change as _pw_change_
 import logging
-from django.forms.fields import FileField, ClearableFileInput
+from django.forms.fields import FileField, ClearableFileInput, CharField, EmailField
 from django.core.exceptions import ObjectDoesNotExist
 from PIL import Image
 import imghdr
 import os
-from django.contrib import messages
 
 
 def start(request):
@@ -35,27 +38,24 @@ def start(request):
     """
     if request.user.is_authenticated():
         if not request.user.is_active:
-            messages.error(request, "Sie sind deaktiviert!")
-            return render(request, "guest/start.html", {"form": AuthenticationForm()})
+            pass  # TODO: was passiert dann?
         return HttpResponseRedirect(reverse("home"))
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             user = form.get_user()
             if user:
-                if not user.is_active:
-                    messages.error(request, "Sie sind deaktiviert!")
-                    return render(request, "guest/start.html", {"form": AuthenticationForm()})
                 login(request, user)
-                messages.success(request, "Sie wurden eingeloggt!")
+                if not request.user.is_active:
+                    pass  # TODO: dann?
                 redirect_to = request.REQUEST.get("next", False)
                 if (redirect_to):
                     if not is_safe_url(url=redirect_to, host=request.get_host()):
                         return HttpResponseRedirect(reverse("home"))
                     return HttpResponseRedirect(redirect_to)
                 return HttpResponseRedirect(reverse("home"))
-        else:
-            messages.error(request, "Benutzername/Passwort falsch!")
+            else:
+                pass  # TODO: fehler beim login melden
     else:
         form = AuthenticationForm()
     return render(request, "guest/start.html", {"form": form})
@@ -86,7 +86,7 @@ class ProfileView(DetailView):
         return super(ProfileView, self).dispatch(request, *args, **kwargs)
 
 
-class EditProfileView(UpdateView, SuccessMessageMixin):
+class EditProfileView(UpdateView):
     """
     Controls the behaviour if a logged in user want to edit his profile.
     If an image is uploaded, then a smaller version of this is created.
@@ -96,7 +96,6 @@ class EditProfileView(UpdateView, SuccessMessageMixin):
     template_name = "logged_in/edit_own_profile.html"
     fields = ["gender", "description"]
     success_url = "/updateprofile"
-    success_message = "Profil wurde gespeichert"
 
     def get_form(self, form_class=None):
         """
@@ -156,7 +155,6 @@ class EditProfileView(UpdateView, SuccessMessageMixin):
                 if not EditProfileView.__create_small_picture__(self.request, image_file_name):
                     os.remove(image_file_name)
                     errors = form._errors.setdefault('image_file', ErrorList())
-                    messages.warning(self.request, "Bild nicht gespeichert - altes Bild wurde geloescht")
                     errors.append(
                         "Das Thumbnail konnte nicht erzeugt werden; benutzen Sie ein anderes (jpg,png,gif(nicht animiert)) Bild.")
                     return super(EditProfileView, self).form_invalid(form)
@@ -173,7 +171,7 @@ class EditProfileView(UpdateView, SuccessMessageMixin):
         return super(EditProfileView, self).dispatch(request, *args, **kwargs)
 
 
-class EditUserdataView(UpdateView, SuccessMessageMixin):
+class EditUserdataView(UpdateView):
     """
     View to edit user data.
     Template is "edit_own_userdata.html"
@@ -182,7 +180,6 @@ class EditUserdataView(UpdateView, SuccessMessageMixin):
     template_name = "logged_in/edit_own_userdata.html"
     fields = ["first_name", "last_name", "email"]
     success_url = "/updateuser"
-    success_message = "Daten gespeichert!"
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -239,10 +236,7 @@ def register(request):
             new_profile.gender = ""
             new_profile.description = ""
             new_profile.save()
-            messages.success(request, "Sie sind registriert und koennen sich nun einloggen!")
             return HttpResponseRedirect(reverse("start"))
-        else:
-            messages.error(request, "Sie haben ungueltige Daten angegeben!")
     else:
         form = RegistrationForm()
     variables = {
@@ -250,9 +244,9 @@ def register(request):
     }
 
     return render(request,
-                  'guest/register.html',
-                  variables,
-                  )
+        'guest/register.html',
+        variables,
+    )
 
 
 def register_success(request):
@@ -269,7 +263,6 @@ def logout(request):
     :return:
     """
     authlogout(request)
-    messages.success(request, "Sie sind ausgeloggt!")
     return HttpResponseRedirect(reverse("start"))
 
 
@@ -335,3 +328,69 @@ def impressum(request):
         return render(request, "logged_in/impressum.html")
     else:
         return render(request, "guest/impressum.html")
+
+class circleOverView(ListView):
+
+    """
+    view to show circle which belongs to current user
+    display in the same site where create circle occurs
+    """
+    model = Circle
+    template_name = "logged_in/circle_overview.html"
+
+
+class createCircleView(CreateView,SuccessMessageMixin):
+    """
+    create circle for the current user, override form_valid to sign user to the circle owner
+    not for sure check if the circle name is already taken
+    """
+    model = Circle
+    template_name = "logged_in/createcircle.html"
+    fields = ['name']
+    success_message = "%(name)s die Kreise erfolgreich erstellt"
+    success_url = reverse_lazy("circleoverview")
+
+    def form_valid(self, form):
+
+        form.instance.owner = self.request.user
+
+        return super(createCircleView, self).form_valid(form)
+
+
+class deleteCircleView(RedirectView,SuccessMessageMixin):
+    """
+    pick up the circle primary key from template and remove the circle with the given object
+    """
+    model = Circle
+    success_message = "%(name)s die Kreise erfolgreich geloescht"
+
+    def get_redirect_url(self, pk=None):
+        if pk != None:
+            Circle.objects.get(pk=pk).delete()
+            return reverse_lazy('circleoverview')
+
+def follow(self,follower,**kwargs):
+
+    """
+    pick up current user and profile which the user like to follow as argument, and create follows relationship
+    :param follower:
+    :param kwargs:
+    :return:
+    """
+    follower = self.request.user
+    #userbeingfollowed = Profile.user
+
+    instance,create = Profile.objects.follows.get_or_create(from_profile_id =follower.pk,to_profile_id=Profile.user.pk)
+
+    return instance
+
+def unfollow(self,follower,userbeingfollowed,**kwargs):
+    """
+    remove the relationship in the database
+    :param follower:
+    :param userbeingfollowed:
+    :param kwargs:
+    :return:
+    """
+    instance = Profile.objects.follows.filter(from_profile_id =follower.id,to_profile_id=userbeingfollowed.id).delete()
+

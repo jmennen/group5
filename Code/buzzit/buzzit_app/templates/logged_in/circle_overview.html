@@ -1,1 +1,73 @@
 <!--a site which contains your circles. you are able to create a new circle.-->
+{% extends "base.html" %}
+{% block title %}Kreisuebersicht{% endblock %}
+{% block content %}
+    {% include "includes/navbar.html" %}
+    <div class="container">
+
+        <h3>Your Circles</h3>
+        <hr/>
+        <div class="row">
+            {% for circle in object_list %}
+                <div class="col-xs-12 col-sm-4 col-lg-5">{{ circle.name }}</div>
+                <div class="col-xs-6 col-sm-4">{{ circle.member }}</div>
+
+
+                <div class="col-xs-6 col-sm-2 col-lg-1">
+                    <a class="btn btn-primary">Bearbeiten</a>
+                </div>
+                <div class="col-xs-6 col-sm-2 col-lg-1">
+                    <a class="btn btn-danger" href="{% url 'deletecircle' pk=circle.pk %}">Löschen</a>
+                </div>
+                {% if not forloop.last %}
+                    <div class="col-xs-12">
+                        <hr/>
+                    </div>
+                {% endif %}
+                {% empty %}
+                <div class="col-xs-12">
+                    Du hast noch keine Kreise.
+                    <br/>
+                    <a class="btn btn-primary" href="/createcircle">Erstellen</a>
+                </div>
+            {% endfor %}
+        </div>
+        <br/>
+
+
+        <!--{% for user in user_list %}-->
+            <tr>
+                <!--the name links to the user's profile-->
+                <td><a href="{% url "view_profile" user.pk %}">{{ circle.name }}</a></td>
+
+                <td>
+                    <form>
+                        <select class="form-control" name="follower" size="3" multiple>
+                            <option>{{ user.username }}</option>
+                            <option>Jan</option>
+                            <option>Dong</option>
+                            <option>David</option>
+                            <option>Florian</option>
+                            <option>Cheng</option>
+                            <option>Qi</option>
+                        </select>
+                        <input type="submit" value="save" class="btn btn-default">
+                    </form>
+                </td>
+                <td>
+                    <button class="btn btn-danger" type="button">Löschen</button>
+                </td>
+
+
+            </tr>
+
+
+            <!-- {% endfor %} -->
+
+    </div>
+{% endblock %}
+
+
+</body>
+
+</html>
