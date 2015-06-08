@@ -68,8 +68,14 @@ def home(request):
     :param request: The request object.
     :return: the home.html template rendered with a user object "user" and a profile object "profile"
     """
+    circles_of_which_we_are_member = Circle.objects.filter(members=request.user.pk)
+    message_list = []
+    for circle in circles_of_which_we_are_member:
+        message_list += (circle.messages.all())
+    # TODO: eigene nachrichten rein
     return render(request, "logged_in/home.html", {"user": request.user,
-                                                   "profile": Profile.objects.get(user=request.user.pk)})
+                                                   "profile": Profile.objects.get(user=request.user.pk),
+                                                   "message_list" : message_list})
 
 
 class ProfileView(DetailView):

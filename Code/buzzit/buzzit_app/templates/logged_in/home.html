@@ -32,58 +32,63 @@
 
                 <!--leads to edit_own_profile site-->
                 <p><a href="{% url "update_profile" %}">edit profile</a></p>
+
                 <p><a href="{% url "list_follows" %}">wem folge ich?</a></p>
-				
+
             </div>
             <div class="col-md-9">
                 <div class="thumbnail">
                     <p>Beschreibung: {{ profile.description | beautifulNone }}</p>
                 </div>
-	
-                 <div class="well">
+                <div class="well">
                     <h3>Kreisnachrichten</h3>
                     <!--space for creating a circle messages-->
-					<form role="form" method="post" action="{% url "new_circlemessage" %}">
-					 {% csrf_token %}					
-						<p>
-						  <select multiple="multiple" name="homecirlce" class="testselect1">
-						   <!-- { for profile in profile_list %} -->
-									<option>Public</option>
-								
-						</select>
-						</p>
-				
-						<div class="input-group">
-							<input required type="text" name="text" id="text" class="form-control" placeholder="Kreisnachricht...">
-							
-						<div class="input-group-btn">
-							<button class="btn btn-info" type="submit">Senden</button>
-						</div>
-						
-						</div>
-					</form>
-					<hr>
-					<!-- { for profile in profile_list %} -->
-			<div class="well col-md-5">
-				<div class="col-md-3">
-					<img src="{{ user.profile.profile_picture }}" height="48" alt="Profilbild">
-				</div>
-					 {{message.creator}} schrieb hier am {{message.created}}:
-				<p>
-					{{message.text}} asssssssssssssssssssssss assssssssssssssssssssssss asdad asdasd asd asd asd asd asd as
-				</p>
-				{% if message.creator == user %}
-				<div align="right">
-					<a class="btn btn-danger btn-xs" href="#">Löschen</a>
-				</div>
-						{% endif %}
-            </div>
-			<div class="col-md-1">
-            </div>
+                    <form role="form" method="post" action="{% url "new_circlemessage" %}">
+                        {% csrf_token %}
+                        <p>
+                            <select multiple="multiple" name="homecirlce" class="testselect1">
+                                <!-- { for profile in profile_list %} -->
+                                <option>Public</option>
+
+                            </select>
+                        </p>
+
+                        <div class="input-group">
+                            <input required type="text" name="text" id="text" class="form-control"
+                                   placeholder="Kreisnachricht...">
+
+                            <div class="input-group-btn">
+                                <button class="btn btn-info" type="submit">Senden</button>
+                            </div>
+
+                        </div>
+                    </form>
+                    <hr>
+                    {% for circlemessage in message_list %}
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="#">
+                                    <img height="64" width="64" class="media-object" src="{{ circlemessage.creator.profile.profile_picture }}" alt="Profilbild">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">{{ circlemessage.creator }} schrieb hier
+                                    am {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
+                                {{ circlemessage.text }}
+
+                                {% if circlemessage.creator == user %}
+                                    <div align="right">
+                                        <a class="btn btn-danger btn-xs" href="#">Löschen</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
-				
-				
             </div>
+
+
         </div>
+    </div>
     </div>
 {% endblock %}
