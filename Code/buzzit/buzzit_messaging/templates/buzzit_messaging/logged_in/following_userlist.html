@@ -1,1 +1,52 @@
 <!--a site which contains the user you are following right now in a list. you are able to unfollow them via this template.-->
+{% extends "base.html" %}
+
+{% block title %}du followst{% endblock %}
+
+{% block content %}
+
+    {% include "includes/navbar.html" %}
+	
+	<div class="container">
+
+        <h3>User you are following:</h3>
+        <table class="table table-bordered">
+            <tr>
+                <th>Name</th>
+                <th>Profilbild</th>
+                <th>Description</th>
+                <th>Actions</th>
+
+            </tr>
+			
+              {% for profile in profile_list %}
+                 <tr>
+				<!--the name links to the user's profile-->
+                    <td><a href="{% url "view_profile" user.pk %}">{{ profile.user.username }}</a></td>
+				<!--profile_picture is resized-->
+                    <td><img src="{{ user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
+                    <td>{{ user.profile.description | beautifulNone }}</td>
+                    <td>
+						<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-envelope"></span></button>
+						<button class="btn btn-danger" type="button">Entfolgen</button>
+					</td>
+
+                </tr>
+				
+			    <tr>
+				<!--the name links to the user's profile-->
+                    <td><a href="{% url "view_profile" user.pk %}">{{ profile.follows }}</a></td>
+				<!--profile_picture is resized-->
+                    <td><img src="{{ user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
+                    <td>{{ user.profile.description | beautifulNone }}</td>
+                    <td>
+						<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-envelope"></span></button>
+						<button class="btn btn-danger" type="button">Entfolgen</button>						
+					</td>
+
+                </tr>
+           {% endfor %} 
+        </table>
+    </div>   
+	
+	{% endblock %}

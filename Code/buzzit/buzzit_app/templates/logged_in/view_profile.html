@@ -8,28 +8,41 @@
 
 	<!-- template to view your own or an other user's profile -->
 
-    <p class="lead">{{ user.username }}
-		<!--button for sending a message to this user-->
-        <button type="button" class="btn btn-primary">Diesem Benutzer eine Nachricht senden</button>
-    </p>
+
 	
 	<!--information and picture of this profile-->
     <div class="col-md-5">
+	<p class="lead">{{ profile.user.username }}
+		<!--button for sending a message to this user-->
+        <button type="button" class="btn btn-primary">Diesem Benutzer eine Nachricht senden</button>
+    </p>
 
         <div class="thumbnail">
             <img class="img-responsive" src="{{ profile.profile_picture }}" alt="Profilbild">
         </div>
 		
         <div class="well">
-            <p>{{ user.first_name }}</p>
+            <p>Vorname: {{ profile.user.first_name }}</p>
             <hr>
-            <p>{{ user.last_name }}</p>
+            <p>Nachname: {{ profile.user.last_name }}</p>
             <hr>
-            <p>{{ profile.description }}</p>
+            <p>Beschreibung: {{ profile.description }}</p>
             <hr>
+			
+			<form class="form-inline" role="form" method="post" action="{% url "follow" user.pk %}">
+					 {% csrf_token %}
+						<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-envelope"></span></button>		
+						
+						<!--{ if not profile.follows %}	-->					
+						<button class="btn btn-info" role="form-control"  type="submit"> Folgen </button>				
+						<!--{ endif %}-->
+						
+						<!--{ if profile.follows %}-->
+						<button class="btn btn-danger" role="form-control" method="post" action="{% url "unfollow" user.pk %}" type="submit">Entfolgen</button>	
+						<!--{ endif %}-->
+						</form>
+
         </div>
-
-
     </div>
 
 
@@ -37,54 +50,28 @@
 
         <div class="well">
 			<!--space for public messages-->
-            <h3>Öffentliche Nachrichten</h3>
+            <h3>Kreisnachrichten</h3>
 
             <div class="row">
                 <div class="col-md-12">
                 </div>
             </div>
 
-            <hr>
-            <!-- dummy placeholder for content -->
-            <div class="row">
-                <div class="col-md-12">
-                </div>
+			<div class="well col-md-5">
+						<div class="col-md-3">
+					 <img src="{{ user.profile.profile_picture }}" height="48" alt="Profilbild">
+					 </div>
+					 {{message.creator}} schrieb hier am {{message.created}}:
+				<p>
+					{{message.text}} asssssssssssssssssssssss assssssssssssssssssssssss asdad
+				</p>
+           	
             </div>
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
+			<div class="col-md-1">
                 </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                </div>
-            </div>
+              
+
+      
 
 
         </div>

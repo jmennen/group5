@@ -1,1 +1,75 @@
 <!--a site which contains your circles. you are able to create a new circle.-->
+{% extends "base.html" %}
+
+{% block title %}Kreisübersicht{% endblock %}
+
+{% block content %}
+
+    {% include "includes/navbar.html" %}
+	
+	<div class="container">
+
+
+        <h3>Your Circles</h3>
+        <table class="table table-bordered">
+            <tr>
+                <th>Name</th>
+                <th>Follower</th>
+                <th>Actions</th>
+			</tr>
+			
+            
+			<tr>
+			
+				<form role="form" method="post" action="{% url "new_circle" %}">
+				{% csrf_token %}
+				
+				<!--a required name is set for a new circle-->
+                    <td>
+						<input required type="text" class="form-control" name="name" id="name" placeholder="erstelle einen Kreis">
+					</td>
+
+                    <td>  				
+					</td>
+						
+					<td>
+						<button class="btn btn-default" type="submit">Erstellen</button>
+					</td>
+				</form>
+            </tr>
+			
+				<form>
+                <tr>
+				<!-- { for circle in circle_list %} -->
+				<!--the name links to the circle's details-->
+                    <td><a href=""> <!--{ url "circle_details" pk=circle.pk %}"--> {{circle.name }}</a></td>
+
+                    <td>   
+						<div class="btn-group">					
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+						Zeige Follower an <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+					<!-- { for profile in profile_list %} -->
+						<li>{{ profile.user.username }}</li>
+						<li>asdasdsa</li>
+
+					<!-- { endfor %} -->
+					</ul>
+					</div>
+					</td>
+					<td>
+
+					<a class="btn btn-danger" href=""> <!--{ url "delete_circle" pk=circle.pk %}--> Löschen</a>
+					</td>
+				<!--{ endfor %}-->	
+					
+                </tr>
+				</form>
+				
+
+         
+        </table>
+    </div>   
+	
+	{% endblock %}

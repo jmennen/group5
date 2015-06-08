@@ -1,1 +1,49 @@
 <!--a userlist which consists of users that are following you. you can arrange their circle status in this template-->
+{% extends "base.html" %}
+
+{% block title %}deine Follower{% endblock %}
+
+{% block content %}
+
+    {% include "includes/navbar.html" %}
+
+
+	
+	
+	<div class="container">
+
+        <h3>User that are following you:</h3>
+        <table class="table table-bordered">
+            <tr>
+                <th>Name</th>
+                <th>Profilbild</th>
+                <th>Kreise</th>
+                <th>Actions</th>
+
+            </tr>
+			
+  {% for profile in profile_list %}
+				<form method="post" action="" role="form">
+				{% csrf_token %}
+				<tr>
+				<!--the name links to the user's profile-->
+                    <td><a href="{% url "view_profile" user.pk %}">{{ user.username }}</a></td>
+				<!--profile_picture is resized-->
+                    <td><img src="{{ user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
+                    <td>   
+						
+								<select multiple="multiple" name="homecirlce" class="testselect1">
+									<option>{{circle.name}}</option>
+									<option>Public</option>
+								</select>		
+						
+					</td>
+					<td><input type="submit" value="Speichern" class="btn btn-default"></td>
+					
+                </tr>
+				</form>
+        {% endfor %}
+        </table>
+    </div>   
+
+{% endblock %}
