@@ -27,7 +27,7 @@ class CircleDetailsView(UpdateView):
     template_name = "buzzit_messaging/logged_in/circle_details.html"
 
     def get_object(self, queryset=None):
-        logged_in_user = self.request.user
+        logged_in_user = self.request.user.pk
         return Circle.objects.get(owner=logged_in_user, pk=self.request.kwargs.get('slug'))
 
     @method_decorator(login_required)
@@ -66,9 +66,9 @@ class CircleOverviewView(ListView):
 @login_required
 def listfollows(request):
     # list of profile
-    profiles_ids = Profile.objects.get(user=request.user.id).follows
+    profiles_ids = Profile.objects.get(user=request.user.pk).follows
     profiles = Profile.objects.filter(pk__in = profiles_ids)
-    return render(request, "buzzit_messaging/logged_in/following_userlist.html", {"profile": profiles})
+    return render(request, "buzzit_messaging/logged_in/following_userlist.html", {"profiles": profiles})
 
 
 class PostCirclemessageView(CreateView, SuccessMessageMixin):
@@ -117,7 +117,7 @@ def follow(request, user_id):
     except ObjectDoesNotExist:
         # logged in user has no profile
         return HttpResponseRedirect(reverse_lazy('home'))
-    my_profile.follows.add(follow_user)
+    my_profile.follows.add(follow_user.pk)
     return HttpResponseRedirect(reverse_lazy('home'))
 
 
@@ -125,9 +125,9 @@ def follow(request, user_id):
 def unfollow(request, user_id):
     # TODO: exceptions für nicht gefundene user usw (wie follow())
     unfollow_user = Profile.objects.get(pk=user_id)
-    my_profile = Profile.objects.get(pk=request.user)
+    my_profile = Profile.objects.get(pk=request.user.pk)
     circles_of_unfollowed_user = Circle.objects.filter(owner=unfollow_user.pk, members=my_profile.pk)
     for circle in circles_of_unfollowed_user:
-        circle.members.remove(my_profile)
-    my_profile.follows.remove(unfollow_user)
+        circle.members.remove(my_profile.pk)
+    my_profile.follows.remove(unfollow_user.pk)
     return HttpResponseRedirect(reverse_lazy('home'))
