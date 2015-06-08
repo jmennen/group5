@@ -75,7 +75,8 @@ def home(request):
     # TODO: eigene nachrichten rein
     return render(request, "logged_in/home.html", {"user": request.user,
                                                    "profile": Profile.objects.get(user=request.user.pk),
-                                                   "message_list" : message_list})
+                                                   "message_list" : message_list,
+                                                   "circles" : Circle.objects.filter(owner=request.user.pk)})
 
 
 class ProfileView(DetailView):
@@ -86,6 +87,11 @@ class ProfileView(DetailView):
     model = Profile
     template_name = "logged_in/view_profile.html"
     slug_field = "user"
+
+    def get_object(self, queryset=None):
+        profile = super(ProfileView, self).get_object(queryset)
+        profile.i_am_following = self.request.user.profile.follows.all().filter(pk=profile.user)
+        return profile
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -204,16 +210,19 @@ class UserSearchResultsView(ListView):
     """
     model = User
     template_name = "logged_in/usersearch_results.html"
+    context_object_name = "O"
 
     def get_queryset(self):
+        ownprofile = self.request.user.profile
+        ownprofile.follows_list = ownprofile.follows.all()
         usrname = self.request.GET.get("q", False)
         if usrname and len(usrname) > 0:
             userset = User.objects.filter(username__contains=usrname)
         else:
             userset = User.objects.all()
         for user in userset:
-            user.profile = Profile.objects.get(user=user.pk)
-        return userset
+            user.i_am_following = ownprofile.follows.all().filter(pk=user)
+        return {"user_list":userset, "ownprofile" : ownprofile }
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -240,7 +249,7 @@ def register(request):
                 last_name=form.cleaned_data.get('last_name', ''),
             )
             new_profile = Profile()
-            new_profile.user = user.pk
+            new_profile.user = user
             new_profile.profile_picture = "https://placehold.it/128x128"
             new_profile.gender = ""
             new_profile.description = ""

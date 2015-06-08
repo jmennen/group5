@@ -1,26 +1,26 @@
 {% extends "base.html" %}
 {% block title %}Profil anzeigen{% endblock %}
 {% block content %}
-<!--imports the navigation bar-->
-{% include "includes/navbar.html" %}
+    <!--imports the navigation bar-->
+    {% include "includes/navbar.html" %}
 
-	<!-- Page Content -->
+    <!-- Page Content -->
 
-	<!-- template to view your own or an other user's profile -->
+    <!-- template to view your own or an other user's profile -->
 
 
-	
-	<!--information and picture of this profile-->
+
+    <!--information and picture of this profile-->
     <div class="col-md-5">
-	<p class="lead">{{ profile.user.username }}
-		<!--button for sending a message to this user-->
-        <button type="button" class="btn btn-primary">Diesem Benutzer eine Nachricht senden</button>
-    </p>
+        <p class="lead">{{ profile.user.username }}
+            <!--button for sending a message to this user-->
+            <button type="button" class="btn btn-primary">Diesem Benutzer eine Nachricht senden</button>
+        </p>
 
         <div class="thumbnail">
             <img class="img-responsive" src="{{ profile.profile_picture }}" alt="Profilbild">
         </div>
-		
+
         <div class="well">
             <p>Vorname: {{ profile.user.first_name }}</p>
             <hr>
@@ -28,19 +28,21 @@
             <hr>
             <p>Beschreibung: {{ profile.description }}</p>
             <hr>
-			
-			<form class="form-inline" role="form" method="post" action="{% url "follow" user.pk %}">
-					 {% csrf_token %}
-						<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-envelope"></span></button>		
-						
-						<!--{ if not profile.follows %}	-->					
-						<button class="btn btn-info" role="form-control"  type="submit"> Folgen </button>				
-						<!--{ endif %}-->
-						
-						<!--{ if profile.follows %}-->
-						<button class="btn btn-danger" role="form-control" method="post" action="{% url "unfollow" user.pk %}" type="submit">Entfolgen</button>	
-						<!--{ endif %}-->
-						</form>
+
+            <form class="form-inline" role="form" method="post">
+                {% csrf_token %}
+                <button class="btn btn-info" type="button"><span class="glyphicon glyphicon-envelope"></span></button>
+
+                {% if profile.i_am_following %}
+                    <a class="btn btn-danger" role="form-control" method="post"
+                       href="{% url "unfollow" profile.pk %}" type="submit">Entfolgen
+                    </a>
+                {% else %}
+                    <a class="btn btn-info" role="form-control" method="post"
+                       href="{% url "follow" profile.pk %}" type="submit"> Folgen
+                    </a>
+                {% endif %}
+            </form>
 
         </div>
     </div>
@@ -49,7 +51,7 @@
     <div class="col-md-7">
 
         <div class="well">
-			<!--space for public messages-->
+            <!--space for public messages-->
             <h3>Kreisnachrichten</h3>
 
             <div class="row">
@@ -57,21 +59,18 @@
                 </div>
             </div>
 
-			<div class="well col-md-5">
-						<div class="col-md-3">
-					 <img src="{{ user.profile.profile_picture }}" height="48" alt="Profilbild">
-					 </div>
-					 {{message.creator}} schrieb hier am {{message.created}}:
-				<p>
-					{{message.text}} asssssssssssssssssssssss assssssssssssssssssssssss asdad
-				</p>
-           	
-            </div>
-			<div class="col-md-1">
+            <div class="well col-md-5">
+                <div class="col-md-3">
+                    <img src="{{ user.profile.profile_picture }}" height="48" alt="Profilbild">
                 </div>
-              
+                {{ message.creator }} schrieb hier am {{ message.created }}:
+                <p>
+                    {{ message.text }} asssssssssssssssssssssss assssssssssssssssssssssss asdad
+                </p>
 
-      
+            </div>
+            <div class="col-md-1">
+            </div>
 
 
         </div>

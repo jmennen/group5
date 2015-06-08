@@ -30,7 +30,7 @@
                     <td>{{ followed_profile.user.profile.description | beautifulNone }}</td>
                     <td>
 						<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-envelope"></span></button>
-						<button class="btn btn-danger" type="button">Entfolgen</button>						
+						<a class="btn btn-danger" href="{% url "unfollow" followed_profile.pk %}">Entfolgen</a>
 					</td>
 
                 </tr>

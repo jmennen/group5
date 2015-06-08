@@ -8,11 +8,11 @@
     {% include "includes/navbar.html" %}
 
 
-	
-	
-	<div class="container">
 
-        <h3>User that are following you:</h3>
+
+    <div class="container">
+
+        <h3>Benutzer, die Dir folgen:</h3>
         <table class="table table-bordered">
             <tr>
                 <th>Name</th>
@@ -21,29 +21,30 @@
                 <th>Actions</th>
 
             </tr>
-			
-  {% for profile in profile_list %}
-				<form method="post" action="" role="form">
-				{% csrf_token %}
-				<tr>
-				<!--the name links to the user's profile-->
-                    <td><a href="{% url "view_profile" user.pk %}">{{ user.username }}</a></td>
-				<!--profile_picture is resized-->
-                    <td><img src="{{ user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
-                    <td>   
-						
-								<select multiple="multiple" name="homecirlce" class="testselect1">
-									<option>{{circle.name}}</option>
-									<option>Public</option>
-								</select>		
-						
-					</td>
-					<td><input type="submit" value="Speichern" class="btn btn-default"></td>
-					
-                </tr>
-				</form>
-        {% endfor %}
+
+            {% for profile in profile_list %}
+                <form method="post" action="TODO_add_user_to_circles" role="form">
+                    {% csrf_token %}
+                    <tr>
+                        <!--the name links to the user's profile-->
+                        <td><a href="{% url "view_profile" profile.pk %}">{{ profile.user.username }}</a></td>
+                        <!--profile_picture is resized-->
+                        <td><img src="{{ profile.profile_picture }}" height="64" alt="Profilbild"></td>
+                        <td>
+
+                            <select multiple="multiple" name="add_members" class="testselect1">
+                                {% for circle in circles %}
+                                    <option>{{ circle.name }}</option>
+                                {% endfor %}
+                            </select>
+
+                        </td>
+                        <td><input type="submit" value="Speichern" class="btn btn-default"></td>
+
+                    </tr>
+                </form>
+            {% endfor %}
         </table>
-    </div>   
+    </div>
 
 {% endblock %}
