@@ -69,7 +69,7 @@ def home(request):
     :return: the home.html template rendered with a user object "user" and a profile object "profile"
     """
     return render(request, "logged_in/home.html", {"user": request.user,
-                                                   "profile": Profile.objects.get(user=request.user)})
+                                                   "profile": Profile.objects.get(user=request.user.pk)})
 
 
 class ProfileView(DetailView):
@@ -140,7 +140,7 @@ class EditProfileView(UpdateView, SuccessMessageMixin):
         :return:
         """
         instance = form.save(commit=False)
-        instance.user = self.request.user
+        instance.user = self.request.user.pk
         image_file = self.request.FILES.get('image_file', False)
         image_file_name = "pp/pp_" + self.request.user.username
         if image_file:
@@ -166,7 +166,7 @@ class EditProfileView(UpdateView, SuccessMessageMixin):
         return super(EditProfileView, self).form_valid(form)
 
     def get_object(self, queryset=None):
-        return Profile.objects.get(user=self.request.user)
+        return Profile.objects.get(user=self.request.user.pk)
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -206,7 +206,7 @@ class UserSearchResultsView(ListView):
         else:
             userset = User.objects.all()
         for user in userset:
-            user.profile = Profile.objects.get(user=user)
+            user.profile = Profile.objects.get(user=user.pk)
         return userset
 
     @method_decorator(login_required)
@@ -234,7 +234,7 @@ def register(request):
                 last_name=form.cleaned_data.get('last_name', ''),
             )
             new_profile = Profile()
-            new_profile.user = user
+            new_profile.user = user.pk
             new_profile.profile_picture = "https://placehold.it/128x128"
             new_profile.gender = ""
             new_profile.description = ""
