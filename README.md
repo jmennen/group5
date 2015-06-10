@@ -23,6 +23,7 @@ Qi Yang | Frontend Entwicklung | flouza@hotmail.de
 --
 
 ######**Dokumentation** 
+* Die readme-Datei dieses Repositories als zentraler Übersichtspunkt
 * Die Github Issues dieses Repositories
  - Dort finden Sie alle unsere Stories (Label "story"). Das Label "ready" markiert stories welche im aktuellen Sprintplan sind.
  - In den Beschreibungen (oder Kommentaren) der Issues sind detailiertere Informationen zu den Stories zu finden.
