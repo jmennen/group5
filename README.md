@@ -37,6 +37,12 @@ Qi Yang | Frontend Entwicklung | flouza@hotmail.de
 
 --
 
+######**Lizenz**
+Lizenzinfos kommen bald
+
+
+--
+
 How to use this?
 <ul>
 <li>Install Python (3.3+) incl. PIP or find the packages another way</li>
