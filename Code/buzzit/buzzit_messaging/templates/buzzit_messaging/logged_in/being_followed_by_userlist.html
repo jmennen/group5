@@ -1,0 +1,49 @@
+<!--a userlist which consists of users that are following you. you can arrange their circle status in this template-->
+{% extends "base.html" %}
+
+{% block title %}deine Follower{% endblock %}
+
+{% block content %}
+
+    {% include "includes/navbar.html" %}
+
+
+
+
+    <div class="container">
+
+        <h3>Benutzer, die Dir folgen:</h3>
+
+        <div class="table table-bordered" style="display: table;">
+            <div style="display: table-row;">
+                <div style="display: table-cell">Name</div>
+                <div style="display: table-cell">Profilbild</div>
+                <div style="display: table-cell">Kreise</div>
+                <div style="display: table-cell">Actions</div>
+            </div>
+            {% for profile in profile_list %}
+                <form style="display: table-row;" method="post" action="{% url "add_user_to_circles" profile.user.pk %}"
+                      role="form">
+                    {% csrf_token %}
+                    <!--the name links to the user's profile-->
+                    <div style="display: table-cell"><a
+                            href="{% url "view_profile" profile.pk %}">{{ profile.user.username }}</a></div>
+                    <!--profile_picture is resized-->
+                    <div style="display: table-cell"><img src="{{ profile.profile_picture }}" height="64"
+                                                          alt="Profilbild"></div>
+                    <div style="display: table-cell">
+                        <select multiple="multiple" name="circles" class="testselect1">
+                            {% for circle in circles %}
+                                <option value="{{ circle.pk }}">{{ circle.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div style="display: table-cell"><input type="submit" value="Speichern" class="btn btn-default">
+                    </div>
+
+                </form>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

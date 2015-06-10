@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'buzzit_models',
     'buzzit_app',
+    'buzzit_messaging'
 )
 
 MIDDLEWARE_CLASSES = (

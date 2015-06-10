@@ -1,5 +1,6 @@
 __author__ = 'User'
 from django import template
+from buzzit_models.models import Profile
 
 register = template.Library()
 
@@ -38,3 +39,9 @@ def addcssclass(input, cssclass):
     return input.as_widget(attrs={'class': cssclass})
 
 register.filter('addcssclass', addcssclass)
+
+# TODO:
+def iAmFollowing(otherprofile, myprofile):
+    return myprofile.follows.all().filter(pk=otherprofile)
+
+register.filter('i_am_following', iAmFollowing)

@@ -2,7 +2,7 @@ from django.conf.urls import include, url
 from . import views
 
 urlpatterns = [
-    url(r'^profile/(?P<slug>[0-9]+)/$', views.ProfileView.as_view(), name="view_profile"),
+    url(r'^profile/(?P<slug>[0-9]+)/$', views.view_profile, name="view_profile"),
     url(r'^profile/(?P<slug>[0-9]+)/picture/full$', views.profilepicture_full, name="profile_picture_full"),
     url(r'^profile/(?P<slug>[0-9]+)/picture/small$', views.profilepicture_small, name="profile_picture_small"),
     url(r'^updateprofile', views.EditProfileView.as_view(), name="update_profile"),

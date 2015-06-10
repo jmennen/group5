@@ -1,0 +1,41 @@
+<!--a site which contains the user you are following right now in a list. you are able to unfollow them via this template.-->
+{% extends "base.html" %}
+
+{% load filters %}
+
+{% block title %}du followst{% endblock %}
+
+{% block content %}
+
+    {% include "includes/navbar.html" %}
+	
+	<div class="container">
+
+        <h3>Benutzer, denen Du folgst:</h3>
+        <table class="table table-bordered">
+            <tr>
+                <th>Name</th>
+                <th>Profilbild</th>
+                <th>Description</th>
+                <th>Actions</th>
+
+            </tr>
+              {% for followed_profile in follows %}
+				
+			    <tr>
+				<!--the name links to the user's profile-->
+                    <td><a href="{% url "view_profile" followed_profile.user.pk %}">{{ followed_profile.user.username }}</a></td>
+				<!--profile_picture is resized-->
+                    <td><img src="{{ followed_profile.user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
+                    <td>{{ followed_profile.user.profile.description | beautifulNone }}</td>
+                    <td>
+						<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-envelope"></span></button>
+						<a class="btn btn-danger" href="{% url "unfollow" followed_profile.pk %}">Entfolgen</a>
+					</td>
+
+                </tr>
+           {% endfor %} 
+        </table>
+    </div>   
+	
+	{% endblock %}

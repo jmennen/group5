@@ -1,0 +1,83 @@
+<!--a site which contains the list of follower in one circle. you are able to add or remove a follower to/from the circle-->
+<!--messages from this circle will be shown-->
+{% extends "base.html" %}
+
+{% block title %}Kreisdetails{% endblock %}
+
+{% block content %}
+
+    {% include "includes/navbar.html" %}
+
+    <div class="container">
+
+        <div class="thumbnail col-md-5">
+            <h3>{{ circle.name }}</h3>
+
+            <form class="" method="post" action="{% url "add_users_to_circle" circle.pk %}">
+                {% csrf_token %}
+                <select multiple="multiple" name="add_members" class="form-control testselect2">
+                    {% for follower in followers %}
+                        <option value="{{ follower.user.pk }}">{{ follower.user.username }}</option>
+                    {% endfor %}
+                </select>
+
+                <p>
+                    <input type="submit" value="Speichern" class="btn btn-default">
+                </p>
+            </form>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Members<h6></h6></th>
+                    <th>Actions</th>
+                </tr>
+                {% for user in circle.members.all %}
+                    <tr>
+                        <!--the name links to the user's profile-->
+                        <td>
+                            <a href="{% url "view_profile" user.pk %}">{{ user.username }}</a>
+                        </td>
+                        <td>
+                            <form action="{% url "remove_user_from_circle" user.pk circle.pk %}">
+                                <div class="btn-group">
+                                    <button class="btn btn-info" type="button">
+                                        <span class="glyphicon glyphicon-envelope"></span>
+                                    </button>
+                                    <button class="btn btn-danger" type="submit">Entfernen</button>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="well col-md-7">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Kreisnachrichten</h3>
+                    <!--space for circle messages-->
+                    {% for circlemessage in circle.messages.all %}
+                        <div class="media">
+                        <div class="media-left">
+                            <a href="#">
+                                <img height="64" width="64" class="media-object"
+                                     src="{{ circlemessage.creator.profile.profile_picture }}" alt="Profilbild">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">{{ circlemessage.creator }} schrieb hier
+                                am {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
+                            {{ circlemessage.text }}
+
+                            {% if circlemessage.creator == user %}
+                                <div align="right">
+                                    <a class="btn btn-danger btn-xs" href="{% url "delete_circlemessage" circlemessage.id %}">Löschen</a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
