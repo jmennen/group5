@@ -70,9 +70,16 @@ def home(request):
     """
     circles_of_which_we_are_member = Circle.objects.filter(members=request.user.pk)
     message_list = []
+    # nachrichten von usern denen, wir folgen, und in deren kreis wir sind:
     for circle in circles_of_which_we_are_member:
         message_list += (circle.messages.all())
-    # TODO: eigene nachrichten rein
+    # public nachrichten von usern, denen wir folgen:
+    followed_profiles= request.user.profile.follows.all()
+    for followed_profile in followed_profiles:
+        circles_of_user = Circle.objects.filter(owner=followed_profile.user)
+        messages_of_user = Circle_message.objects.filter(creator=followed_profile.user).exclude(circle__in=circles_of_user).distinct()
+        message_list += messages_of_user.all()
+
     return render(request, "logged_in/home.html", {"user": request.user,
                                                    "profile": Profile.objects.get(user=request.user.pk),
                                                    "message_list" : message_list,
@@ -89,16 +96,17 @@ def view_profile(request, slug):
     message_list = []
     # nachrichten, die in kreisen sind, denen ich zugeteilt wurde
     for circle in circles_im_in:
-        message_list.append(circle.messages.all())
+        message_list += (circle.messages.all())
 
     # nachrichten, die keinem kreis zugeordnet sind - also public sind
     # 1. alle circles
     circles_of_user = Circle.objects.filter(owner=profile.user)
-    # 2. alle nachrichten vom user
+    # 2. alle public nachrichten vom user
     messages_of_user = Circle_message.objects.filter(creator=profile.user).exclude(circle__in=circles_of_user).distinct()
+    message_list += (messages_of_user.all())
 
     return render(request, "logged_in/view_profile.html", {"profile":profile,
-                                                           "message_list" : messages_of_user,
+                                                           "message_list" : message_list,
                                                            "user": request.user})
 
 
