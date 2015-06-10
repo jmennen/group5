@@ -37,9 +37,14 @@
                             <a href="{% url "view_profile" user.pk %}">{{ user.username }}</a>
                         </td>
                         <td>
-                            <button class="btn btn-info" type="button"><span
-                                    class="glyphicon glyphicon-envelope"></span></button>
-                            <button class="btn btn-danger" type="submit">Entfernen</button>
+                            <form action="{% url "remove_user_from_circle" user.pk circle.pk %}">
+                                <div class="btn-group">
+                                    <button class="btn btn-info" type="button">
+                                        <span class="glyphicon glyphicon-envelope"></span>
+                                    </button>
+                                    <button class="btn btn-danger" type="submit">Entfernen</button>
+                                </div>
+                            </form>
                         </td>
                     </tr>
                 {% endfor %}

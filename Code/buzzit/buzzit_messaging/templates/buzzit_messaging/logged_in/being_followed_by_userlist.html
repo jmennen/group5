@@ -13,36 +13,37 @@
     <div class="container">
 
         <h3>Benutzer, die Dir folgen:</h3>
-        <table class="table table-bordered">
-            <tr>
-                <th>Name</th>
-                <th>Profilbild</th>
-                <th>Kreise</th>
-                <th>Actions</th>
 
-            </tr>
-
+        <div class="table table-bordered" style="display: table;">
+            <div style="display: table-row;">
+                <div style="display: table-cell">Name</div>
+                <div style="display: table-cell">Profilbild</div>
+                <div style="display: table-cell">Kreise</div>
+                <div style="display: table-cell">Actions</div>
+            </div>
             {% for profile in profile_list %}
-                <form method="post" action="TODO_add_user_to_circles" role="form">
+                <form style="display: table-row;" method="post" action="{% url "add_user_to_circles" profile.user.pk %}"
+                      role="form">
                     {% csrf_token %}
-                    <tr>
-                        <!--the name links to the user's profile-->
-                        <td><a href="{% url "view_profile" profile.pk %}">{{ profile.user.username }}</a></td>
-                        <!--profile_picture is resized-->
-                        <td><img src="{{ profile.profile_picture }}" height="64" alt="Profilbild"></td>
-                        <td>
-                            <select multiple="multiple" name="add_members" class="testselect1">
-                                {% for circle in circles %}
-                                    <option>{{ circle.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </td>
-                        <td><input type="submit" value="Speichern" class="btn btn-default"></td>
+                    <!--the name links to the user's profile-->
+                    <div style="display: table-cell"><a
+                            href="{% url "view_profile" profile.pk %}">{{ profile.user.username }}</a></div>
+                    <!--profile_picture is resized-->
+                    <div style="display: table-cell"><img src="{{ profile.profile_picture }}" height="64"
+                                                          alt="Profilbild"></div>
+                    <div style="display: table-cell">
+                        <select multiple="multiple" name="circles" class="testselect1">
+                            {% for circle in circles %}
+                                <option value="{{ circle.pk }}">{{ circle.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div style="display: table-cell"><input type="submit" value="Speichern" class="btn btn-default">
+                    </div>
 
-                    </tr>
                 </form>
             {% endfor %}
-        </table>
+        </div>
     </div>
 
 {% endblock %}

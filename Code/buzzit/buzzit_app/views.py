@@ -79,23 +79,27 @@ def home(request):
                                                    "circles" : Circle.objects.filter(owner=request.user.pk)})
 
 
-class ProfileView(DetailView):
-    """
-    Controls the behaviour, if a logged in user wants to show a users profile.
-    Returns the view_profile.html template rendered with a "profile" object.
-    """
-    model = Profile
-    template_name = "logged_in/view_profile.html"
-    slug_field = "user"
+@login_required
+def view_profile(request, slug):
+    profile = Profile.objects.get(pk=slug)
+    profile.i_am_following = request.user.profile.follows.all().filter(pk=profile.user)
 
-    def get_object(self, queryset=None):
-        profile = super(ProfileView, self).get_object(queryset)
-        profile.i_am_following = self.request.user.profile.follows.all().filter(pk=profile.user)
-        return profile
+    circles_im_in = Circle.objects.filter(members=request.user, owner=profile.user)
 
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(ProfileView, self).dispatch(request, *args, **kwargs)
+    message_list = []
+    # nachrichten, die in kreisen sind, denen ich zugeteilt wurde
+    for circle in circles_im_in:
+        message_list.append(circle.messages.all())
+
+    # nachrichten, die keinem kreis zugeordnet sind - also public sind
+    # 1. alle circles
+    circles_of_user = Circle.objects.filter(owner=profile.user)
+    # 2. alle nachrichten vom user
+    messages_of_user = Circle_message.objects.filter(creator=profile.user).exclude(circle__in=circles_of_user).distinct()
+
+    return render(request, "logged_in/view_profile.html", {"profile":profile,
+                                                           "message_list" : messages_of_user,
+                                                           "user": request.user})
 
 
 class EditProfileView(UpdateView, SuccessMessageMixin):

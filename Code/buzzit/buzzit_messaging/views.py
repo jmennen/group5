@@ -13,12 +13,13 @@ from django.core.urlresolvers import reverse, reverse_lazy
 import django.contrib.messages as messages
 import logging
 
+
 @login_required
 def beingFollowedByView(request):
     return render(request, "buzzit_messaging/logged_in/being_followed_by_userlist.html",
                   {
-                      "profile_list" : Profile.objects.filter(follows=request.user.pk),
-                      "circles" : Circle.objects.filter(owner=request.user)
+                      "profile_list": Profile.objects.filter(follows=request.user.pk),
+                      "circles": Circle.objects.filter(owner=request.user)
                   })
 
 
@@ -94,14 +95,32 @@ class PostCirclemessageView(CreateView, SuccessMessageMixin):
     def dispatch(self, request, *args, **kwargs):
         return super(PostCirclemessageView, self).dispatch(request, *args, **kwargs)
 
+@login_required
+def delete_circle_message(request, message_id):
+    try:
+        message_to_del = Circle_message.objects.get(pk=message_id)
+    except ObjectDoesNotExist:
+        messages.error(request, "Kreisnachricht existiert nicht")
+        return HttpResponseRedirect(reverse_lazy('home'))
+    if request.user != message_to_del.creator:
+        messages.error(request, "Diese Kreisnachricht duerfen Sie nicht loeschen")
+        return HttpResponseRedirect(reverse_lazy('home'))
+    message_to_del.delete()
+    messages.success(request, "Nachricht geloescht")
+    return HttpResponseRedirect(reverse_lazy('home'))
 
 class DeleteCirclemessageView(DeleteView):
     model = Circle_message
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(PostCirclemessageView, self).dispatch(request, *args, **kwargs)
 
 
 class RemoveCircleView(DeleteView, SuccessMessageMixin):
     """
     pick up the circle primary key from template and remove the circle with the given object
+    auto-removes the relations circle-members
     """
     model = Circle
     success_message = "%(name)s die Kreise erfolgreich geloescht"
@@ -112,10 +131,25 @@ class RemoveCircleView(DeleteView, SuccessMessageMixin):
         return self.post(*args, **kwargs)
 
 
-        # def get_redirect_url(self, pk=None):
-        #    if pk != None:
-        #       Circle.objects.get(pk=pk).delete()
-        #       return reverse_lazy('circleoverview')
+def add_user_to_circles(request, user_id):
+    circle_ids = request.POST.getlist("circles")
+    if len(circle_ids) < 1:
+        messages.error(request, "Keine Kreise angegeben")
+        return HttpResponseRedirect(reverse_lazy('my_followers'))
+    try:
+        user = User.objects.get(pk=user_id)
+    except ObjectDoesNotExist:
+        messages.error(request, "User mit id %s existiert nicht" % user_id)
+        return HttpResponseRedirect(reverse_lazy('home'))
+    for circle_id in circle_ids:
+        try:
+            circle = Circle.objects.get(pk=circle_id)
+        except ObjectDoesNotExist:
+            messages.error(request, "Kreis mit id %s existiert nicht" % circle_id)
+            return HttpResponseRedirect(reverse_lazy('home'))
+        circle.members.add(user)
+        messages.success(request, "Dem Kreis %s wurde der User %s hinzugefuegt" % (circle.name, user.username))
+    return HttpResponseRedirect(reverse_lazy('my_followers'))
 
 
 @login_required
@@ -169,15 +203,9 @@ def remove_user_from_circle(request, user_id, circle_id):
         # circle does not exist
         messages.error(request, "Kreis existiert nicht")
         return HttpResponseRedirect(reverse_lazy('home'))
-    try:
-        user_in_circle = Circle.members.get(pk=user_id)
-    except ObjectDoesNotExist:
-        # user ist not in chosen circle
-        messages.error(request, "User existiert nicht im Kreis")
-        return HttpResponseRedirect(reverse_lazy('home'))
-    chosen_circle.members.remove(follow_user)
-    messages.success(request, "User wurde aus Kreis entfernt")
-    return HttpResponseRedirect(reverse_lazy('home'))
+    chosen_circle.members.remove(follow_user.user)
+    messages.success(request, "User %s wurde aus Kreis %s entfernt" % (follow_user.user.username, chosen_circle.name))
+    return HttpResponseRedirect(reverse_lazy('circle_details', kwargs={'slug': circle_id}))
 
 
 @login_required()
@@ -193,6 +221,7 @@ def follow(request, user_id):
         # logged in user has no profile
         return HttpResponseRedirect(reverse_lazy('home'))
     my_profile.follows.add(follow_user.pk)
+    messages.success(request, "Du folgst jetzt %s" % follow_user.user.username)
     return HttpResponseRedirect(reverse_lazy('home'))
 
 
