@@ -2,8 +2,8 @@
 # group5
 Das Repository von Gruppe 5 des Praktikums Soziale Netzwerke an der TU Berlin
 
-License info: You are not allowed to do anything with the code in this repository!
-Don't even read this.
+######**Projektziel**
+>*Das Ziel des Projektes ist das Erstellen eines neuen sozialen Netzwerkes, das auf die Web Application Framework Django aufbaut und über den Browser erreichbar ist. Das Soziale Netzwerk soll die Möglichkeit zur Kontrolle der Sichtbarkeit der eigenen Veröffentlichungen biete und mit anderen Sozialen Netzwerken interagieren können.*
 
 Gruppenmitglieder: 
 Cheng Chen
