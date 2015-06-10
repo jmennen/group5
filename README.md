@@ -10,11 +10,11 @@ Das Repository von Gruppe 5 des Praktikums Soziale Netzwerke an der TU Berlin
 --
 
 ######**Projektteam** 
-Cheng Chen
-Qi Yang
-Dong Yang
-Florian Stelzer
-David Skowronek
+Cheng Chen,
+Qi Yang,
+Dong Yang,
+Florian Stelzer,
+David Skowronek,
 Jan Mennen (Gruppenleiter)
 
 --
