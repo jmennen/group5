@@ -31,6 +31,7 @@ Qi Yang | Frontend Entwicklung | flouza@hotmail.de
 * Das Google Docs Sheet:
  - Dort zu finden sind die Tasks für sämtliche Sprints mit einem Status und eventuell dem Fertigstellungsdatum.
  - Das Glossar
+ - Zu finden unter: https://docs.google.com/spreadsheets/d/1N_UW9WGyGDWDz0Np6o5HEIzIVfv1p_poOpYCRMQkPLY/edit?usp=sharing
 * Der Ordner Dokumentation in diesem Github Repository:
  - Hier sind alle Arten von Diagrammen zu finden (Klassendiagramm, Usecase, Kontextdiagramm) 
 
