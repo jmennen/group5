@@ -10,14 +10,14 @@ Das Repository von Gruppe 5 des Praktikums Soziale Netzwerke an der TU Berlin
 --
 
 ######**Projektteam** 
-Name | Aufgabenbereich
-:----- | :----------------------------------
-Cheng Chen | Frontend Entwicklung
-David Skowronek | Technische Leitung
-Dong Yang | Backend Entwicklung
-Florian Stelzer | Backend Entwicklung
-Qi Yang | Frontend Entwicklung
-Jan Mennen | Dokumentation, Gruppenleiter
+Name | Aufgabenbereich | E-Mail
+:----- | :---------------------------------- | :--------------------------------
+Cheng Chen | Frontend Entwicklung | chengchen@hotmail.de
+David Skowronek | Technische Leitung | dskowronek.ds@gmail.com
+Dong Yang | Backend Entwicklung | fabian082yang@hotmail.com
+Florian Stelzer | Backend Entwicklung | florian.stelzer@web.de
+Jan Mennen | Dokumentation, Gruppenleiter | jan.mennen@campus.tu-berlin.de
+Qi Yang | Frontend Entwicklung | flouza@hotmail.de
 
 
 --
