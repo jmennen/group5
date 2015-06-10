@@ -21,6 +21,8 @@ Jan Mennen (Gruppenleiter)
 
 ######**Dokumentation** 
 https://docs.google.com/spreadsheets/d/1N_UW9WGyGDWDz0Np6o5HEIzIVfv1p_poOpYCRMQkPLY/edit?usp=sharing
+https://waffle.io/jmennen/group5
+Der Ordner Dokumentation in diesem Github Repository
 
 --
 
