@@ -7,6 +7,7 @@ Das Repository von Gruppe 5 des Praktikums Soziale Netzwerke an der TU Berlin
 ######**Projektziel:**
 >*Das Ziel des Projektes ist das Erstellen eines neuen sozialen Netzwerkes, das auf die Web Application Framework Django aufbaut und über den Browser erreichbar ist. Das Soziale Netzwerk soll die Möglichkeit zur Kontrolle der Sichtbarkeit der eigenen Veröffentlichungen biete und mit anderen Sozialen Netzwerken interagieren können.*
 
+--
 
 ######**Projektteam** 
 Cheng Chen
@@ -16,9 +17,12 @@ Florian Stelzer
 David Skowronek
 Jan Mennen (Gruppenleiter)
 
+--
 
 ######**Dokumentation** 
 https://docs.google.com/spreadsheets/d/1N_UW9WGyGDWDz0Np6o5HEIzIVfv1p_poOpYCRMQkPLY/edit?usp=sharing
+
+--
 
 How to use this?
 <ul>
