@@ -24,15 +24,15 @@ Qi Yang | Frontend Entwicklung | flouza@hotmail.de
 
 ######**Dokumentation** 
 * Die Github Issues dieses Repositories
-- Dort finden Sie alle unsere Stories (Label "story"). Das Label "ready" markiert stories welche im aktuellen Sprintplan sind.
-- In den Beschreibungen (oder Kommentaren) der Issues sind detailiertere Informationen zu den Stories zu finden.
-- Change Requests sind mit dem Label CHANGE versehen. Die Beschreibung der Änderung findet in den Kommentaren statt.
-- Auch einsehbar unter: https://waffle.io/jmennen/group5
+ - Dort finden Sie alle unsere Stories (Label "story"). Das Label "ready" markiert stories welche im aktuellen Sprintplan sind.
+ - In den Beschreibungen (oder Kommentaren) der Issues sind detailiertere Informationen zu den Stories zu finden.
+ - Change Requests sind mit dem Label CHANGE versehen. Die Beschreibung der Änderung findet in den Kommentaren statt.
+ - Auch einsehbar unter: https://waffle.io/jmennen/group5
 * Das Google Docs Sheet:
-- Dort zu finden sind die Tasks für sämtliche Sprints mit einem Status und eventuell dem Fertigstellungsdatum.
-- Das Glossar
+ - Dort zu finden sind die Tasks für sämtliche Sprints mit einem Status und eventuell dem Fertigstellungsdatum.
+ - Das Glossar
 * Der Ordner Dokumentation in diesem Github Repository:
-- Hier sind alle Arten von Diagrammen zu finden (Klassendiagramm, Usecase, Kontextdiagramm) 
+ - Hier sind alle Arten von Diagrammen zu finden (Klassendiagramm, Usecase, Kontextdiagramm) 
 
 --
 
