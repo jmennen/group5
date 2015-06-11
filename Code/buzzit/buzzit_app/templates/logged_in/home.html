@@ -79,7 +79,7 @@
 
                                 {% if circlemessage.creator == user %}
                                     <div align="right">
-                                        <a class="btn btn-danger btn-xs" href="#">Löschen</a>
+                                        <a class="btn btn-danger btn-xs" href="{% url "delete_circlemessage" circlemessage.id %}">Löschen</a>
                                     </div>
                                 {% endif %}
                             </div>
