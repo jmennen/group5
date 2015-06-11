@@ -37,7 +37,7 @@
                 </div>
 
                 <div class="input-group">
-
+					<!-- if imagefile does not match correct format an error will be sent out -->
                     <input type="file" class="form-control" name="image_file" placeholder="Datei hochladen" accept="image/*">
                     {% if form.image_file.errors %}
                         {{ form.image_file.errors }}

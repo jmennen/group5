@@ -40,13 +40,14 @@
             </tr>
 
             <form>
-                <!-- {% for circle in circle_list %} -->
+                {% for circle in circle_list %}
                     <tr>
                         <!--the name links to the circle's details-->
                         <td><a href="{% url "circle_details" slug=circle.pk %}">
-                            <!--{ url "circle_details" pk=circle.pk %}"--> {{ circle.name }}</a></td>
+                            {{ circle.name }}</a></td>
 
                         <td>
+						<!-- list of follower you added to this circle -->
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
                                         aria-expanded="false">
@@ -61,13 +62,13 @@
                             </div>
                         </td>
                         <td>
-
-                            <a class="btn btn-danger" href="{% url "delete_circle" slug=circle.pk %}"> <!--{ url "delete_circle" pk=circle.pk %}--> Löschen</a>
+						<!-- button to delete this circle -->
+                            <a class="btn btn-danger" href="{% url "delete_circle" slug=circle.pk %}"> Löschen</a>
                         </td>
-                        <!--{ endfor %}-->
+                      
 
                     </tr>
-                    <!-- {% endfor %} -->
+                    {% endfor %}
             </form>
 
 
