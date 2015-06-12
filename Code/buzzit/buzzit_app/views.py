@@ -164,7 +164,7 @@ class EditProfileView(UpdateView, SuccessMessageMixin):
         :return:
         """
         instance = form.save(commit=False)
-        instance.user = self.request.user.pk
+        instance.user = self.request.user
         image_file = self.request.FILES.get('image_file', False)
         image_file_name = "pp/pp_" + self.request.user.username
         if image_file:
