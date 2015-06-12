@@ -12,7 +12,7 @@ from django.views.generic.list import ListView
 from buzzit_app.forms import RegistrationForm
 from buzzit_models.models import *
 from django.contrib.auth.forms import AuthenticationForm
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth import login, logout as authlogout
 from django.contrib.auth.views import password_change as _pw_change_
 import logging
@@ -110,7 +110,7 @@ def view_profile(request, slug):
                                                            "user": request.user})
 
 
-class EditProfileView(UpdateView, SuccessMessageMixin):
+class EditProfileView(SuccessMessageMixin, UpdateView):
     """
     Controls the behaviour if a logged in user want to edit his profile.
     If an image is uploaded, then a smaller version of this is created.
@@ -119,7 +119,7 @@ class EditProfileView(UpdateView, SuccessMessageMixin):
     model = Profile
     template_name = "logged_in/edit_own_profile.html"
     fields = ["gender", "description"]
-    success_url = "/updateprofile"
+    success_url = reverse_lazy("update_profile")
     success_message = "Profil wurde gespeichert"
 
     def get_form(self, form_class=None):
