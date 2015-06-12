@@ -79,6 +79,7 @@ def home(request):
         circles_of_user = Circle.objects.filter(owner=followed_profile.user)
         messages_of_user = Circle_message.objects.filter(creator=followed_profile.user).exclude(circle__in=circles_of_user).distinct()
         message_list += messages_of_user.all()
+    message_list.sort(key=lambda m: m.created, reverse=True)
 
     return render(request, "logged_in/home.html", {"user": request.user,
                                                    "profile": Profile.objects.get(user=request.user.pk),
