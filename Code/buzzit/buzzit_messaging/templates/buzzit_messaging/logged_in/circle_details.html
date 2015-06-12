@@ -12,7 +12,7 @@
 
         <div class="thumbnail col-md-5">
             <h3>{{ circle.name }}</h3>
-			<!-- add user to this circle -->
+            <!-- add user to this circle -->
             <form class="" method="post" action="{% url "add_users_to_circle" circle.pk %}">
                 {% csrf_token %}
                 <select multiple="multiple" name="add_members" class="form-control testselect2">
@@ -37,7 +37,7 @@
                             <a href="{% url "view_profile" user.pk %}">{{ user.username }}</a>
                         </td>
                         <td>
-						<!-- remove user from this circle -->
+                            <!-- remove user from this circle -->
                             <form action="{% url "remove_user_from_circle" user.pk circle.pk %}">
                                 <div class="btn-group">
                                     <button class="btn btn-info" type="button">
@@ -55,6 +55,21 @@
             <div class="row">
                 <div class="col-md-12">
                     <h3>Kreisnachrichten</h3>
+                    <!-- nachricht nur in diesen kreis schreiben -->
+                    <form role="form" method="post" action="{% url "new_circlemessage" %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="circles" value="{{ circle.pk }}">
+                        <div class="input-group">
+                            <!-- inputfield for the messages you are going to send -->
+                            <input required type="text" name="text" id="text" class="form-control"
+                                   placeholder="Kreisnachricht...">
+
+                            <div class="input-group-btn">
+                                <button class="btn btn-info" type="submit">Senden</button>
+                            </div>
+
+                        </div>
+                    </form>
                     <!-- space for circle messages from this circle -->
                     {% for circlemessage in circle.messages.all %}
                         <div class="media">
@@ -71,7 +86,8 @@
 
                             {% if circlemessage.creator == user %}
                                 <div align="right">
-                                    <a class="btn btn-danger btn-xs" href="{% url "delete_circlemessage" circlemessage.id %}">Löschen</a>
+                                    <a class="btn btn-danger btn-xs"
+                                       href="{% url "delete_circlemessage" circlemessage.id %}">Löschen</a>
                                 </div>
                             {% endif %}
                         </div>

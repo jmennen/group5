@@ -28,16 +28,18 @@
                         <form class="form-inline" role="form">
                             <button class="btn btn-info" type="button"><span
                                     class="glyphicon glyphicon-envelope"></span></button>
-							<!-- if you are following the user an unfollow button will be shown -->
-                            {% if user.i_am_following %}
-                                <a class="btn btn-danger" role="form-control" method="post"
-                                        href="{% url "unfollow" user.pk %}" type="submit">Entfolgen
-                                </a>
-							<!-- if you are not following the user a follow button will be shown -->	
-                            {% else %}
-                                <a class="btn btn-info" role="form-control" method="post"
-                                        href="{% url "follow" user.pk %}" type="submit"> Folgen
-                                </a>
+                            {% if O.ownprofile.user != user %}
+                                <!-- if you are following the user an unfollow button will be shown -->
+                                {% if user.i_am_following %}
+                                    <a class="btn btn-danger" role="form-control" method="post"
+                                       href="{% url "unfollow" user.pk %}" type="submit">Entfolgen
+                                    </a>
+                                    <!-- if you are not following the user a follow button will be shown -->
+                                {% else %}
+                                    <a class="btn btn-info" role="form-control" method="post"
+                                       href="{% url "follow" user.pk %}" type="submit"> Folgen
+                                    </a>
+                                {% endif %}
                             {% endif %}
                         </form>
                     </td>

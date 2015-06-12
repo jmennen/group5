@@ -26,7 +26,7 @@
 			
             <ul class="nav navbar-nav">
 				<!--leads to home site -->
-                <li><a href="{% url "home" %}">Profil</a></li>
+                <li><a href="{% url "view_profile" user.pk %}">Profil</a></li>
                 <li><a href="{% url "my_followers" %}">Follower</a></li>
 				<!--leads to circle site -->
                 <li><a href="{% url "circle_overview" %}">Kreise</a></li>
