@@ -39,8 +39,7 @@ Qi Yang | Frontend Entwicklung | flouza@hotmail.de
 --
 
 ######**Lizenz**
-Lizenzinfos kommen bald
-
+Dieses Projekt steht unter der BSD-Lizenz. Siehe Licence.md
 
 --
 
