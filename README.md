@@ -51,5 +51,6 @@ How to use this?
 <li>Install Pillow (pip install pillow) -- Image Manipulation Library</li>
 <li>Install MySQLClient (pip install mysqlclient) -- MySQL DB-Connector</li>
 <li>Download this project</li>
+<li>Create a folder pp in the parent folder of the django project called "buzzit". 
 <li>Have Fun</li>
 </ul>
