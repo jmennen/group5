@@ -24,3 +24,8 @@ class Circle(models.Model):
     messages = models.ManyToManyField(Circle_message, symmetrical=False)  # Kreis enthält Nachrichten
     members = models.ManyToManyField(User, symmetrical=False)  # Kreis enthält User
     name = models.CharField(max_length=40, null=False, blank=False)
+
+
+class Settings(models.Model):
+    owner = models.OneToOneField(User, blank=False, null=False, primary_key=True)
+    show_own_messages_on_home_screen = models.BooleanField(null=False, blank=False, default=True)

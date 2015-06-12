@@ -235,4 +235,5 @@ def unfollow(request, user_id):
     for circle in circles_of_unfollowed_user:
         circle.members.remove(my_profile.pk)
     my_profile.follows.remove(unfollow_user.pk)
+    messages.success(request, "Du folgst %s nicht mehr" % unfollow_user.user.username)
     return HttpResponseRedirect(reverse_lazy('home'))

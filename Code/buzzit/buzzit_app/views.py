@@ -12,7 +12,7 @@ from django.views.generic.list import ListView
 from buzzit_app.forms import RegistrationForm
 from buzzit_models.models import *
 from django.contrib.auth.forms import AuthenticationForm
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth import login, logout as authlogout
 from django.contrib.auth.views import password_change as _pw_change_
 import logging
@@ -80,6 +80,14 @@ def home(request):
         messages_of_user = Circle_message.objects.filter(creator=followed_profile.user).exclude(circle__in=circles_of_user).distinct()
         message_list += messages_of_user.all()
 
+    (settings, created) = Settings.objects.get_or_create(owner=request.user)
+
+    if settings.show_own_messages_on_home_screen:
+        message_list += Circle_message.objects.filter(creator=request.user).all()
+
+    message_list.sort(key=lambda m: m.created, reverse=True)
+
+
     return render(request, "logged_in/home.html", {"user": request.user,
                                                    "profile": Profile.objects.get(user=request.user.pk),
                                                    "message_list" : message_list,
@@ -90,6 +98,9 @@ def home(request):
 def view_profile(request, slug):
     profile = Profile.objects.get(pk=slug)
     profile.i_am_following = request.user.profile.follows.all().filter(pk=profile.user)
+
+    if profile == request.user.profile:
+        messages.info(request, "Das ist Dein eigenes oeffentliches Profil")
 
     circles_im_in = Circle.objects.filter(members=request.user, owner=profile.user)
 
@@ -104,13 +115,14 @@ def view_profile(request, slug):
     # 2. alle public nachrichten vom user
     messages_of_user = Circle_message.objects.filter(creator=profile.user).exclude(circle__in=circles_of_user).distinct()
     message_list += (messages_of_user.all())
+    message_list.sort(key=lambda m: m.created, reverse=True)
 
     return render(request, "logged_in/view_profile.html", {"profile":profile,
                                                            "message_list" : message_list,
                                                            "user": request.user})
 
 
-class EditProfileView(UpdateView, SuccessMessageMixin):
+class EditProfileView(SuccessMessageMixin, UpdateView):
     """
     Controls the behaviour if a logged in user want to edit his profile.
     If an image is uploaded, then a smaller version of this is created.
@@ -119,7 +131,7 @@ class EditProfileView(UpdateView, SuccessMessageMixin):
     model = Profile
     template_name = "logged_in/edit_own_profile.html"
     fields = ["gender", "description"]
-    success_url = "/updateprofile"
+    success_url = reverse_lazy("update_profile")
     success_message = "Profil wurde gespeichert"
 
     def get_form(self, form_class=None):
@@ -164,7 +176,7 @@ class EditProfileView(UpdateView, SuccessMessageMixin):
         :return:
         """
         instance = form.save(commit=False)
-        instance.user = self.request.user.pk
+        instance.user = self.request.user
         image_file = self.request.FILES.get('image_file', False)
         image_file_name = "pp/pp_" + self.request.user.username
         if image_file:
@@ -197,7 +209,7 @@ class EditProfileView(UpdateView, SuccessMessageMixin):
         return super(EditProfileView, self).dispatch(request, *args, **kwargs)
 
 
-class EditUserdataView(UpdateView, SuccessMessageMixin):
+class EditUserdataView(SuccessMessageMixin, UpdateView):
     """
     View to edit user data.
     Template is "edit_own_userdata.html"
@@ -229,9 +241,9 @@ class UserSearchResultsView(ListView):
         ownprofile.follows_list = ownprofile.follows.all()
         usrname = self.request.GET.get("q", False)
         if usrname and len(usrname) > 0:
-            userset = User.objects.filter(username__contains=usrname)
+            userset = User.objects.filter(username__contains=usrname).order_by("username")
         else:
-            userset = User.objects.all()
+            userset = User.objects.all().order_by("username")
         for user in userset:
             user.i_am_following = ownprofile.follows.all().filter(pk=user)
         return {"user_list":userset, "ownprofile" : ownprofile }
@@ -352,6 +364,8 @@ def profilepicture_small(request, slug):
 
 
 def password_change(request):
+    if request.method == "POST":
+        messages.info(request, "Wenn keine Fehler angezeigt wurden, wurde das Passwort geaendert")
     return _pw_change_(request,
                        template_name='logged_in/change_password.html',
                        post_change_redirect=reverse("home"))
