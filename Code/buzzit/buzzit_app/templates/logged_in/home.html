@@ -77,7 +77,7 @@
                             </div>
                             <div class="media-body">
 							<!-- the creator of the message as well as the date will be shown -->
-                                <h4 class="media-heading">{{ circlemessage.creator }} schrieb hier
+                                <h4 class="media-heading"><a href="{% url "view_profile" circlemessage.creator.pk %}">{{ circlemessage.creator }}</a> schrieb hier
                                     am {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
                                 {{ circlemessage.text }}
 								<!-- if you are the creator of the message, a delete button will be shown -->
