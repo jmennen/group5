@@ -43,7 +43,23 @@ Dieses Projekt steht unter der BSD-Lizenz. Siehe Licence.md
 
 --
 
-How to use this?
+######**Tools used**
+* Django
+* Bootstrap
+* Noty
+* Sumoselect
+
+--
+
+######**Dependencies**
+* python 3.4
+* django 1.8
+* python Pillow 
+* python mySQLClient
+
+--
+
+######**How to use this?**
 <ul>
 <li>Install Python (3.3+) incl. PIP or find the packages another way</li>
 <li>Install Django (pip install django) -- The Django Framework</li>
