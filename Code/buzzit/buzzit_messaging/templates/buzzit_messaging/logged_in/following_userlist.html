@@ -21,7 +21,7 @@
 
             </tr>
               {% for followed_profile in follows %}
-				
+				<!-- list of user you are following -->
 			    <tr>
 				<!--the name links to the user's profile-->
                     <td><a href="{% url "view_profile" followed_profile.user.pk %}">{{ followed_profile.user.username }}</a></td>
@@ -29,7 +29,9 @@
                     <td><img src="{{ followed_profile.user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
                     <td>{{ followed_profile.user.profile.description | beautifulNone }}</td>
                     <td>
+
 						<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-envelope"></span></button>
+						<!-- button to unfollow this user -->
 						<a class="btn btn-danger" href="{% url "unfollow" followed_profile.pk %}">Entfolgen</a>
 					</td>
 

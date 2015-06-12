@@ -15,6 +15,35 @@ body {
     color: #333;
 }
 
+.table
+    {
+        display: table;
+		border: solid grey;
+		border-width: thin;
+
+    }
+
+    .heading
+    {
+        display: table-row;
+        font-weight: bold;
+
+    }
+    .row
+    {
+        display: table-row;
+    }
+    .cell
+    {
+        display: table-cell;
+        border: solid grey;
+        border-width: thin;
+        padding-left: 5px;
+        padding-right: 2px;
+
+    }
+	
+
 footer {
     margin: 50px 0;
 }

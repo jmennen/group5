@@ -14,31 +14,32 @@
 
         <h3>Benutzer, die Dir folgen:</h3>
 
-        <div class="table table-bordered" style="display: table;">
-            <div style="display: table-row;">
-                <div style="display: table-cell">Name</div>
-                <div style="display: table-cell">Profilbild</div>
-                <div style="display: table-cell">Kreise</div>
-                <div style="display: table-cell">Actions</div>
-            </div>
+        <div class="table" style="display: table;">
+            
+                <div class="cell">Name</div>
+                <div class="cell">Profilbild</div>
+                <div class="cell">Kreise</div>
+                <div class="cell">Actions</div>
+            <!-- list of user following you -->
             {% for profile in profile_list %}
                 <form style="display: table-row;" method="post" action="{% url "add_user_to_circles" profile.user.pk %}"
                       role="form">
                     {% csrf_token %}
                     <!--the name links to the user's profile-->
-                    <div style="display: table-cell"><a
+                    <div class="cell"><a
                             href="{% url "view_profile" profile.pk %}">{{ profile.user.username }}</a></div>
                     <!--profile_picture is resized-->
-                    <div style="display: table-cell"><img src="{{ profile.profile_picture }}" height="64"
+                    <div class="cell"><img src="{{ profile.profile_picture }}" height="64"
                                                           alt="Profilbild"></div>
-                    <div style="display: table-cell">
+                    <div class="cell">
+					<!-- choose circles to add the user to them -->
                         <select multiple="multiple" name="circles" class="testselect1">
                             {% for circle in circles %}
                                 <option value="{{ circle.pk }}">{{ circle.name }}</option>
                             {% endfor %}
                         </select>
                     </div>
-                    <div style="display: table-cell"><input type="submit" value="Speichern" class="btn btn-default">
+                    <div class="cell"><input type="submit" value="Speichern" class="btn btn-default">
                     </div>
 
                 </form>
