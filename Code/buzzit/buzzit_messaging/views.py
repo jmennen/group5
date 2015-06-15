@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.utils.datetime_safe import datetime
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from buzzit_models.models import *
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse, reverse_lazy
@@ -237,3 +237,81 @@ def unfollow(request, user_id):
     my_profile.follows.remove(unfollow_user.pk)
     messages.success(request, "Du folgst %s nicht mehr" % unfollow_user.user.username)
     return HttpResponseRedirect(reverse_lazy('home'))
+
+
+
+@login_required
+def direct_messages_overview(request):
+    """
+    Overview of all direct messages.
+    Returns two objects:
+    1. directmessage_list : a list of all chats with one specific user
+    2. systemmessages : a list of all system messages
+
+    :param request:
+    :return:
+    """
+    pass
+
+
+@login_required
+def direct_messages_details(request, sender_id):
+    """
+    One specific chat. So this filters all messages from one specific sender.
+    Returns one object: directmessage_list, where sender was specified by user_id
+    and receiver is the logged in user and vice versa.
+    :param request:
+    :return:
+    """
+    pass
+
+
+@login_required
+def repost_circlemessage(request, original_message_id):
+    """
+    Creates a new post with referencing to the old one specified by original_message_id.
+    The new post  has its own text and all data, but the field "original_post" is filled.
+    :param request:
+    :param original_message_id:
+    :return:
+    """
+    pass
+
+
+@login_required
+def answer_to_circlemessage(request, message_id):
+    """
+    Answer to a message specified by message_id.
+    :param request:
+    :param message_id:
+    :return:
+    """
+    pass
+
+
+@login_required
+def one_circlemessage(request, message_id):
+    """
+    Gives the ability to view details about the circlemessage by message_id.
+    :param request:
+    :param message_id:
+    :return:
+    """
+    pass
+
+
+@login_required
+def information_about_new_directmessages(request):
+    """
+    The function, that answers the client polling.
+    Only allowed method is GET.
+    Returns JSON Data like
+    {
+        "new_notifications" : <count of new notifications>
+    }
+    So if <count of new notifications> is > 0, the logged in user has new notifications.
+    :param request:
+    :return:
+    """
+    notifications_count = 0
+    return JsonResponse({"new_notifications" : notifications_count})

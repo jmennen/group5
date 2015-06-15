@@ -16,4 +16,11 @@ urlpatterns = [
     url(r'^circlemessage/(?P<message_id>[0-9]+)/delete/$', views.delete_circle_message, name="delete_circlemessage"),
     url(r'^follow/(?P<user_id>[0-9]+)/$', views.follow, name="follow"),
     url(r'^unfollow/(?P<user_id>[0-9]+)/$', views.unfollow, name="unfollow"),
+    # new since sprint 4
+    url(r'^are_there_new_notifications/$', views.information_about_new_directmessages, name="notification_polling"),
+    url(r'^circle/message/(?P<message_id>[0-9]+)/$', views.one_circlemessage, name="one_circlemessage"),
+    url(r'^circle/message/(?P<message_id>[0-9]+)/answer$', views.answer_to_circlemessage, name="answer_circlemessage"),
+    url(r'^circle/message/(?P<original_message_id>[0-9]+)/repost$', views.repost_circlemessage, name="repost_circlemessage"),
+    url(r'^chat/(?P<sender_id>[0-9]+)/$', views.direct_messages_details, name="chat"),
+    url(r'^chats/$', views.direct_messages_overview, name="all_chats"),
 ]
