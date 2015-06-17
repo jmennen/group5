@@ -1,2 +1,31 @@
 <!-- form for retweets(messages you want to quote and publish yourself with a link to the creator ). 
      original message will be shown and highlighted -->
+	 	 {% extends "base.html" %}
+
+{% block title %}Direktnachrichten{% endblock %}
+
+{% block content %}
+
+    {% include "includes/navbar.html" %}
+	
+	<h3>Du retweetest...</h3>
+	 <form role="form" method="post" action="#">
+                        {% csrf_token %}
+                        <p>
+						<!-- choose circe/s to send the messages to -->
+                            <select multiple="multiple" name="circles" class="testselect1">
+                                {% for circle in circles %}
+                                    <option value="{{ circle.pk }}">{{ circle.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </p>
+
+                       <div class="textfield">
+							<textarea class="form-control" rows="5"> eZ reweets from {{retweeteter user}}<i>„{{circle.message.text}}“<i></textarea>
+							<button id="messagebutton" type="submit" class="btn btn-default">Senden</button>
+
+</div>
+    </form>
+	
+	
+{% endblock %}
