@@ -313,5 +313,5 @@ def information_about_new_directmessages(request):
     :param request:
     :return:
     """
-    notifications_count = 0
+    notifications_count = Directmessage.objects.filter(receiver=request.user, read=False).count()
     return JsonResponse({"new_notifications" : notifications_count})
