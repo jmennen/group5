@@ -329,4 +329,9 @@ def search_user_json(request, query):
 
 @login_required
 def search_theme_json(request, query):
+    themes = Theme.objects.filter(username__contains=query).only('name')
+    themenamelist = []
+    for user in themes:
+        themenamelist.append(user.username)
+    return JsonResponse({"symbol": "#", "list": themenamelist}, safe=False, )
     pass
