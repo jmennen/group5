@@ -32,7 +32,7 @@
 
                 <!--leads to edit_own_profile site-->
                 <p><a href="{% url "update_profile" %}">edit profile</a></p>
-				<!-- leads to the follwing_userlist which contains the user you are following -->
+                <!-- leads to the follwing_userlist which contains the user you are following -->
                 <p><a href="{% url "list_follows" %}">wem folge ich?</a></p>
 
             </div>
@@ -43,10 +43,10 @@
                 <div class="well">
                     <h3>Kreisnachrichten</h3>
                     <!--space for creating a circle messages-->
-                    <form role="form" method="post" action="{% url "new_circlemessage" %}">
+                    <form id="new_post_form" role="form" method="post" action="{% url "new_circlemessage" %}">
                         {% csrf_token %}
                         <p>
-						<!-- choose circe/s to send the messages to -->
+                            <!-- choose circe/s to send the messages to -->
                             <select multiple="multiple" name="circles" class="testselect1">
                                 {% for circle in circles %}
                                     <option value="{{ circle.pk }}">{{ circle.name }}</option>
@@ -55,9 +55,10 @@
                         </p>
 
                         <div class="input-group">
-						<!-- inputfield for the messages you are going to send -->
-                            <input required type="text" name="text" id="text" class="form-control"
-                                   placeholder="Kreisnachricht...">
+                            <!-- inputfield for the messages you are going to send -->
+                            <input required type="hidden" name="text" id="text" class="form-control"/>
+
+                            <div class="form-control" contenteditable="true" id="editor"></div>
 
                             <div class="input-group-btn">
                                 <button class="btn btn-info" type="submit">Senden</button>
@@ -67,7 +68,7 @@
                     </form>
                     <hr>
                     {% for circlemessage in message_list %}
-					<!-- messagefeed for the messages that are visible to you -->
+                        <!-- messagefeed for the messages that are visible to you -->
                         <div class="media">
                             <div class="media-left">
                                 <a href="#">
@@ -76,14 +77,17 @@
                                 </a>
                             </div>
                             <div class="media-body">
-							<!-- the creator of the message as well as the date will be shown -->
-                                <h4 class="media-heading"><a href="{% url "view_profile" circlemessage.creator.pk %}">{{ circlemessage.creator }}</a> schrieb hier
+                                <!-- the creator of the message as well as the date will be shown -->
+                                <h4 class="media-heading"><a
+                                        href="{% url "view_profile" circlemessage.creator.pk %}">{{ circlemessage.creator }}</a>
+                                    schrieb hier
                                     am {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
                                 {{ circlemessage.text }}
-								<!-- if you are the creator of the message, a delete button will be shown -->
+                                <!-- if you are the creator of the message, a delete button will be shown -->
                                 {% if circlemessage.creator == user %}
                                     <div align="right">
-                                        <a class="btn btn-danger btn-xs" href="{% url "delete_circlemessage" circlemessage.id %}">Löschen</a>
+                                        <a class="btn btn-danger btn-xs"
+                                           href="{% url "delete_circlemessage" circlemessage.id %}">Löschen</a>
                                     </div>
                                 {% endif %}
                             </div>
@@ -93,4 +97,15 @@
             </div>
         </div>
     </div>
+    <script>
+        var editor;
+        $(document).ready(function () {
+            editor = $("#editor").ckeditor(function () {
+            });
+            $('#new_post_form').submit(function () {
+                var data = CKEDITOR.instances.editor.getData();
+                $('#new_post_form').find('input[name="text"]').val(data);
+            });
+        });
+    </script>
 {% endblock %}

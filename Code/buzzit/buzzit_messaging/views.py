@@ -95,6 +95,7 @@ class PostCirclemessageView(CreateView, SuccessMessageMixin):
     def dispatch(self, request, *args, **kwargs):
         return super(PostCirclemessageView, self).dispatch(request, *args, **kwargs)
 
+
 @login_required
 def delete_circle_message(request, message_id):
     try:
@@ -108,6 +109,7 @@ def delete_circle_message(request, message_id):
     message_to_del.delete()
     messages.success(request, "Nachricht geloescht")
     return HttpResponseRedirect(reverse_lazy('home'))
+
 
 class DeleteCirclemessageView(DeleteView):
     model = Circle_message
@@ -239,7 +241,6 @@ def unfollow(request, user_id):
     return HttpResponseRedirect(reverse_lazy('home'))
 
 
-
 @login_required
 def direct_messages_overview(request):
     """
@@ -314,4 +315,18 @@ def information_about_new_directmessages(request):
     :return:
     """
     notifications_count = Directmessage.objects.filter(receiver=request.user, read=False).count()
-    return JsonResponse({"new_notifications" : notifications_count})
+    return JsonResponse({"new_notifications": notifications_count})
+
+
+@login_required
+def search_user_json(request, query):
+    users = User.objects.filter(username__contains=query).only('username')
+    usernamelist = []
+    for user in users:
+        usernamelist.append(user.username)
+    return JsonResponse({"symbol": "@", "list": usernamelist}, safe=False, )
+
+
+@login_required
+def search_theme_json(request, query):
+    pass
