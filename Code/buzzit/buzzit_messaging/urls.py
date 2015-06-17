@@ -23,6 +23,6 @@ urlpatterns = [
     url(r'^circle/message/(?P<original_message_id>[0-9]+)/repost$', views.repost_circlemessage, name="repost_circlemessage"),
     url(r'^chat/(?P<sender_id>[0-9]+)/$', views.direct_messages_details, name="chat"),
     url(r'^chats/$', views.direct_messages_overview, name="all_chats"),
-    url(r'^search/user/@(?P<query>[a-zA-Z0-9]+)/json$', views.search_user_json, name="search_user_json"),
-    url(r'^search/theme/#(?P<query>[a-zA-Z0-9]+)/json$', views.search_theme_json, name="search_theme_json"),
+    url(r'^search/user/(?P<query>[a-zA-Z0-9]+)/json$', views.search_user_json, name="search_user_json"),
+    url(r'^search/theme/(?P<query>[a-zA-Z0-9]+)/json$', views.search_theme_json, name="search_theme_json"),
 ]

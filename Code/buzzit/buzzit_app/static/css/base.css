@@ -44,3 +44,8 @@ body {
 footer {
     margin: 50px 0;
 }
+
+.mention-suggestions span {
+    padding-left: 10px;
+    padding-right: 10px;
+}

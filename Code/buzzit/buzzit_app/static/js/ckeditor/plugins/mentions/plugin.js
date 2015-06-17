@@ -70,7 +70,7 @@ CKEDITOR_mentions.instances = [];
  * @type Number
  */
 
-CKEDITOR_mentions.timeout_delay = 500;
+CKEDITOR_mentions.timeout_delay = 100;
 
 /*
  * Minimum number of characters needed to start searching for users (includes the @).
@@ -172,10 +172,16 @@ CKEDITOR_mentions.prototype.timeout_callback = function (args) {
     var range = selection.getRanges()[0];
     var startOffset = parseInt(range.startOffset - str.length) || 0;
     var element = range.startContainer.$;
-    $.get("http://127.0.0.1:8000/messaging/search/user/" + str + "/json", {}, function (rsp) {
+    var url = "http://127.0.0.1:8000/messaging/search/";
+    if (str.startsWith("@"))
+        url += "user/";
+    else if (str.startsWith("#"))
+        url += "theme/";
+    url += str.substr(1) + "/json";
+    $.get(url, {}, function (rsp) {
 
         var ckel = $('#' + element_id);
-        var par = ckel// .parent();
+        var par = $('#new_post_form');//ckel// .parent();
 
         $('.mention-suggestions').remove();
 
@@ -183,13 +189,20 @@ CKEDITOR_mentions.prototype.timeout_callback = function (args) {
             var sugs = $('<div>').addClass("mention-suggestions");
             sugs.insertAfter(par);
             rsp.list.forEach(function (el, i) {
-                sugs.append($('<span>').addClass("mention-users").text(el).data("username", el).data("symbol", rsp.symbol));
+                sugs.append($('<span>')
+                        .addClass("mention-users")
+                        .text(el)
+                        .data("value", el)
+                        .data("symbol", rsp.symbol)
+                        .addClass("btn")
+                        .addClass("btn-default")
+                );
             });
         }
 
         $('.mention-users').click(function (e) {
             e.preventDefault();
-            var username = $(e.target).data("username");
+            var username = $(e.target).data("value");
             var symbol = $(e.target).data("symbol");
 
             var mentions = CKEDITOR_mentions.get_instance(editor);
