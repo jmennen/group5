@@ -1,2 +1,134 @@
 <!-- site which contains the messages between the user and other users.
 	 system notifications will be sent through a system-user as direct message -->
+	 
+	 {% extends "base.html" %}
+
+{% block title %}Direktnachrichten{% endblock %}
+
+{% block content %}
+
+    {% include "includes/navbar.html" %}
+	
+	
+
+
+<div class="container">	
+<div class="row">
+
+<div class="col-md-3">
+
+<div class="list-group">
+
+		
+  <a href="#" class="list-group-item">Jan<span class="badge">14</span>
+  <p><h6><i>paar Wörter von der Nachricht</i></h6></p>
+  </a>
+  
+  <a href="#" class="list-group-item">David<span class="badge">14</span>
+  <p><h6><i>paar Wörter von der Nachricht</i></h6></p>
+  </a>
+  
+  <a href="#" class="list-group-item">Florian<span class="badge">14</span>
+  <p><h6><i>paar Wörter von der Nachricht</i></h6></p>
+  </a>
+
+  <a href="#" class="list-group-item">
+		
+		Dong<span class="badge">14</span>
+		<p><h6><i>paar Wörter von der Nachricht</i></h6></p>
+		</a>
+		
+  <a href="#" class="list-group-item">Jan<span class="badge">14</span>
+  <p><h6><i>paar Wörter von der Nachricht</i></h6></p>
+  </a>
+  
+  <a href="#" class="list-group-item">David<span class="badge">14</span>
+  <p><h6><i>paar Wörter von der Nachricht</i></h6></p>
+  </a>
+  
+  <a href="#" class="list-group-item">Florian<span class="badge">14</span>
+  <p><h6><i>paar Wörter von der Nachricht</i></h6></p>
+  </a>  
+  <a href="#" class="list-group-item">Florian<span class="badge">14</span>
+  <p><h6><i>paar Wörter von der Nachricht</i></h6></p>
+  </a>  
+ 
+
+</div>
+</div>
+
+<div class="col-md-9">
+
+<h3> Deine Nachrichten mit...</h3>
+<div class="area">
+	<div class="show_message">
+	<div class="systemmessage">
+	<a href="#">
+            <img height="40" width="40" src="{{ .profile_picture }}" alt="Profilbild">
+     </a>
+	{{creator}} schrieb:
+	<p>DU wurdest soeben von Cheng gefolgt!</p>
+	</div>
+	</div>
+	
+
+	
+	
+	<div class="show_message">
+	<div class="theirmessage">
+	 <a href="#">
+            <img height="40" width="40" src="{{ .profile_picture }}" alt="Profilbild">
+     </a>
+	{{creator}} schrieb:
+	<p>asdasd asdassadas asdasdsad asdsadsasdasd asdasdassa asdasdsadas asdsasdsa</p>
+	</div>
+	</div>
+	
+	<div class="show_message">
+	<div class="mymessage">
+	<a href="#">
+            <img height="40" width="40" src="{{ .profile_picture }}" alt="Profilbild">
+     </a>
+	{{creator}} schrieb:
+	<p>asdsssssssssssssssss´sssssasd sdfssssssssssss</p>
+	</div>
+	</div>
+	<div class="show_message">
+	<div class="mymessage">
+	<a href="#">
+            <img height="40" width="40" src="{{ .profile_picture }}" alt="Profilbild">
+     </a>
+	{{creator}} schrieb:
+	<p>asdsssssssssssssssss´sssssasd sdfssssssssssss</p>
+	</div>
+	</div>
+	<div class="show_message">
+	<div class="mymessage">
+	<a href="#">
+            <img height="40" width="40" src="{{ .profile_picture }}" alt="Profilbild">
+     </a>
+	{{creator}} schrieb:
+	<p>asdsssssssssssssssss´sssssasd sdfssssssssssss</p>
+	</div>
+	</div>
+	
+</div>
+
+<div class="textfield">
+<textarea class="form-control" rows="5"></textarea>
+<button id="messagebutton" type="submit" class="btn btn-default">Senden</button>
+
+</div>
+
+</div>
+
+
+
+</div>
+</div>
+
+	
+	
+	
+	
+	{% endblock %}
