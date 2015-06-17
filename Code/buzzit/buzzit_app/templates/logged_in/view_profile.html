@@ -38,11 +38,11 @@
                         {% if profile.user != user %}
                             {% if profile.i_am_following %}
                                 <a class="btn btn-danger" role="form-control" method="post"
-                                   href="{% url "unfollow" profile.pk %}" type="submit">Entfolgen
+                                   href="{% url "unfollow" profile.pk %}" type="submit"><span class="glyphicon glyphicon-remove-circle"></span>
                                 </a>
                             {% else %}
-                                <a class="btn btn-info" role="form-control" method="post"
-                                   href="{% url "follow" profile.pk %}" type="submit"> Folgen
+                                <a class="btn btn-success" role="form-control" method="post"
+                                   href="{% url "follow" profile.pk %}" type="submit"><span class="glyphicon glyphicon-circle-arrow-right"></span> 
                                 </a>
                             {% endif %}
                         {% endif %}
