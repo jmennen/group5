@@ -116,19 +116,21 @@ class DeleteCirclemessageView(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super(PostCirclemessageView, self).dispatch(request, *args, **kwargs)
 
-
-class RemoveCircleView(DeleteView, SuccessMessageMixin):
+def RemoveCircleView(request, slug):
     """
     pick up the circle primary key from template and remove the circle with the given object
     auto-removes the relations circle-members
     """
-    model = Circle
-    success_message = "%(name)s die Kreise erfolgreich geloescht"
-    slug_field = "id"
-    success_url = reverse_lazy("circle_overview")
-
-    def get(self, *args, **kwargs):
-        return self.post(*args, **kwargs)
+    try:
+        circle_to_del = Circle.objects.get(pk = slug)
+        messages_to_del = circle_to_del.messages.all()
+        for m in messages_to_del:
+            if (not (Circle.objects.filter(messages = m).count() > 1)):
+                m.delete()
+        circle_to_del.delete()
+    except Exception:
+        messages.error(request, "Fehler beim loeschen")
+    return HttpResponseRedirect(reverse("circle_overview"))
 
 
 def add_user_to_circles(request, user_id):
