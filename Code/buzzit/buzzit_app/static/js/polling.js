@@ -14,7 +14,7 @@ window.polling.poll = function () {
     }
 };
 window.polling.startPolling = function (url) {
-    window.polling.badge = $('#myNavbar').find('.notification_count');
+    window.polling.badge = $('.notification_count');
     window.polling.pollingurl = url;
     window.polling.pollingactive = true;
     window.polling.poll();
