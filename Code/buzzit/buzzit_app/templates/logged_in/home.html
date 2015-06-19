@@ -56,7 +56,9 @@
 
                         <div class="input-group">
                             <!-- inputfield for the messages you are going to send -->
-                            <textarea name="text" class="new_text_input" placeholder="Neue Kreisnachricht..."></textarea>
+                            <input type="hidden" name="mentions" />
+                            <input type="hidden" name="themes" />
+                            <textarea required name="text" class="new_text_input" placeholder="Neue Kreisnachricht..."></textarea>
 
                             <div class="input-group-btn">
                                 <button class="btn btn-info" type="submit">Senden</button>

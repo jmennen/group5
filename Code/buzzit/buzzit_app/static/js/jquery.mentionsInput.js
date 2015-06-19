@@ -17,11 +17,18 @@ window.debug = function (str) {
 };
 
 function init_post_area(filter_textarea, filter_form) {
-    $(filter_textarea).keypress(function (event) {
+    $(filter_form).submit(function () {
+        $(filter_textarea).mentionsInput('getMentions', function (data) {
+            var mentions = _.filter(data, function(el) {return el.type === "contact"});
+            var themes = _.filter(data, function(el) {return el.type === "theme"});
+            $(filter_form).find('input[name="mentions"]').val(JSON.stringify(mentions));
+            $(filter_form).find('input[name="themes"]').val(JSON.stringify(mentions));
+        });
+    });
+    var input = $(filter_textarea).keypress(function (event) {
         if ((event.keyCode || event.which) == 13) {
             event.preventDefault();
             $(filter_form).submit();
-            return false;
         }
     }).mentionsInput({
         onDataRequest: function (mode, query, callback) {
