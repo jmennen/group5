@@ -45,7 +45,9 @@ footer {
     margin: 50px 0;
 }
 
-.mention-suggestions span {
-    padding-left: 10px;
-    padding-right: 10px;
+.highlight_theme {
+    background-color: #AAD7FF;
+}
+.highlight_contact {
+    background-color: #9AEEAC;
 }

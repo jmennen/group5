@@ -56,9 +56,7 @@
 
                         <div class="input-group">
                             <!-- inputfield for the messages you are going to send -->
-                            <input required type="hidden" name="text" id="text" class="form-control"/>
-
-                            <div class="form-control" contenteditable="true" id="editor"></div>
+                            <textarea name="text" class="new_text_input" placeholder="Neue Kreisnachricht..."></textarea>
 
                             <div class="input-group-btn">
                                 <button class="btn btn-info" type="submit">Senden</button>
@@ -98,14 +96,8 @@
         </div>
     </div>
     <script>
-        var editor;
         $(document).ready(function () {
-            editor = $("#editor").ckeditor(function () {
-            });
-            $('#new_post_form').submit(function () {
-                var data = CKEDITOR.instances.editor.getData();
-                $('#new_post_form').find('input[name="text"]').val(data);
-            });
+            init_post_area("textarea.new_text_input", '#new_post_form');
         });
     </script>
 {% endblock %}

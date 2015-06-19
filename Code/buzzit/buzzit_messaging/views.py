@@ -323,7 +323,8 @@ def search_user_json(request, query):
     users = User.objects.filter(username__contains=query).only('username')
     usernamelist = []
     for user in users:
-        usernamelist.append(user.username)
+        usernamelist.append(
+            {"name": user.username, "id": user.pk, "avatar": user.profile.profile_picture, "type": "contact"})
     return JsonResponse({"symbol": "@", "list": usernamelist}, safe=False, )
 
 
@@ -333,9 +334,10 @@ def search_theme_json(request, query):
     if themes.count() < 1:
         theme = Theme()
         theme.name = query
+        theme.pk = query
         themes = [theme]
     themenamelist = []
     for theme in themes:
-        themenamelist.append(theme.name)
+        themenamelist.append({"name": theme.name, "id": theme.pk, "avatar": "", "type": "theme"})
     return JsonResponse({"symbol": "#", "list": themenamelist}, safe=False, )
     pass
