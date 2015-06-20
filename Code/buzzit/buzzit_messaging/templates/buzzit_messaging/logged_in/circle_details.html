@@ -85,7 +85,7 @@
                             {{ circlemessage.text }}
 
                             <div align="right">	
-								 <a class="btn btn-info btn-xs" href="#"><span class="glyphicon glyphicon-share-alt"></span> Antworten</a>
+								 <a class="btn btn-info btn-xs" href="#antworten" data-toggle="collapse"><span class="glyphicon glyphicon-share-alt"></span> Antworten</a>
 								 <a class="btn btn-info btn-xs" href="#"><span class="glyphicon glyphicon-retweet"></span> Retweet</a>
 								 <!-- if you are the creator of the message, a delete button will be shown -->
                                 {% if circlemessage.creator == user %}
@@ -95,6 +95,16 @@
 							</div>
                         </div>
                     {% endfor %}
+					
+					<!-- erscheint, wenn auf antworten geklickt wird -->
+					<div id="antworten" class="collapse">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="antworte hier...">
+							<span class="input-group-btn">
+							<button class="btn btn-info" type="submit">Senden</button>
+							</span>
+						</div>
+					</div>
                     </div>
                 </div>
             </div>
