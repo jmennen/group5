@@ -1,7 +1,7 @@
 /**
 *	@name							Elastic
 *	@descripton						Elastic is jQuery plugin that grow and shrink your textareas automatically
-*	@version						1.6.10
+*	@version						1.6.11
 *	@requires						jQuery 1.2.6+
 *
 *	@author							Jan Jarfalk
@@ -11,7 +11,7 @@
 *	@licence						MIT License - http://www.opensource.org/licenses/mit-license.php
 */
 
-(function(jQuery){ 
+(function($){ 
 	jQuery.fn.extend({  
 		elastic: function() {
 		
@@ -42,14 +42,19 @@
 				];
 			
 			return this.each( function() {
-				
+
 				// Elastic only works on textareas
 				if ( this.type !== 'textarea' ) {
 					return false;
 				}
 					
 			var $textarea	= jQuery(this),
-				$twin		= jQuery('<div />').css({'position': 'absolute','display':'none','word-wrap':'break-word'}),
+				$twin		= jQuery('<div />').css({
+					'position'		: 'absolute',
+					'display'		: 'none',
+					'word-wrap'		: 'break-word',
+					'white-space'	:'pre-wrap'
+				}),
 				lineHeight	= parseInt($textarea.css('line-height'),10) || parseInt($textarea.css('font-size'),'10'),
 				minheight	= parseInt($textarea.css('height'),10) || lineHeight*3,
 				maxheight	= parseInt($textarea.css('max-height'),10) || Number.MAX_VALUE,
@@ -70,7 +75,7 @@
 				
 				// Updates the width of the twin. (solution for textareas with widths in percent)
 				function setTwinWidth(){
-					curatedWidth = Math.floor(parseInt($textarea.width(),10));
+					var curatedWidth = Math.floor(parseInt($textarea.width(),10));
 					if($twin.width() !== curatedWidth){
 						$twin.css({'width': curatedWidth + 'px'});
 						
@@ -85,10 +90,6 @@
 					var curratedHeight = Math.floor(parseInt(height,10));
 					if($textarea.height() !== curratedHeight){
 						$textarea.css({'height': curratedHeight + 'px','overflow':overflow});
-						
-						// Fire the custom event resize
-						$textarea.trigger('resize');
-						
 					}
 				}
 				
@@ -133,7 +134,7 @@
 				});
 				
 				// Update width of twin if browser or textarea is resized (solution for textareas with widths in percent)
-				$(window).bind('resize', setTwinWidth);
+				jQuery(window).bind('resize', setTwinWidth);
 				$textarea.bind('resize', setTwinWidth);
 				$textarea.bind('update', update);
 				
