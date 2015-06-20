@@ -354,8 +354,9 @@ def search_user_json(request, query):
     users = User.objects.filter(username__icontains=query).only('username')
     usernamelist = []
     for user in users:
+        pic_url = reverse("profile_picture_small", args=(user.pk,))
         usernamelist.append(
-            {"name": user.username, "id": user.pk, "avatar": reverse("profile_picture_small", (user.profile.pk,)), "type": "contact"})
+            {"name": user.username, "id": user.pk, "avatar": pic_url, "type": "contact"})
     return JsonResponse({"symbol": "@", "list": usernamelist}, safe=False, )
 
 
