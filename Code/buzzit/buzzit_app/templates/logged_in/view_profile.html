@@ -11,10 +11,10 @@
     <div class="container">
 
         <!--information and picture of this profile-->
-        <p class="lead">{{ profile.user.username }}
-            <!--button for sending a message to this user-->
-            <button type="button" class="btn btn-primary">Diesem Benutzer eine Nachricht senden</button>
-        </p>
+		<div class="container">
+        <h3> {{ profile.user.username }}
+        </h3>
+        </div>
         <div>
             <div class="col-md-5">
 
@@ -32,17 +32,18 @@
 
                     <form class="form-inline" role="form" method="post">
                         {% csrf_token %}
+						<!--button for sending a message to this user-->
                         <button class="btn btn-info" type="button"><span class="glyphicon glyphicon-envelope"></span>
                         </button>
 
                         {% if profile.user != user %}
                             {% if profile.i_am_following %}
                                 <a class="btn btn-danger" role="form-control" method="post"
-                                   href="{% url "unfollow" profile.pk %}" type="submit"><span class="glyphicon glyphicon-remove-circle"></span>
+                                   href="{% url "unfollow" profile.pk %}" type="submit"><span class="glyphicon glyphicon-remove-circle"></span> Entfolgen
                                 </a>
                             {% else %}
-                                <a class="btn btn-success" role="form-control" method="post"
-                                   href="{% url "follow" profile.pk %}" type="submit"><span class="glyphicon glyphicon-circle-arrow-right"></span> 
+                                <a class="btn btn-info" role="form-control" method="post"
+                                   href="{% url "follow" profile.pk %}" type="submit"><span class="glyphicon glyphicon-circle-arrow-right"></span> Folgen 
                                 </a>
                             {% endif %}
                         {% endif %}
@@ -77,12 +78,17 @@
                                     am {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
                                 {{ circlemessage.text }}
 
-                                {% if circlemessage.creator == user %}
+                                
                                     <div align="right">
+										<a class="btn btn-info btn-xs" href="#"><span class="glyphicon glyphicon-share-alt"></span> Antworten</a>
+										<a class="btn btn-info btn-xs" href="#"><span class="glyphicon glyphicon-retweet"></span> Retweet</a>
+									{% if circlemessage.creator == user %}
                                         <a class="btn btn-danger btn-xs"
-                                           href="{% url "delete_circlemessage" circlemessage.id %}">L&ouml;schen</a>
+                                           href="{% url "delete_circlemessage" circlemessage.id %}"><span class="glyphicon glyphicon-remove"></span> L&ouml;schen</a>
+									{% endif %}
+									<hr>
                                     </div>
-                                {% endif %}
+                                
                             </div>
                         </div>
                     {% endfor %}
