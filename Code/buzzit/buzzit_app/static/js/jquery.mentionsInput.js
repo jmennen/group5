@@ -80,7 +80,7 @@ function init_post_area(filter_textarea, filter_form) {
         minChars: 2, //Minimum chars to fire the event
         allowRepeat: false, //Allow repeat mentions
         showAvatars: true, //Show the avatars
-        elastic: false, //Grow the textarea automatically
+        elastic: true, //Grow the textarea automatically
         defaultValue: '',
         onCaret: false,
         classes: {

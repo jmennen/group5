@@ -8,7 +8,7 @@
     width: 100%;
     display: block;
     height: 18px;
-    padding: 8px 12px 26px 12px;
+    padding: 9px;
     border: 1px solid #dcdcdc;
     border-radius: 3px;
     overflow: hidden;
@@ -97,7 +97,7 @@
     right: 0;
     top: 1px;
     bottom: 0;
-    padding: 8px 12px 26px 12px;
+    padding: 9px;
     color: #fff;
     overflow: hidden;
 
