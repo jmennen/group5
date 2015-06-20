@@ -19,7 +19,7 @@
             <div class="col-md-5">
 
                 <div class="thumbnail">
-                    <img class="img-responsive" src="{{ profile.profile_picture }}" alt="Profilbild">
+                    <img class="img-responsive" src="{% url "profile_picture_small" profile.pk %}" alt="Profilbild">
                 </div>
 
                 <div class="well">
@@ -68,7 +68,7 @@
                             <div class="media-left">
                                 <a href="#">
                                     <img height="64" width="64" class="media-object"
-                                         src="{{ circlemessage.creator.profile.profile_picture }}" alt="Profilbild">
+                                         src="{% url "profile_picture_small" circlemessage.creator.profile.pk %}" alt="Profilbild">
                                 </a>
                             </div>
                             <!-- the creator of the message as well as the date will be shown -->
