@@ -29,6 +29,7 @@ class Circle_message(Message):
     themes = models.ManyToManyField(Theme, symmetrical=False)
     mentions = models.ManyToManyField(User, symmetrical=False)
     original_message = models.ForeignKey("self", blank=True, null=True, related_name="repost_of")
+    public = models.BooleanField(default=False, null=False, blank=False)
 
 class Circle(models.Model):
     owner = models.ForeignKey(User, blank=False, null=False, related_name="owner_of_circle")  # User erstellt Kreis
