@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}buzzit - base{% endblock %}
+{% block title %}Neue Kreisnachricht{% endblock %}
 
 {% block content %}
     {% load filters %}
@@ -9,6 +9,10 @@
 
     <div class="container">
 
+        <h3>Schreibe was neues...</h3>
+        {% if form.errors %}
+            {{ form.errors }}
+        {% endif %}
         <form id="new_post_form" role="form" method="post" action="{% url "new_circlemessage" %}">
             {% csrf_token %}
             <p>
