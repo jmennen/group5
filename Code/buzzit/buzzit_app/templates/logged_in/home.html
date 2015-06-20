@@ -56,9 +56,10 @@
 
                         <div class="input-group">
                             <!-- inputfield for the messages you are going to send -->
-                            <input type="hidden" name="mentions" />
-                            <input type="hidden" name="themes" />
-                            <textarea required name="text" class="new_text_input" placeholder="Neue Kreisnachricht..."></textarea>
+                            <input type="hidden" name="mentions"/>
+                            <input type="hidden" name="themes"/>
+                            <textarea required name="text" class="new_text_input"
+                                      placeholder="Neue Kreisnachricht..."></textarea>
 
                             <div class="input-group-btn">
                                 <button class="btn btn-info" type="submit">Senden</button>
@@ -67,6 +68,7 @@
                         </div>
                     </form>
                     <hr>
+                    {% load messagefilters %}
                     {% for circlemessage in message_list %}
                         <!-- messagefeed for the messages that are visible to you -->
                         <div class="media">
@@ -82,7 +84,7 @@
                                         href="{% url "view_profile" circlemessage.creator.pk %}">{{ circlemessage.creator }}</a>
                                     schrieb hier
                                     am {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
-                                {{ circlemessage.text }}
+                                {{ circlemessage | messagefilter | safe }}
                                 <!-- if you are the creator of the message, a delete button will be shown -->
                                 {% if circlemessage.creator == user %}
                                     <div align="right">

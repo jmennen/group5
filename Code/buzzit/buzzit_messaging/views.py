@@ -12,6 +12,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse, reverse_lazy
 import django.contrib.messages as messages
 import logging
+import json
 
 
 @login_required
@@ -70,30 +71,60 @@ def listfollows(request):
                   )
 
 
-class PostCirclemessageView(CreateView, SuccessMessageMixin):
-    model = Circle_message
-    fields = ["text"]
-    success_message = "Kreisnachricht gespeichert"
-    success_url = reverse_lazy("home")
+@login_required
+def postCirclemessage(request):
+    if request.method == "POST":
+        newPost = Circle_message()
+        newPost.creator = request.user
+        newPost.created = datetime.now()
+        newPost.text = request.POST.get("text")
+        if len(newPost.text) < 1:
+            messages.error("Es wurde kein Text angegeben")
+            return HttpResponseRedirect(reverse("home"))
+        newPost.save()  # save, to generate primary key to use RELs
 
-    def form_valid(self, form):
-        form.instance.creator = self.request.user
-        form.instance.created = datetime.now()
-        return super(PostCirclemessageView, self).form_valid(form)
+        # now that we have a pk in the newPost, we cann push it to the circles
+        # or mark it as public if no circles were given
+        circle_ids = request.POST.getlist("circles", [])
+        if len(circle_ids) > 0:
+            # not public
+            for circle_id in circle_ids:
+                circle = Circle.objects.get(pk=circle_id)
+                circle.messages.add(object.id)
+        else:
+            # public
+            newPost.public = True
 
-    def get_success_url(self):
-        # nachricht in die circles
-        # TODO: Wenn exceptions auftreten nachricht loeschen oder so
-        circle_ids = self.request.POST.getlist("circles", [])
-        for circle_id in circle_ids:
-            logging.getLogger(__name__).error(circle_id)
-            circle = Circle.objects.get(pk=circle_id)
-            circle.messages.add(self.object.id)
-        return self.success_url
+        # add mentions, that were submitted
+        # ignore users, that are not registered
+        mentions = json.loads(request.POST.get("mentions", "[]"))
+        for mention in mentions:
+            try:
+                user_mentioned = User.objects.get(username=mention["name"])
+            except ObjectDoesNotExist:
+                continue
+            # inform mentioned user about mention
+            notification = Directmessage()
+            notification.created = datetime.now()
+            notification.creator = User.objects.get(username="SYSTEM")
+            notification.receiver = user_mentioned
+            notification.text = "Du wurdest in einem Post erwaehnt: <POST:%s>" % newPost.id
+            notification.save()
+            newPost.mentions.add(user_mentioned)
 
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(PostCirclemessageView, self).dispatch(request, *args, **kwargs)
+        # add themes, that were submitted
+        # create not found themes
+        themes = json.loads(request.POST.get("themes", "[]"))
+        for theme in themes:
+            theme_mentioned, created = Theme.objects.get_or_create(pk=theme["name"])
+            messages.info(request, "Du hast ein neues Thema erstellt: %s" % theme_mentioned.name)
+            newPost.themes.add(theme_mentioned)
+
+        # save all changes
+        newPost.save()
+
+        return HttpResponseRedirect(reverse("home"))
+    return render(request, "buzzit_models/circle_message_form.html")
 
 
 @login_required

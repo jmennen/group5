@@ -22,7 +22,7 @@ function init_post_area(filter_textarea, filter_form) {
             var mentions = _.filter(data, function(el) {return el.type === "contact"});
             var themes = _.filter(data, function(el) {return el.type === "theme"});
             $(filter_form).find('input[name="mentions"]').val(JSON.stringify(mentions));
-            $(filter_form).find('input[name="themes"]').val(JSON.stringify(mentions));
+            $(filter_form).find('input[name="themes"]').val(JSON.stringify(themes));
         });
     });
     var input = $(filter_textarea).keypress(function (event) {
