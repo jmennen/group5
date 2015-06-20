@@ -62,20 +62,22 @@
                         <div class="col-md-12">
                         </div>
                     </div>
+                    {% load messagefilters %}
                     <!-- available messages of this user -->
                     {% for circlemessage in message_list %}
                         <div class="media">
                             <div class="media-left">
                                 <a href="#">
                                     <img height="64" width="64" class="media-object"
-                                         src="{% url "profile_picture_small" circlemessage.creator.profile.pk %}" alt="Profilbild">
+                                         src="{% url "profile_picture_small" circlemessage.creator.profile.pk %}"
+                                         alt="Profilbild">
                                 </a>
                             </div>
                             <!-- the creator of the message as well as the date will be shown -->
                             <div class="media-body">
                                 <h4 class="media-heading">{{ circlemessage.creator }} schrieb hier
                                     am {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
-                                {{ circlemessage.text }}
+                                {{ circlemessage | messagefilter | safe }}
 
                                 {% if circlemessage.creator == user %}
                                     <div align="right">
