@@ -79,10 +79,8 @@ def home(request):
     # public nachrichten von usern, denen wir folgen:
     followed_profiles = request.user.profile.follows.all()
     for followed_profile in followed_profiles:
-        circles_of_user = Circle.objects.filter(owner=followed_profile.user)
-        messages_of_user = Circle_message.objects.filter(creator=followed_profile.user).exclude(
-            circle__in=circles_of_user).distinct()
-        message_list += messages_of_user.all()
+        public_messages_of_user = Circle_message.objects.filter(creator=followed_profile.user, public=True)
+        message_list += public_messages_of_user.all()
 
     (settings, created) = Settings.objects.get_or_create(owner=request.user)
 
@@ -116,8 +114,7 @@ def view_profile(request, slug):
     # 1. alle circles
     circles_of_user = Circle.objects.filter(owner=profile.user)
     # 2. alle public nachrichten vom user
-    messages_of_user = Circle_message.objects.filter(creator=profile.user).exclude(
-        circle__in=circles_of_user).distinct()
+    messages_of_user = Circle_message.objects.filter(creator=profile.user, public=True)
     message_list += (messages_of_user.all())
     message_list.sort(key=lambda m: m.created, reverse=True)
 
