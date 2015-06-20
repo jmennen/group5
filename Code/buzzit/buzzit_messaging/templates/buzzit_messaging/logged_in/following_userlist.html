@@ -26,7 +26,7 @@
 				<!--the name links to the user's profile-->
                     <td><a href="{% url "view_profile" followed_profile.user.pk %}">{{ followed_profile.user.username }}</a></td>
 				<!--profile_picture is resized-->
-                    <td><img src="{{ followed_profile.user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
+                    <td><img src="{% url "profile_picture_small" followed_profile.user.profile.pk %}" height="64" alt="Profilbild"></td>
                     <td>{{ followed_profile.user.profile.description | beautifulNone }}</td>
                     <td>
 

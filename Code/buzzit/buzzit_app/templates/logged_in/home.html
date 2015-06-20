@@ -19,7 +19,7 @@
         </div>
         <div class="row">
             <div class="thumbnail col-md-3">
-                <img class="img-responsive" src="{{ profile.profile_picture }}" alt="Profilbild">
+                <img class="img-responsive" src="{% url "profile_picture_small" user.profile.pk %}" alt="Profilbild">
                 <hr>
                 <p>Vorname: {{ user.first_name | beautifulNone }}</p>
                 <hr>
@@ -75,7 +75,7 @@
                             <div class="media-left">
                                 <a href="#">
                                     <img height="64" width="64" class="media-object"
-                                         src="{{ circlemessage.creator.profile.profile_picture }}" alt="Profilbild">
+                                         src="{% url "profile_picture_small" circlemessage.creator.profile.pk %}" alt="Profilbild">
                                 </a>
                             </div>
                             <div class="media-body">

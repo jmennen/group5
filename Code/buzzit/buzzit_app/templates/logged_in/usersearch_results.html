@@ -22,7 +22,7 @@
                     <!--the name links to the user's profile-->
                     <td><a href="{% url "view_profile" user.pk %}">{{ user.username }}</a></td>
                     <!--profile_picture is resized-->
-                    <td><img src="{{ user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
+                    <td><img src="{% url "profile_picture_small" user.profile.pk %}" height="64" alt="Profilbild"></td>
                     <td>{{ user.profile.description | beautifulNone }}</td>
                     <td>
                         <form class="form-inline" role="form">

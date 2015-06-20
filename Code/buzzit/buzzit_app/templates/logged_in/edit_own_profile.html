@@ -33,7 +33,7 @@
                 <label>Profilbild ändern:</label>
 
                 <div class="thumbnail">
-                    <img class="img-responsive" height="128" style="width: auto;" src="{{ profile.profile_picture }}" alt="">
+                    <img class="img-responsive" height="128" style="width: auto;" src="{% url "profile_picture_small" profile.pk %}" alt="">
                 </div>
 
                 <div class="input-group">

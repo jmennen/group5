@@ -197,7 +197,7 @@ class EditProfileView(SuccessMessageMixin, UpdateView):
                         "Das Thumbnail konnte nicht erzeugt werden; benutzen Sie ein anderes (jpg,png,gif(nicht animiert)) Bild.")
                     return super(EditProfileView, self).form_invalid(form)
                 else:
-                    instance.profile_picture = reverse("profile_picture_small", kwargs={"slug": self.request.user.pk})
+                    instance.profile_picture_small = reverse("profile_picture_small", kwargs={"slug": self.request.user.pk})
                     instance.save()
         return super(EditProfileView, self).form_valid(form)
 
@@ -274,7 +274,7 @@ def register(request):
             )
             new_profile = Profile()
             new_profile.user = user
-            new_profile.profile_picture = "https://placehold.it/128x128"
+            new_profile.profile_picture_small = "https://placehold.it/128x128"
             new_profile.gender = ""
             new_profile.description = ""
             new_profile.save()
@@ -332,10 +332,13 @@ def profilepicture_full(request, slug):
     :return:
     """
     try:
-        username = User.objects.get(pk=slug).username
+        profile = Profile.objects.get(pk=slug)
     except ObjectDoesNotExist:
         return __create_dummy_pic_response__()
-    image = "pp/pp_" + username
+    if profile.profile_picture_full:
+        image = profile.profile_picture_full.path
+    else:
+        image = Profile.objects.get(user__username="SYSTEM").profile_picture_full.path
     try:
         with open(image, "rb") as f:
             return HttpResponse(f.read(), content_type="image/jpeg")
@@ -352,10 +355,13 @@ def profilepicture_small(request, slug):
     :return:
     """
     try:
-        username = User.objects.get(pk=slug).username
+        profile = Profile.objects.get(pk=slug)
     except ObjectDoesNotExist:
         return __create_dummy_pic_response__()
-    image = "pp/pp_" + username + "_sm"
+    if profile.profile_picture_small:
+        image = profile.profile_picture_small.path
+    else:
+        image = Profile.objects.get(user__username="SYSTEM").profile_picture_small.path
     try:
         with open(image, "rb") as f:
             return HttpResponse(f.read(), content_type="image/jpeg")
