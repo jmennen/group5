@@ -81,14 +81,14 @@ def postCirclemessage(request):
             return HttpResponseRedirect(reverse("home"))
         newPost.save()  # save, to generate primary key to use RELs
 
-        # now that we have a pk in the newPost, we cann push it to the circles
+        # now that we have a pk in the newPost, we can push it to the circles
         # or mark it as public if no circles were given
         circle_ids = request.POST.getlist("circles", [])
         if len(circle_ids) > 0:
             # not public
             for circle_id in circle_ids:
                 circle = Circle.objects.get(pk=circle_id)
-                circle.messages.add(object.id)
+                circle.messages.add(newPost)
         else:
             # public
             newPost.public = True
