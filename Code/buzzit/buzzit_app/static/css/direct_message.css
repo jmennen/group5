@@ -28,7 +28,7 @@ body {
 }
 
 
-.systemmessage{
+.systemmessage-danger{
   text-align: center;
   margin-left: auto;
   margin-right: auto;
@@ -46,7 +46,43 @@ body {
   position:relative:
 }
 
-.mymessage{
+.systemmessage-info{
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  color: #454545;
+  font-family: arial;
+  font-size: 13px;
+  font-weight:lighter;
+  line-height: 20px;
+  width:807px;
+  border:1px solid #f0f0f0;
+  background-color:#88EB8F;
+  margin-top:10px;
+  border-radius:15px;
+  padding:5px; 
+  position:relative:
+}
+
+.systemmessage-news{
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  color: #454545;
+  font-family: arial;
+  font-size: 13px;
+  font-weight:lighter;
+  line-height: 20px;
+  width:807px;
+  border:1px solid #f0f0f0;
+  background-color:#FFB669;
+  margin-top:10px;
+  border-radius:15px;
+  padding:5px; 
+  position:relative:
+}
+
+.theirmessage{
   margin-left:20px;
   color: #5E5D5D;
   font-family: arial;
@@ -63,7 +99,7 @@ body {
   position:relative:
 }
 
-.theirmessage{
+.mymessage{
   margin-right:20px;
   color: #5E5D5D;
   font-family: arial;

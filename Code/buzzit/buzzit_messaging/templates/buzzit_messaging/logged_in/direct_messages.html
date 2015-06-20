@@ -1,7 +1,7 @@
 <!-- site which contains the messages between the user and other users.
 	 system notifications will be sent through a system-user as direct message -->
 	 
-	 <!--http://techoctave.com/c7/posts/60-simple-long-polling-example-with-javascript-and-jquery-->
+
 	 
 	 {% extends "base.html" %}
 
@@ -64,12 +64,32 @@
 <h3> Deine Nachrichten mit...</h3>
 <div class="area">
 	<div class="show_message">
-	<div class="systemmessage">
+	<div class="systemmessage-danger">
+	<a href="#">
+            <img height="40" width="40" src="{{ .profile_picture }}" alt="Profilbild">
+     </a>
+	{{creator}} schrieb:
+	<p>Dein Beitrag wurde von einem Admin gelöscht!</p>
+	</div>
+	</div>
+	
+	<div class="show_message">
+	<div class="systemmessage-info">
 	<a href="#">
             <img height="40" width="40" src="{{ .profile_picture }}" alt="Profilbild">
      </a>
 	{{creator}} schrieb:
 	<p>DU wurdest soeben von Cheng gefolgt!</p>
+	</div>
+	</div>
+	
+	<div class="show_message">
+	<div class="systemmessage-news">
+	<a href="#">
+            <img height="40" width="40" src="{{ .profile_picture }}" alt="Profilbild">
+     </a>
+	{{creator}} schrieb:
+	<p>DU wurdest soeben in einem Beitrag erwähnt!</p>
 	</div>
 	</div>
 	
@@ -104,15 +124,7 @@
 	<p>asdsssssssssssssssss´sssssasd sdfssssssssssss</p>
 	</div>
 	</div>
-	<div class="show_message">
-	<div class="mymessage">
-	<a href="#">
-            <img height="40" width="40" src="{{ .profile_picture }}" alt="Profilbild">
-     </a>
-	{{creator}} schrieb:
-	<p>asdsssssssssssssssss´sssssasd sdfssssssssssss</p>
-	</div>
-	</div>
+
 	
 </div>
 
