@@ -1,5 +1,8 @@
+from io import BytesIO
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.files.images import ImageFile
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.forms.utils import ErrorList
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, render_to_response
@@ -74,10 +77,11 @@ def home(request):
     for circle in circles_of_which_we_are_member:
         message_list += (circle.messages.all())
     # public nachrichten von usern, denen wir folgen:
-    followed_profiles= request.user.profile.follows.all()
+    followed_profiles = request.user.profile.follows.all()
     for followed_profile in followed_profiles:
         circles_of_user = Circle.objects.filter(owner=followed_profile.user)
-        messages_of_user = Circle_message.objects.filter(creator=followed_profile.user).exclude(circle__in=circles_of_user).distinct()
+        messages_of_user = Circle_message.objects.filter(creator=followed_profile.user).exclude(
+            circle__in=circles_of_user).distinct()
         message_list += messages_of_user.all()
 
     (settings, created) = Settings.objects.get_or_create(owner=request.user)
@@ -87,11 +91,10 @@ def home(request):
 
     message_list.sort(key=lambda m: m.created, reverse=True)
 
-
     return render(request, "logged_in/home.html", {"user": request.user,
                                                    "profile": Profile.objects.get(user=request.user.pk),
-                                                   "message_list" : message_list,
-                                                   "circles" : Circle.objects.filter(owner=request.user.pk)})
+                                                   "message_list": message_list,
+                                                   "circles": Circle.objects.filter(owner=request.user.pk)})
 
 
 @login_required
@@ -113,12 +116,13 @@ def view_profile(request, slug):
     # 1. alle circles
     circles_of_user = Circle.objects.filter(owner=profile.user)
     # 2. alle public nachrichten vom user
-    messages_of_user = Circle_message.objects.filter(creator=profile.user).exclude(circle__in=circles_of_user).distinct()
+    messages_of_user = Circle_message.objects.filter(creator=profile.user).exclude(
+        circle__in=circles_of_user).distinct()
     message_list += (messages_of_user.all())
     message_list.sort(key=lambda m: m.created, reverse=True)
 
-    return render(request, "logged_in/view_profile.html", {"profile":profile,
-                                                           "message_list" : message_list,
+    return render(request, "logged_in/view_profile.html", {"profile": profile,
+                                                           "message_list": message_list,
                                                            "user": request.user})
 
 
@@ -145,21 +149,26 @@ class EditProfileView(SuccessMessageMixin, UpdateView):
         form.fields['image_file'].required = False
         return form
 
-    def __create_small_picture__(request, o_image_filename):
+    def __create_small_picture__(request):
         """
         Generates a smaller, standard size (128x128) picture of original image with filename <o_o_image_filename>.
         Filename of smaller file is <o_o_image_filename>_sm
         If this fails, the smaller file will we removed!
         :param request:  the originial request object
-        :param o_image_filename: the filename of original image
+        :param o_image: the filename of original image
         :return: True on success, False else
         """
-        outfile = o_image_filename + "_sm"
+        profile = request.user.profile
+        outfile = profile.profile_picture_full.path + "_sm"
         try:
-            im = Image.open(o_image_filename)
+            im = Image.open(request.user.profile.profile_picture_full.path)
             im.thumbnail((128, 128))
-            im.save(outfile, "JPEG")
-            im.close()
+            thumb_io = BytesIO()
+            im.save(thumb_io, format='JPEG')
+            thumb_file = InMemoryUploadedFile(thumb_io, None, 'pp.jpg', 'image/jpeg',
+                                              thumb_io.getbuffer().nbytes, None)
+            profile.profile_picture_small = thumb_file
+            profile.save()
             return True
         except IOError:
             logging.error("Fehler beim speichern des thumbnails")
@@ -178,27 +187,17 @@ class EditProfileView(SuccessMessageMixin, UpdateView):
         instance = form.save(commit=False)
         instance.user = self.request.user
         image_file = self.request.FILES.get('image_file', False)
-        image_file_name = "pp/pp_" + self.request.user.username
         if image_file:
             imgtype = imghdr.what(image_file)
             if imgtype in ["jpeg", "png", "gif"]:
-                try:
-                    f = open(image_file_name, "xb")
-                except FileExistsError:
-                    f = open(image_file_name, "wb")
-                for chunk in image_file.chunks():
-                    f.write(chunk)
-                f.close()
-                if not EditProfileView.__create_small_picture__(self.request, image_file_name):
-                    os.remove(image_file_name)
+                instance.profile_picture_full = image_file
+                instance.save()
+                if not EditProfileView.__create_small_picture__(self.request):
                     errors = form._errors.setdefault('image_file', ErrorList())
                     messages.warning(self.request, "Bild nicht gespeichert - altes Bild wurde geloescht")
                     errors.append(
                         "Das Thumbnail konnte nicht erzeugt werden; benutzen Sie ein anderes (jpg,png,gif(nicht animiert)) Bild.")
                     return super(EditProfileView, self).form_invalid(form)
-                else:
-                    instance.profile_picture_small = reverse("profile_picture_small", kwargs={"slug": self.request.user.pk})
-                    instance.save()
         return super(EditProfileView, self).form_valid(form)
 
     def get_object(self, queryset=None):
@@ -246,7 +245,7 @@ class UserSearchResultsView(ListView):
             userset = User.objects.all().order_by("username")
         for user in userset:
             user.i_am_following = ownprofile.follows.all().filter(pk=user)
-        return {"user_list":userset, "ownprofile" : ownprofile }
+        return {"user_list": userset, "ownprofile": ownprofile}
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -274,7 +273,6 @@ def register(request):
             )
             new_profile = Profile()
             new_profile.user = user
-            new_profile.profile_picture_small = "https://placehold.it/128x128"
             new_profile.gender = ""
             new_profile.description = ""
             new_profile.save()
