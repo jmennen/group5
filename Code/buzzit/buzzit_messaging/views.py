@@ -1,18 +1,16 @@
-import string
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
-from django.middleware.common import logger
 from django.shortcuts import render
 from django.utils.datetime_safe import datetime
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, UpdateView, CreateView, DeleteView
+from django.views.generic import ListView, CreateView, DeleteView
 from django.http import HttpResponseRedirect, JsonResponse
 from buzzit_models.models import *
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse, reverse_lazy
 import django.contrib.messages as messages
-import logging
 import json
+from bleach import clean as html_clean
 
 
 @login_required
@@ -77,7 +75,7 @@ def postCirclemessage(request):
         newPost = Circle_message()
         newPost.creator = request.user
         newPost.created = datetime.now()
-        newPost.text = request.POST.get("text")
+        newPost.text = html_clean(request.POST.get("text"), tags=[])
         if len(newPost.text) < 1:
             messages.error("Es wurde kein Text angegeben")
             return HttpResponseRedirect(reverse("home"))
@@ -116,8 +114,10 @@ def postCirclemessage(request):
         # create not found themes
         themes = json.loads(request.POST.get("themes", "[]"))
         for theme in themes:
+            theme["name"] = html_clean(theme["name"], tags=[])
             theme_mentioned, created = Theme.objects.get_or_create(pk=theme["name"])
-            messages.info(request, "Du hast ein neues Thema erstellt: %s" % theme_mentioned.name)
+            if created:
+                messages.info(request, "Du hast ein neues Thema erstellt: %s" % theme_mentioned.name)
             newPost.themes.add(theme_mentioned)
 
         # save all changes
