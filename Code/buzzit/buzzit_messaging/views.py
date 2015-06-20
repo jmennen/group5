@@ -351,7 +351,7 @@ def information_about_new_directmessages(request):
 
 @login_required
 def search_user_json(request, query):
-    users = User.objects.filter(username__contains=query).only('username')
+    users = User.objects.filter(username__icontains=query).only('username')
     usernamelist = []
     for user in users:
         usernamelist.append(
@@ -361,7 +361,7 @@ def search_user_json(request, query):
 
 @login_required
 def search_theme_json(request, query):
-    themes = Theme.objects.filter(name__contains=query).only('name')
+    themes = Theme.objects.filter(name__icontains=query).only('name')
     if themes.count() < 1:
         theme = Theme()
         theme.name = query
