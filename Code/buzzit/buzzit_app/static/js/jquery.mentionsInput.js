@@ -19,8 +19,12 @@ window.debug = function (str) {
 function init_post_area(filter_textarea, filter_form) {
     $(filter_form).submit(function () {
         $(filter_textarea).mentionsInput('getMentions', function (data) {
-            var mentions = _.filter(data, function(el) {return el.type === "contact"});
-            var themes = _.filter(data, function(el) {return el.type === "theme"});
+            var mentions = _.filter(data, function (el) {
+                return el.type === "contact"
+            });
+            var themes = _.filter(data, function (el) {
+                return el.type === "theme"
+            });
             $(filter_form).find('input[name="mentions"]').val(JSON.stringify(mentions));
             $(filter_form).find('input[name="themes"]').val(JSON.stringify(themes));
         });
@@ -34,16 +38,19 @@ function init_post_area(filter_textarea, filter_form) {
         onDataRequest: function (mode, query, callback) {
             var data = [];
             var _this = this;
-            if (query.startsWith("@")) {
-                $.get("/messaging/search/user/" + query.substr(1) + "/json", {}, function (d) {
-                    data = d.list;
-                    callback.call(_this, data);
-                });
-            } else if (query.startsWith("#")) {
-                $.get("/messaging/search/theme/" + query.substr(1) + "/json", {}, function (d) {
-                    data = d.list;
-                    callback.call(_this, data);
-                });
+            switch (query[0]) {
+                case "@":
+                    $.get("/messaging/search/user/" + query.substr(1) + "/json", {}, function (d) {
+                        data = d.list;
+                        callback.call(_this, data);
+                    });
+                    break;
+                case "#":
+                    $.get("/messaging/search/theme/" + query.substr(1) + "/json", {}, function (d) {
+                        data = d.list;
+                        callback.call(_this, data);
+                    });
+                    break;
             }
         }
     });
