@@ -21,13 +21,13 @@
                             </div>
                             <div class="media-body">
 							<!-- the creator of the message as well as the date will be shown -->
-                                <h4 class="media-heading"><a href="{% url "view_profile" circlemessage.creator.pk %}">{{ circlemessage.creator }}</a> schrieb hier
+                                <h4 class="media-heading"><a href="{% url "view_profile" circlemessage.creator.pk %}">{{ circlemessage.creator }}</a> schrieb
                                     am {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
                                 {{ circlemessage.text }}
 								
 								<!--link um Input zum antworten zu aktivieren-->	
 								<p><a href="#antworten" data-toggle="collapse">antworten</a></p>
-                            </div>
+                            
 						<!-- the answers -->
 						{% for answer_to in answer_list  %}	
 						<div class="media">
@@ -39,7 +39,7 @@
                             </div>
                             <div class="media-body">
 							<!-- the creator of the answer as well as the date will be shown -->
-                                <h4 class="media-heading"><a href="{% url "view_profile" answer_to.circlemessage.creator.pk %}">{{ answer_to.circlemessage.creator }}</a> schrieb hier
+                                <h4 class="media-heading"><a href="{% url "view_profile" answer_to.circlemessage.creator.pk %}">{{ answer_to.circlemessage.creator }}</a> antwortete
                                     am {{ answer_to.circlemessage.created | date:'d.m.Y H:i' }}:</h4>
                                 {{ answer_to.circlemessage.text }}
 
@@ -49,7 +49,7 @@
 						</div>
 						
 						{% endfor %}
-						
+						</div>
                         </div>
 	
 	
