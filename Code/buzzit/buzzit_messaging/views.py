@@ -244,7 +244,7 @@ def unfollow(request, user_id):
     messages.success(request, "Du folgst %s nicht mehr" % unfollow_user.user.username)
     return HttpResponseRedirect(reverse_lazy('home'))
 
-
+"""
 @login_required()
 class Answers(CreateView,SuccessMessageMixin):
 
@@ -268,14 +268,13 @@ class Answers(CreateView,SuccessMessageMixin):
     def dispatch(self, request, *args, **kwargs):
         return super(Answers, self).dispatch(request, *args, **kwargs)
 
-
 """
-def answertocirclemessage(request,circlemessage_id):
+
+def answer_to_circlemessage(request,message_id):
 
     try:
-        messageanswerto = Circle_message.objects.get(pk=circlemessage_id)
+        messageanswerto = Circle_message.objects.get(pk=message_id)
     except ObjectDoesNotExist:
-        # message to answer does not exist
         messages.error(request,"Die Nachrichte, worauf du antwortest, existiert nicht mehr")
         return HttpResponseRedirect(reverse_lazy('home'))
 
@@ -283,9 +282,10 @@ def answertocirclemessage(request,circlemessage_id):
     answer.created = datetime.now()
     answer.creator = request.user
     answer.answer_to.add(messageanswerto)
+    Circle_message.add(answer)
     messages.info(request,"Du hast auf die Nachtichte geantwortet")
     return HttpResponseRedirect(reverse_lazy('home'))
-"""
+
 
 @login_required()
 class Retweet(CreateView,SuccessMessageMixin):
