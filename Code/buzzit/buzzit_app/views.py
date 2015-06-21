@@ -282,7 +282,7 @@ def register(request):
             token.update(urandom(64))
             token = token.hexdigest()
             at = AccountActivation()
-            at.username = user.username
+            at.username = user
             at.token = token
             at.save()
             activation_address = request.build_absolute_uri(reverse("activateaccount", args=(at.username, at.token)))
