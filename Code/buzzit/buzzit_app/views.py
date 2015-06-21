@@ -291,7 +291,7 @@ def register(request):
                       html_message="<html><h3>Dein neues Passwort:</h3>" +
                                    "<a href='%s'>Klicke hier um den Account zu aktivieren!</a>." % activation_address +
                                    "</html>" ,from_email="AccountAktivierung@vps146949.ovh.net", recipient_list=(user.email,))
-            messages.success(request, "Sie sind registriert und haben eine EMail bekommen!\nBestaetigen Sie dort die EMail Adresse")
+            messages.success(request, "Sie sind registriert und haben eine EMail bekommen!\\nBestaetigen Sie dort die EMail Adresse")
             return HttpResponseRedirect(reverse("start"))
         else:
             messages.error(request, "Sie haben ungueltige Daten angegeben!")
