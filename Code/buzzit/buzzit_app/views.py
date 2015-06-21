@@ -285,7 +285,7 @@ def register(request):
             at.username = user
             at.token = token
             at.save()
-            activation_address = request.build_absolute_uri(reverse("activateaccount", args=(at.username, at.token)))
+            activation_address = request.build_absolute_uri(reverse("activateaccount", args=(at.username.username, at.token)))
             send_mail("Aktiviere Deinen Account",
                       message= "Gehe zu: '%s' um Deinen Account zu aktivieren. Danach kannst Du Dich einloggen!" % activation_address,
                       html_message="<html><h3>Dein neues Passwort:</h3>" +
