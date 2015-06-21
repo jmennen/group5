@@ -399,9 +399,9 @@ def reset_password(request):
         new_pwd.update(urandom(64))
         send_mail("Dein neues Password",
                   message= "Deine neues Passwort lautet: '%s'. Log Dich ein, um es direkt zu aendern!" % new_pwd,
-                  html_message="<html><h3>Dein neues Passwort:</h3>"
-                               "<p>%s</p><br />"
-                               "<a href='%s'>Log Dich ein und aendere es!</a>."
-                               "</html>" % (new_pwd, reverse("start"),),from_email="PasswortAenderung@vps146949.ovh.net", recipient_list=(user.email,))
+                  html_message="<html><h3>Dein neues Passwort:</h3>" +
+                               "<p>%s</p><br />" % new_pwd +
+                               "<a href='%s'>Log Dich ein und aendere es!</a>." % reverse("start") +
+                               "</html>" ,from_email="PasswortAenderung@vps146949.ovh.net", recipient_list=(user.email,))
         return render(request, "forgot_password/message_password_sent.html")
     return render(request, "forgot_password/forgot_password.html")
