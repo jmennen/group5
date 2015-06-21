@@ -244,11 +244,10 @@ def unfollow(request, user_id):
     messages.success(request, "Du folgst %s nicht mehr" % unfollow_user.user.username)
     return HttpResponseRedirect(reverse_lazy('home'))
 
+
 @login_required()
-class answerToCircleMessageView(CreateView,SuccessMessageMixin):
-    """
-    create answer for circle messages
-    """
+class Answers(CreateView,SuccessMessageMixin):
+
     model = Circle_message
     fields = ['text']
     success_message = "du hast darauf geantwortet"
@@ -263,20 +262,18 @@ class answerToCircleMessageView(CreateView,SuccessMessageMixin):
         except ObjectDoesNotExist:
             messages.error(self.request,"Nachticht existiert nicht.")
             return HttpResponseRedirect(reverse_lazy("home"))
-        return super(answerToCircleMessageView, self).form_valid(form)
+        return super(Answers, self).form_valid(form)
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        return super(answerToCircleMessageView, self).dispatch(request, *args, **kwargs)
+        return super(Answers, self).dispatch(request, *args, **kwargs)
 
 
 """
-aternative function to answer circle message
-
-def answertocirclemessage(request,answertocirclemessage_id):
+def answertocirclemessage(request,circlemessage_id):
 
     try:
-        messageanswerto = Circle_message.objects.get(pk=answertocirclemessage_id)
+        messageanswerto = Circle_message.objects.get(pk=circlemessage_id)
     except ObjectDoesNotExist:
         # message to answer does not exist
         messages.error(request,"Die Nachrichte, worauf du antwortest, existiert nicht mehr")
@@ -287,11 +284,11 @@ def answertocirclemessage(request,answertocirclemessage_id):
     answer.creator = request.user
     answer.answer_to.add(messageanswerto)
     messages.info(request,"Du hast auf die Nachtichte geantwortet")
-    return  HttpResponseRedirect(reverse_lazy('home'))
+    return HttpResponseRedirect(reverse_lazy('home'))
 """
 
 @login_required()
-class retweet(CreateView,SuccessMessageMixin):
+class Retweet(CreateView,SuccessMessageMixin):
     """
     add retweet to the circle messages
     """
@@ -313,7 +310,7 @@ class retweet(CreateView,SuccessMessageMixin):
         form.instance.original_message = original_message
         cirle_which_currentUser_belongs_to = Circle.objects.get(members = self.request.user) # get the circle which current user belongs to
         cirle_which_currentUser_belongs_to.messages.add(form.instance) # add retweet as circle message to the circle
-        return super(retweet, self).form_valid(form)
+        return super(Retweet, self).form_valid(form)
 
     def get_success_url(self):
         # obtain circle key from request object and add anwsers to this circle
@@ -326,7 +323,7 @@ class retweet(CreateView,SuccessMessageMixin):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        return super(retweet, self).dispatch(request, *args, **kwargs)
+        return super(Retweet, self).dispatch(request, *args, **kwargs)
 
 
 @login_required()
@@ -359,7 +356,7 @@ def showPostToTheTheme(request,theme):
         messages.error(request,"Du hast noch keine Kreise")
     return render(request,"home",{"posts_list":posts})
 
-class postDetailsView(ListView,SuccessMessageMixin):
+class PostDetailsView(ListView,SuccessMessageMixin):
 
     """
     show all the circle messge to the given message
@@ -373,4 +370,4 @@ class postDetailsView(ListView,SuccessMessageMixin):
         return Circle_message.objects.filter(answer_to = currentcirclemessage).order_by('username')
 
     def dispatch(self, request, *args, **kwargs):
-        return super(postDetailsView, self).dispatch(request,*args,**kwargs)
+        return super(PostDetailsView, self).dispatch(request,*args,**kwargs)
