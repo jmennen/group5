@@ -26,12 +26,15 @@
                                 <h4 class="media-heading"><a href="{% url "view_profile" circlemessage.creator.pk %}">{{ circlemessage.creator }}</a> schrieb
                                     am {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
                                 {{ circlemessage.text }}
-								<!-- if you are the creator of the message, a delete button will be shown -->
+                            <div align="right">	
+								 <a class="btn btn-info btn-xs" href="#antworten" data-toggle="collapse"><span class="glyphicon glyphicon-share-alt"></span> Antworten</a>
+								 <a class="btn btn-info btn-xs" href="#"><span class="glyphicon glyphicon-retweet"></span> Retweet</a>
+								 <!-- if you are the creator of the message, a delete button will be shown -->
                                 {% if circlemessage.creator == user %}
-                                    <div align="right">
-                                        <a class="btn btn-danger btn-xs" href="{% url "delete_circlemessage" circlemessage.id %}">Löschen</a>
-                                    </div>
+                                        <a class="btn btn-danger btn-xs" href="{% url "delete_circlemessage" circlemessage.id %}"><span class="glyphicon glyphicon-remove"></span> Löschen</a>
                                 {% endif %}
+								<hr>
+							</div>
                             </div>
                         </div>
 					</div>	
