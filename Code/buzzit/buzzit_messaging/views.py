@@ -326,19 +326,6 @@ class retweet(CreateView,SuccessMessageMixin):
     def dispatch(self, request, *args, **kwargs):
         return super(retweet, self).dispatch(request, *args, **kwargs)
 
-"""
-class allPostTotheme(DetailView,SuccessMessageMixin):
-
-    klick one theme and show all the posts
-
-    model = Circle_message
-    slug_field =
-    def get_queryset(self):
-        #how to get the theme key
-        alltheposts = Circle_message.objects.all()
-        posttothetheme = alltheposts.get()
-
-"""
 
 @login_required()
 def showPostToTheTheme(request,theme):
