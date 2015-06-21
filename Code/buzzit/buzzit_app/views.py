@@ -265,12 +265,12 @@ def register(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             user = User.objects.create_user(
+                is_active = False,
                 username=form.cleaned_data['username'],
                 password=form.cleaned_data['password1'],
                 email=form.cleaned_data['email'],
                 first_name=form.cleaned_data.get('first_name', ''),
                 last_name=form.cleaned_data.get('last_name', ''),
-                is_active = False,
             )
             new_profile = Profile()
             new_profile.user = user
