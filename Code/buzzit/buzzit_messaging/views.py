@@ -373,3 +373,22 @@ class PostDetailsView(ListView,SuccessMessageMixin):
 
     def dispatch(self, request, *args, **kwargs):
         return super(PostDetailsView, self).dispatch(request,*args,**kwargs)
+
+@login_required
+def one_circlemessage(request, message_id):
+    """
+    Gives the ability to view details about the circlemessage by message_id.
+    :param request:
+    :param message_id:
+    :return:
+    """
+    all_answers = []
+    try:
+        circle_message = Circle_message.objects.get(pk = message_id)
+    except ObjectDoesNotExist:
+        messages.error(request,"Die Nachricht existiert nicht mehr")
+        return HttpResponseRedirect(reverse_lazy('home'))
+
+    all_answers = Circle_message.objects.filter(answer_to = circle_message)
+    return render(request,"buzzit_messaging/logged_in/post_details.html",
+                  {"answers": all_answers})
