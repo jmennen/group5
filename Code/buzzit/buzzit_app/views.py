@@ -397,6 +397,7 @@ def reset_password(request):
                           {"errors": "Benutzername oder Email stimmen nicht"})
         new_pwd = hashlib.sha1()
         new_pwd.update(urandom(64))
+        new_pwd = new_pwd.digest()
         send_mail("Dein neues Password",
                   message= "Deine neues Passwort lautet: '%s'. Log Dich ein, um es direkt zu aendern!" % new_pwd,
                   html_message="<html><h3>Dein neues Passwort:</h3>" +
