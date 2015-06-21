@@ -25,6 +25,7 @@ from PIL import Image
 import imghdr
 import os
 from django.contrib import messages
+from django.core.mail import send_mail
 
 
 def start(request):
@@ -377,3 +378,30 @@ def impressum(request):
         return render(request, "logged_in/impressum.html")
     else:
         return render(request, "guest/impressum.html")
+
+
+import hashlib
+from os import urandom
+
+
+def reset_password(request):
+    if request.method == "POST":
+        username = request.POST.get("username", False)
+        email = request.POST.get("email", False)
+        if not (username or email):
+            return render(request, "forgot_password/forgot_password.html", {"errors": "Benutzername oder EMail fehlen"})
+        try:
+            user = User.objects.get(username=username, email=email)
+        except ObjectDoesNotExist:
+            return render(request, "forgot_password/forgot_password.html",
+                          {"errors": "Benutzername oder Email stimmen nicht"})
+        new_pwd = hashlib.sha1()
+        new_pwd.update(urandom(64))
+        send_mail("Dein neues Password",
+                  """
+        <h3>Dein neues Passwort:</h3>
+        <p>%s</p><br />
+        <a href="%s">Log Dich ein und aendere es!</a>.
+        """ % (new_pwd, reverse("start"),),"PasswortAenderung@vps146949.ovh.net", (user.email,))
+        return render(request, "forgot_password/message_password_sent.html")
+    return render(request, "forgot_password/forgot_password.html")

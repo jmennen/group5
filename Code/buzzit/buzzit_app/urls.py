@@ -16,4 +16,5 @@ urlpatterns = [
     url(r'^impressum', views.impressum, name="impressum"),
     url(r'^accounts/login', views.start, name="login"),
     url(r'^logout', views.logout, name="logout"),
+    url(r'^resetpassword', views.reset_password, name="reset_password"),
 ]
