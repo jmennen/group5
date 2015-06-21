@@ -271,6 +271,8 @@ class answerToCircleMessageView(CreateView,SuccessMessageMixin):
 
 
 """
+aternative function to answer circle message
+
 def answertocirclemessage(request,answertocirclemessage_id):
 
     try:
