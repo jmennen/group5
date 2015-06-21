@@ -291,7 +291,7 @@ def register(request):
                       html_message="<html><h3>Dein neues Passwort:</h3>" +
                                    "<a href='%s'>Klicke hier um den Account zu aktivieren!</a>." % activation_address +
                                    "</html>" ,from_email="AccountAktivierung@vps146949.ovh.net", recipient_list=(user.email,))
-            messages.success(request, "Sie sind registriert und haben eine EMail bekommen!<br/>Bestaetigen Sie dort die EMail Adresse")
+            messages.success(request, "Sie sind registriert und haben eine EMail bekommen!\nBestaetigen Sie dort die EMail Adresse")
             return HttpResponseRedirect(reverse("start"))
         else:
             messages.error(request, "Sie haben ungueltige Daten angegeben!")
@@ -423,5 +423,15 @@ def reset_password(request):
     return render(request, "forgot_password/forgot_password.html")
 
 
-def activateaccount(request, token):
-    pass
+def activateaccount(request, username, token):
+    try:
+        activation_data = AccountActivation.objects.get(username_id=username, token=token)
+    except ObjectDoesNotExist:
+        messages.error(request, "Dieser Link ist ungueltig!")
+        return HttpResponseRedirect(reverse("start"))
+    user = activation_data.username
+    user.is_active = True
+    user.save()
+    activation_data.delete()
+    messages.success(request, "Dein Account wurde aktiviert! Logge Dich jetzt ein")
+    return HttpResponseRedirect(reverse("start"))
