@@ -26,6 +26,8 @@ import imghdr
 import os
 from django.contrib import messages
 from django.core.mail import send_mail
+import hashlib
+from os import urandom
 
 
 def start(request):
@@ -268,13 +270,27 @@ def register(request):
                 email=form.cleaned_data['email'],
                 first_name=form.cleaned_data.get('first_name', ''),
                 last_name=form.cleaned_data.get('last_name', ''),
+                is_active = False,
             )
             new_profile = Profile()
             new_profile.user = user
             new_profile.gender = ""
             new_profile.description = ""
             new_profile.save()
-            messages.success(request, "Sie sind registriert und koennen sich nun einloggen!")
+            token = hashlib.sha1()
+            token.update(urandom(64))
+            token = token.hexdigest()
+            at = AccountActivation()
+            at.username = user.username
+            at.token = token
+            at.save()
+            activation_address = request.build_absolute_uri(reverse("activateaccount", args=(at.username, at.token)))
+            send_mail("Aktiviere Deinen Account",
+                      message= "Gehe zu: '%s' um Deinen Account zu aktivieren. Danach kannst Du Dich einloggen!" % activation_address,
+                      html_message="<html><h3>Dein neues Passwort:</h3>" +
+                                   "<a href='%s'>Klicke hier um den Account zu aktivieren!</a>." % activation_address +
+                                   "</html>" ,from_email="AccountAktivierung@vps146949.ovh.net", recipient_list=(user.email,))
+            messages.success(request, "Sie sind registriert und haben eine EMail bekommen!<br/>Bestaetigen Sie dort die EMail Adresse")
             return HttpResponseRedirect(reverse("start"))
         else:
             messages.error(request, "Sie haben ungueltige Daten angegeben!")
@@ -380,10 +396,6 @@ def impressum(request):
         return render(request, "guest/impressum.html")
 
 
-import hashlib
-from os import urandom
-
-
 def reset_password(request):
     if request.method == "POST":
         username = request.POST.get("username", False)
@@ -408,3 +420,7 @@ def reset_password(request):
                                "</html>" ,from_email="PasswortAenderung@vps146949.ovh.net", recipient_list=(user.email,))
         return render(request, "forgot_password/message_password_sent.html")
     return render(request, "forgot_password/forgot_password.html")
+
+
+def activateaccount(request, token):
+    pass

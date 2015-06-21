@@ -17,4 +17,5 @@ urlpatterns = [
     url(r'^accounts/login', views.start, name="login"),
     url(r'^logout', views.logout, name="logout"),
     url(r'^resetpassword', views.reset_password, name="reset_password"),
+    url(r'^activeaccount/(?P<username>[a-zA-Z0-9]+)/(?P<token>[a-zA-Z0-9]+)', views.activateaccount, name="activate_account"),
 ]

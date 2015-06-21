@@ -43,3 +43,8 @@ class Circle(models.Model):
 class Settings(models.Model):
     owner = models.OneToOneField(User, blank=False, null=False, primary_key=True)
     show_own_messages_on_home_screen = models.BooleanField(null=False, blank=False, default=True)
+
+
+class AccountActivation(models.Model):
+    username = models.OneToOneField(User, to_field="username", null=False, blank=False, primary_key=True)
+    token = models.CharField(max_length=40, null=False, blank=False)
