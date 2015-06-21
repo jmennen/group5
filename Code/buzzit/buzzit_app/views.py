@@ -395,7 +395,7 @@ def reset_password(request):
         except ObjectDoesNotExist:
             return render(request, "forgot_password/forgot_password.html",
                           {"errors": "Benutzername oder Email stimmen nicht"})
-        new_pwd = hashlib.sha1()
+        new_pwd = hashlib.md5()
         new_pwd.update(urandom(64))
         new_pwd = new_pwd.digest()
         user.set_password(new_pwd)
