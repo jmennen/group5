@@ -370,17 +370,6 @@ def answer_to_circlemessage(request, message_id):
 
 
 @login_required
-def one_circlemessage(request, message_id):
-    """
-    Gives the ability to view details about the circlemessage by message_id.
-    :param request:
-    :param message_id:
-    :return:
-    """
-    pass
-
-
-@login_required
 def information_about_new_directmessages(request):
     """
     The function, that answers the client polling.
@@ -460,7 +449,10 @@ def showPostsToTheTheme(request, theme):
 
 class PostDetailsView(ListView):
     """
-    show all the circle messge to the given message
+    Gives the ability to view details about the circlemessage by message_id.
+    :param request:
+    :param message_id:
+    :return:
     """
     model = Circle_message
     template_name = "buzzit_messaging/logged_in/post_details.html"
