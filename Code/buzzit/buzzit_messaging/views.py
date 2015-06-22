@@ -277,17 +277,14 @@ def answertocirclemessage(request,answertocirclemessage_id):
         messageanswerto = Circle_message.objects.get(pk=answertocirclemessage_id)
     except ObjectDoesNotExist:
         # message to answer does not exist
-        messages.error(request,"Die Nachrichte, worauf du antwortest, existiert nicht mehr")
         return HttpResponseRedirect(reverse_lazy('home'))
 
     answer = Circle_message() # so create a new object
-    answer.created = datetime.now()
-    answer.creator = request.user
-    answer.answer_to.add(messageanswerto)
-    messages.info(request,"Du hast auf die Nachtichte geantwortet")
+    # then add all attributes
+        # message which to be returned does not exist
     return  HttpResponseRedirect(reverse_lazy('home'))
-"""
 
+"""
 @login_required()
 class retweet(CreateView,SuccessMessageMixin):
     """
@@ -338,7 +335,7 @@ class allPostTotheme(DetailView,SuccessMessageMixin):
         alltheposts = Circle_message.objects.all()
         posttothetheme = alltheposts.get()
 
-"""
+"""\
 
 @login_required()
 def showPostToTheTheme(request,theme):
