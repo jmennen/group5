@@ -2,6 +2,11 @@ body {
     padding-top: 70px;
 }
 
+span.glyphicon-envelope {
+    font-size: 1.0em;
+}
+
+
 .thumbnail img {
     width: 75%;
 }
@@ -21,6 +26,7 @@ body {
     border-width: thin;
 
 }
+
 
 .heading {
     display: table-row;

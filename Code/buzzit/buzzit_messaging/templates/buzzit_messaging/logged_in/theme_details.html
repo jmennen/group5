@@ -1,1 +1,46 @@
-<!-- all messages sent with a specific hashtag are shown in a list -->
+<!-- posts with the clicked theme-->
+{% extends "base.html" %}
+
+{% block title %}Kreisübersicht{% endblock %}
+
+{% block content %}
+
+    {% include "includes/navbar.html" %}
+
+    <div class="container">
+
+		<h3>Posts mit diesem Hashtag:</h3>
+		
+		{% for circlemessage in message_list %}
+					<!-- messages with the clicked theme -->
+					<div class="well">
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="#">
+                                    <img height="64" width="64" class="media-object"
+                                         src="{{ circlemessage.creator.profile.profile_picture }}" alt="Profilbild">
+                                </a>
+                            </div>
+                            <div class="media-body">
+							<!-- the creator of the message as well as the date will be shown -->
+                                <h4 class="media-heading"><a href="{% url "view_profile" circlemessage.creator.pk %}">{{ circlemessage.creator }}</a> schrieb
+                                    am {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
+                                {{ circlemessage.text }}
+                            <div align="right">	
+								 <a class="btn btn-info btn-xs" href="#antworten" data-toggle="collapse"><span class="glyphicon glyphicon-share-alt"></span> Antworten</a>
+								 <a class="btn btn-info btn-xs" href="#"><span class="glyphicon glyphicon-retweet"></span> Retweet</a>
+								 <!-- if you are the creator of the message, a delete button will be shown -->
+                                {% if circlemessage.creator == user %}
+                                        <a class="btn btn-danger btn-xs" href="{% url "delete_circlemessage" circlemessage.id %}"><span class="glyphicon glyphicon-remove"></span> Löschen</a>
+                                {% endif %}
+								<hr>
+							</div>
+                            </div>
+                        </div>
+					</div>	
+        {% endfor %}
+
+        
+    </div>
+
+{% endblock %}

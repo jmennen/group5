@@ -1,2 +1,55 @@
 <!-- form for retweets(messages you want to quote and publish yourself with a link to the creator ). 
      original message will be shown and highlighted -->
+	 	 {% extends "base.html" %}
+
+{% block title %}Retweet{% endblock %}
+
+{% block content %}
+
+    {% include "includes/navbar.html" %}
+
+	<div class="container">	
+
+	<h3>Du retweetest...</h3>
+	<div class="well col-md-4">
+	<div class="media">
+                            <div class="media-left">
+                                <a href="#">
+                                    <img height="64" width="64" class="media-object"
+                                         src="{{ circlemessage.creator.profile.profile_picture }}" alt="Profilbild">
+                                </a>
+                            </div>
+                            <div class="media-body">
+							<!-- the creator of the message as well as the date will be shown -->
+                                <h4 class="media-heading"><a href=" <!--{ url "view_profile" circlemessage.creator.pk %}">--> {{ circlemessage.creator }}</a> schrieb
+                                    am {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
+                                {{ circlemessage.text }}                               
+                            </div>
+                        </div>
+						</div>
+					
+						<div class="well col-md-10">
+	 <form role="form" method="post" action="#">
+                        {% csrf_token %}
+                        <p>
+						<!-- choose circe/s to send the messages to -->
+                            <select multiple="multiple" name="circles" class="testselect1">
+                                {% for circle in circles %}
+                                    <option value="{{ circle.pk }}">{{ circle.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </p>
+
+                        <div class="textfield">
+							<textarea class="form-control" rows="2" placeholder="gib einen Kommentar zu deinem Retweet ab..."></textarea>
+							<a id="messagebutton" type="submit" class="btn btn-info"><span class="glyphicon glyphicon-retweet"></span> Retweet</a>
+						</div>						
+						<p></p>
+							<a class="btn btn-default" href="{% url "start" %}">Abbrechen</a>
+					</div>
+    </form>
+	
+</div>
+
+	
+{% endblock %}

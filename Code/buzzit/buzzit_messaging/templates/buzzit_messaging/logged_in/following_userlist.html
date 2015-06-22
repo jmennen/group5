@@ -3,7 +3,7 @@
 
 {% load filters %}
 
-{% block title %}du followst{% endblock %}
+{% block title %}du folgst{% endblock %}
 
 {% block content %}
 
@@ -32,7 +32,7 @@
 
 						<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-envelope"></span></button>
 						<!-- button to unfollow this user -->
-						<a class="btn btn-danger" href="{% url "unfollow" followed_profile.pk %}">Entfolgen</a>
+						<a class="btn btn-danger" href="{% url "unfollow" followed_profile.pk %}"><span class="glyphicon glyphicon-remove-circle"></span> Entfolgen</a>
 					</td>
 
                 </tr>
