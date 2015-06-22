@@ -373,3 +373,8 @@ def search_theme_json(request, query):
         themenamelist.append({"name": theme.name, "id": theme.pk, "avatar": "", "type": "theme"})
     return JsonResponse({"symbol": "#", "list": themenamelist}, safe=False, )
     pass
+
+
+@login_required
+def chat_polling(request, sender_id):
+    return JsonResponse({"sender_id" : sender_id, "new_chat_messages" : []})
