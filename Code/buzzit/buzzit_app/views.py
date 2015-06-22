@@ -1,7 +1,7 @@
 from io import BytesIO
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic.base import ContextMixin
+from django.views.generic.detail import SingleObjectMixin
 from django.core.files.images import ImageFile
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.forms.utils import ErrorList
@@ -228,7 +228,7 @@ class EditUserdataView(SuccessMessageMixin, UpdateView):
         return super(EditUserdataView, self).dispatch(request, *args, **kwargs)
 
 
-class UserSearchResultsView(ContextMixin, ListView):
+class UserSearchResultsView(SingleObjectMixin, ListView):
     """
     Handles the results of a user search.
     """
