@@ -242,3 +242,153 @@ def unfollow(request, user_id):
         circle.members.remove(my_profile.pk)
     my_profile.follows.remove(unfollow_user.pk)
     messages.success(request, "Du folgst %s nicht mehr" % unfollow_user.user.username)
+    return HttpResponseRedirect(reverse_lazy('home'))
+
+
+"""
+class Answers(CreateView,SuccessMessageMixin):
+
+    model = Circle_message
+    fields = ['text']
+    success_message = "du hast darauf geantwortet"
+    success_url = reverse_lazy("home")
+
+    def form_valid(self, form):
+        form.instance.creator = self.request.user
+        form.instance.created = datetime.now()
+        original_id = self.request.kwargs.get("message_id")
+        try:
+            form.instance.answer_to = Circle_message.objects.get(pk=original_id) #the curcle message key which the message answered to
+        except ObjectDoesNotExist:
+            messages.error(self.request,"Nachticht existiert nicht.")
+            return HttpResponseRedirect(reverse_lazy("home"))
+        return super(Answers, self).form_valid(form)
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(Answers, self).dispatch(request, *args, **kwargs)
+
+"""
+
+def answer_to_circlemessage(request,message_id):
+
+
+    try:
+        messageanswerto = Circle_message.objects.get(pk=message_id)
+    except ObjectDoesNotExist:
+        messages.error(request,"Die Nachrichte, worauf du antwortest, existiert nicht mehr")
+        return HttpResponseRedirect(reverse_lazy('home'))
+
+    answer = Circle_message() # so create a new object
+    answer.created = datetime.now()
+    answer.creator = request.user
+    answer.answer_to.add(messageanswerto)
+    Circle_message.add(answer)
+    messages.info(request,"Du hast auf die Nachtichte geantwortet")
+    return HttpResponseRedirect(reverse_lazy('home'))
+
+
+
+class Retweet(CreateView,SuccessMessageMixin):
+    """
+    add retweet to the circle messages
+    """
+    model = Circle_message
+    fields = ['text']
+    success_url = reverse_lazy("home")
+    success_message = "du hast etwas retweetet"
+
+    def form_valid(self, form):
+        form.instance.creator = self.request.user
+        form.instance.created = datetime.now()
+        try:
+            original_id = self.request.kwargs.get("message_id") # original massage id from url
+            original_message = Circle_message.objects.get(pk=original_id)
+        except ObjectDoesNotExist:
+            messages.error(self.request,"Originale Nachricht existiert nicht")
+            return HttpResponseRedirect(reverse_lazy("home"))
+
+        form.instance.original_message = original_message
+        cirle_which_currentUser_belongs_to = Circle.objects.get(members = self.request.user) # get the circle which current user belongs to
+        cirle_which_currentUser_belongs_to.messages.add(form.instance) # add retweet as circle message to the circle
+        return super(Retweet, self).form_valid(form)
+
+    def get_success_url(self):
+        # obtain circle key from request object and add anwsers to this circle
+
+        circle_ids = self.request.POST.getlist("circles", [])
+        for circle_id in circle_ids:
+            circle = Circle.objects.get(pk=circle_id)
+            circle.messages.add(self.object.id)
+        return self.success_url
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(Retweet, self).dispatch(request, *args, **kwargs)
+
+
+@login_required()
+def showPostToTheTheme(request,theme):
+    """
+    klick on theme and show all the posts,check if the theme exits
+
+    filter message which man should see
+    :param request:
+    :param theme:
+    :return:
+    """
+    circle_in_which_i_am_a_member = []
+    all_posts_which_i_can_see = []
+    posts = []
+
+    try:
+        theme = Theme.objects.get(pk = theme.name)
+    except ObjectDoesNotExist:
+        messages.error(request,"Das gewaehlte Thema existiert nicht mehr")
+        return HttpResponseRedirect(reverse_lazy("home"))
+
+    try:
+        circle_in_which_i_am_a_member = Circle.objects.filter(members = request.user.pk) # get the circle in which i am a member
+        for circle in circle_in_which_i_am_a_member:
+            all_posts_which_i_can_see += (circle.messages.all())
+
+        posts = all_posts_which_i_can_see.objects.filter(themes = theme)  # might takes a while because of the posts list
+    except ObjectDoesNotExist:
+        messages.error(request,"Du hast noch keine Kreise")
+    return render(request,"home",{"posts_list":posts})
+
+
+class PostDetailsView(ListView,SuccessMessageMixin):
+
+    """
+    show all the circle messge to the given message
+    """
+    model = Circle_message
+    template_name = "buzzit_messaging/logged_in/post_details.html"
+
+    def get_queryset(self):
+
+        currentcirclemessage = self.request.kwargs.get("message_id")
+        return Circle_message.objects.filter(answer_to = currentcirclemessage).order_by('username')
+
+    def dispatch(self, request, *args, **kwargs):
+        return super(PostDetailsView, self).dispatch(request,*args,**kwargs)
+
+@login_required
+def one_circlemessage(request, message_id):
+    """
+    Gives the ability to view details about the circlemessage by message_id.
+    :param request:
+    :param message_id:
+    :return:
+    """
+    all_answers = []
+    try:
+        circle_message = Circle_message.objects.get(pk = message_id)
+    except ObjectDoesNotExist:
+        messages.error(request,"Die Nachricht existiert nicht mehr")
+        return HttpResponseRedirect(reverse_lazy('home'))
+
+    all_answers = Circle_message.objects.filter(answer_to = circle_message)
+    return render(request,"buzzit_messaging/logged_in/post_details.html",
+                  {"answers": all_answers})
