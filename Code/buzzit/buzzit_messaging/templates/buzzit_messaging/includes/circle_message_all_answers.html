@@ -21,7 +21,7 @@
         {% if answer_to.creator == user %}
             <div align="right">
                 <a class="btn btn-danger btn-xs"
-                   href="{% url "delete_circlemessage" circlemessage.id %}"><span
+                   href="{% url "delete_circlemessage" answer_to.id %}"><span
                         class="glyphicon glyphicon-remove"></span> Löschen</a>
             </div>
         {% endif %}
