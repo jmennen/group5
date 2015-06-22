@@ -85,8 +85,8 @@
                                 {{ circlemessage.text }}
 								
 								<div align="right">	
-								 <a class="btn btn-info btn-xs" href="#antworten" data-toggle="collapse"><span class="glyphicon glyphicon-share-alt"></span> Antworten</a>
-								 <a class="btn btn-info btn-xs" href="#"><span class="glyphicon glyphicon-retweet"></span> Retweet</a>
+								 <a class="btn btn-info btn-xs" href="{% url "one_circlemessage" circlemessage.pk %}" data-toggle="collapse"><span class="glyphicon glyphicon-share-alt"></span> Antworten</a>
+								 <a class="btn btn-info btn-xs" href="{% url "repost_circlemessage" circlemessage.pk %}"><span class="glyphicon glyphicon-retweet"></span> Retweet</a>
 								 <!-- if you are the creator of the message, a delete button will be shown -->
                                 {% if circlemessage.creator == user %}
                                         <a class="btn btn-danger btn-xs" href="{% url "delete_circlemessage" circlemessage.id %}"><span class="glyphicon glyphicon-remove"></span> Löschen</a>
@@ -98,9 +98,9 @@
 						{% for answer_to in answer_list  %}	
 						<div class="media">
                             <div class="media-left">
-                                <a href="#">
+                                <a href="{% url "view_profile" answer_to.creator.profile.pk %}">
                                     <img height="64" width="64" class="media-object"
-                                         src="{{ answer_to.circlemessage.creator.profile.profile_picture }}" alt="Profilbild">
+                                         src="{% url "profile_picture_small" answer_to.circlemessage.creator.profile.pk %}" alt="Profilbild">
                                 </a>
                             </div>
                             <div class="media-body">
