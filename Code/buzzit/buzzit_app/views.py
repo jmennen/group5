@@ -228,7 +228,7 @@ class EditUserdataView(SuccessMessageMixin, UpdateView):
         return super(EditUserdataView, self).dispatch(request, *args, **kwargs)
 
 
-class UserSearchResultsView(SingleObjectMixin, ListView):
+class UserSearchResultsView(ListView):
     """
     Handles the results of a user search.
     """
