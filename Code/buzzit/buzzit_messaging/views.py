@@ -353,7 +353,7 @@ def information_about_new_directmessages(request):
 def search_user_json(request, query):
     users = User.objects.filter(username__icontains=query).only('username')
     usernamelist = []
-    for user in users:
+    for user in users[:10]:
         pic_url = reverse("profile_picture_small", args=(user.pk,))
         usernamelist.append(
             {"name": user.username, "id": user.pk, "avatar": pic_url, "type": "contact"})
@@ -369,7 +369,7 @@ def search_theme_json(request, query):
         theme.pk = query
         themes = [theme]
     themenamelist = []
-    for theme in themes:
+    for theme in themes[:10]:
         themenamelist.append({"name": theme.name, "id": theme.pk, "avatar": "", "type": "theme"})
     return JsonResponse({"symbol": "#", "list": themenamelist}, safe=False, )
     pass
