@@ -371,7 +371,8 @@ def repost(request, message_id):
     if omessage.answer_to:
         messages.error(request, "Antworten koennen nicht repostet werden")
         return HttpResponseRedirect(reverse("home"))
-    return render(request, "buzzit_messaging/logged_in/retweet_form.html", {"circlemessage":omessage})
+    owncircles = Circle.objects.filter(owner=request.user)
+    return render(request, "buzzit_messaging/logged_in/retweet_form.html", {"circlemessage":omessage, "circles":owncircles})
 
 
 @login_required
