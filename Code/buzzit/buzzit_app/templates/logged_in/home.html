@@ -87,7 +87,7 @@
                                 {{ circlemessage.text }}
 
                                 <div align="right">
-                                    <a class="btn btn-info btn-xs" href="#antworten"
+                                    <a class="btn btn-info btn-xs" href="#antworten{{ circlemessage.id }}"
                                        data-toggle="collapse"><span class="glyphicon glyphicon-share-alt"></span>
                                         Antworten</a>
                                     <a class="btn btn-info btn-xs"
@@ -101,7 +101,7 @@
                                     {% endif %}
                                     <hr>
                                     <!-- erscheint, wenn auf antworten geklickt wird -->
-                                    <div id="antworten" class="collapse">
+                                    <div id="antworten{{ circlemessage.id }}" class="collapse">
                                         <div class="input-group">
                                             <input type="text" class="form-control" placeholder="antworte hier..."/>
                                             <span class="input-group-btn">
