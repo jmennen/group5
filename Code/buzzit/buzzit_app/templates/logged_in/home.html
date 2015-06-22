@@ -47,7 +47,7 @@
                     {% load messagefilters %}
                     {% for circlemessage in message_list %}
                         <!-- messagefeed for the messages that are visible to you -->
-                        {% include "buzzit_messaging/extendables/circle_message.html" with circlemessage=circlemessage %}
+                        {% include "buzzit_messaging/includes/circle_message_reduced_answers.html" with circlemessage=circlemessage %}
                     {% endfor %}
                 </div>
             </div>

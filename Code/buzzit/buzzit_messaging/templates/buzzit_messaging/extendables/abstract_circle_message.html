@@ -31,8 +31,7 @@
             {% endif %}
         </div>
         <!-- the answers-->
-        {% for answer_to in circlemessage.circle_message_set.all|slice:":3" %}
-            {% include "buzzit_messaging/extendables/circle_message.html" %}
-        {% endfor %}
+        {% block answers %}
+        {% endblock %}
     </div>
 </div>

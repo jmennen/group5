@@ -13,60 +13,7 @@
         <div class="well">
 
             <!-- the clicked post -->
-            <div class="media">
-                <div class="media-left">
-                    <a href="#">
-                        <img height="64" width="64" class="media-object"
-                             src="{% url "profile_picture_small" circlemessage.creator.pk %}" alt="Profilbild">
-                    </a>
-                </div>
-                <div class="media-body">
-                    <!-- the creator of the message as well as the date will be shown -->
-                    <h4 class="media-heading"><a
-                            href="{% url "view_profile" circlemessage.creator.pk %}">{{ circlemessage.creator }}</a>
-                        schrieb
-                        am {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
-                    {{ circlemessage | messagefilter |safe }}
-
-                    <div align="right">
-                        <a class="btn btn-info btn-xs" href="#"><span class="glyphicon glyphicon-retweet"></span>
-                            Retweet</a>
-                        <!-- if you are the creator of the message, a delete button will be shown -->
-                        {% if circlemessage.creator == user %}
-                            <a class="btn btn-danger btn-xs"
-                               href="{% url "delete_circlemessage" circlemessage.id %}"><span
-                                    class="glyphicon glyphicon-remove"></span> L&ouml;schen</a>
-                        {% endif %}
-                        <hr>
-                    </div>
-
-                    <!-- the answers -->
-                    {% for answer_to in answer_list %}
-                        <div class="media">
-                            <div class="media-left">
-                                <a href="#">
-                                    <img height="64" width="64" class="media-object"
-                                         src="{% url "profile_picture_small" answer_to.creator.pk %}"
-                                         alt="Profilbild">
-                                </a>
-                            </div>
-                            <div class="media-body">
-                                <!-- the creator of the answer as well as the date will be shown -->
-                                <h4 class="media-heading"><a
-                                        href="{% url "view_profile" answer_to.creator.pk %}">{{ answer_to.creator }}</a>
-                                    antwortete
-                                    am {{ answer_to.created | date:'d.m.Y H:i' }}:</h4>
-                                {{ answer_to | messagefilter | safe }}
-
-                            </div>
-
-
-                        </div>
-
-                    {% endfor %}
-                </div>
-            </div>
-
+            {% include "buzzit_messaging/includes/circle_message_all_answers.html" %}
 
             <!-- erscheint, wenn auf antworten geklickt wird -->
             <div id="antworten">

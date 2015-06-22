@@ -1,6 +1,6 @@
 {% extends "buzzit_messaging/extendables/abstract_circle_message.html" %}
 {% block answers %}
-    {% for answer_to in circlemessage.circle_message_set.all|slice:":3" %}
+    {% for answer_to in circlemessage.circle_message_set.all %}
         <div class="media">
             <div class="media-left">
                 <a href="{% url "view_profile" answer_to.creator.profile.pk %}">
