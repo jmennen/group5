@@ -91,7 +91,7 @@
                                 {% endif %}
                                 <!-- if you are not the creator of the message, then you can answer it -->
                                 {% if circlemessage.creator != user %}
-                                    <form method="post" action="{% url "answer_circlemessage" circlemessage.id%}">
+                                    <form method="post" action="{% url "answers" message_id.pk%}">
                                         {% csrf_token %}
                                         <input type="text" name="text" class="form-control"/>
 
