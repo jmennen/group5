@@ -78,11 +78,17 @@ def postCirclemessage(request):
         try:
             if ans:
                 newPost.answer_to = Circle_message.objects.get(pk=ans)
-            elif rep:
+            if rep:
                 newPost.original_message = Circle_message.objects.get(pk=ans)
         except ObjectDoesNotExist:
             messages.error(request, "Fehler")
             return HttpResponseRedirect(reverse("home"))
+        if newPost.original_message:
+            if newPost.original_message.original_message:
+                newPost.original_message = newPost.original_message.original_message
+            if newPost.answer_to:
+                messages.error(request, "Antworten koennen nicht repostet werden")
+                return HttpResponseRedirect(reverse("home"))
         newPost.creator = request.user
         newPost.created = datetime.now()
         newPost.text = html_clean(request.POST.get("text"), tags=[])
@@ -157,7 +163,7 @@ class DeleteCirclemessageView(DeleteView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        return super(PostCirclemessageView, self).dispatch(request, *args, **kwargs)
+        return super(DeleteCirclemessageView, self).dispatch(request, *args, **kwargs)
 
 
 def RemoveCircleView(request, slug):
@@ -290,76 +296,6 @@ def unfollow(request, user_id):
 
 
 @login_required
-def direct_messages_overview(request):
-    """
-    Overview of all direct messages.
-    Returns two objects:
-    1. directmessage_list : a list of all chats with one specific user
-    2. systemmessages : a list of all system messages
-
-    :param request:
-    :return:
-    """
-    pass
-
-
-@login_required
-def direct_messages_details(request, sender_id):
-    """
-    One specific chat. So this filters all messages from one specific sender.
-    Returns one object: directmessage_list, where sender was specified by user_id
-    and receiver is the logged in user and vice versa.
-    :param request:
-    :return:
-    """
-    pass
-
-"""
-UNUSED
-"""
-class RepostView(SuccessMessageMixin, CreateView):
-    """
-    add retweet to the circle messages
-    """
-    model = Circle_message
-    fields = ['text']
-    success_url = reverse_lazy("home")
-    success_message = "du hast etwas retweetet"
-    template_name = "buzzit_messaging/logged_in/retweet_form.html"
-
-    def form_valid(self, form):
-        form.instance.creator = self.request.user
-        form.instance.created = datetime.now()
-        try:
-            original_id = self.request.kwargs.get("message_id")  # original massage id from url
-            original_message = Circle_message.objects.get(pk=original_id)
-        except ObjectDoesNotExist:
-            messages.error(self.request, "Originale Nachricht existiert nicht")
-            return HttpResponseRedirect(reverse_lazy("home"))
-
-        if (original_message.answer_to):
-            messages.error(self.request, "Antworten koennen nicht wiederveroeffentlicht werden")
-            return HttpResponseRedirect(reverse_lazy("home"))
-        if (original_message.original_message):
-            original_message = original_message.original_message
-        form.instance.original_message = original_message
-        return super(RepostView, self).form_valid(form)
-
-    def get_success_url(self):
-        # obtain circle key from request object and add anwsers to this circle
-        circle_where_original_message_was_posted = Circle.objects.get(messages=self.object.original_message)
-        circle_where_original_message_was_posted.messages.add(self.object)
-        circle_ids = self.request.POST.getlist("circles", [])
-        for circle_id in circle_ids:
-            circle = Circle.objects.get(pk=circle_id)
-            circle.messages.add(self.object.id)
-        return self.success_url
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(RepostView, self).dispatch(request, *args, **kwargs)
-
-@login_required
 def repost(request, message_id):
     try:
         omessage = Circle_message.objects.get(pk=message_id)
@@ -372,7 +308,8 @@ def repost(request, message_id):
         messages.error(request, "Antworten koennen nicht repostet werden")
         return HttpResponseRedirect(reverse("home"))
     owncircles = Circle.objects.filter(owner=request.user)
-    return render(request, "buzzit_messaging/logged_in/retweet_form.html", {"circlemessage":omessage, "circles":owncircles})
+    return render(request, "buzzit_messaging/logged_in/retweet_form.html",
+                  {"circlemessage": omessage, "circles": owncircles})
 
 
 @login_required
