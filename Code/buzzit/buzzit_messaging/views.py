@@ -287,9 +287,7 @@ def answertocirclemessage(request,answertocirclemessage_id):
 """
 @login_required()
 class retweet(CreateView,SuccessMessageMixin):
-    """
-    add retweet to the circle messages
-    """
+    # without test
     model = Circle_message
     fields = ['text']
     success_url = reverse_lazy("home")
@@ -306,8 +304,6 @@ class retweet(CreateView,SuccessMessageMixin):
             return HttpResponseRedirect(reverse_lazy("home"))
 
         form.instance.original_message = original_message
-        cirle_which_currentUser_belongs_to = Circle.objects.get(members = self.request.user) # get the circle which current user belongs to
-        cirle_which_currentUser_belongs_to.messages.add(form.instance) # add retweet as circle message to the circle
         return super(retweet, self).form_valid(form)
 
     def get_success_url(self):
@@ -351,8 +347,7 @@ def showPostToTheTheme(request,theme):
         theme = Theme.objects.get(pk = theme.name)
     except:
         ObjectDoesNotExist:
-        messages.error(request,"Das gewaehlte Thema existiert nicht mehr")
-
+        messages.error(request,"Das geklickte Thema existiert nicht mehr")
     try:
         posts = Circle_message.objects.filter(themes=theme)
     except ObjectDoesNotExist:
