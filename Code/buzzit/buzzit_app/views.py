@@ -234,7 +234,7 @@ class UserSearchResultsView(ListView):
     """
     model = User
     template_name = "logged_in/usersearch_results.html"
-    context_object_name = "O"
+    # context_object_name = "O"
 
     def get_context_data(self, **kwargs):
         context = super(UserSearchResultsView, self).get_context_data(**kwargs)
