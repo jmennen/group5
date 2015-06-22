@@ -15,20 +15,8 @@ class Message(models.Model):
     text = models.CharField(blank=False, null=False, max_length=140)
 
 
-class Directmessage(Message):
-    receiver = models.ForeignKey(User, null=False, blank=False)
-    read = models.BooleanField(default=False, null=False, blank=False)
-
-
-class Theme(models.Model):
-    name = models.CharField(max_length=140, primary_key=True)
-
-
 class Circle_message(Message):
     answer_to = models.ForeignKey("self", blank=True, null=True)  # ist Antwort auf Kreisnachricht
-    themes = models.ManyToManyField(Theme, symmetrical=False)
-    mentions = models.ManyToManyField(User, symmetrical=False)
-    original_message = models.ForeignKey("self", blank=True, null=True, related_name="repost_of")
 
 
 class Circle(models.Model):

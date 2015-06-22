@@ -353,7 +353,8 @@ def showPostToTheTheme(request,theme):
 
     try:
         theme = Theme.objects.get(pk = theme.name)
-    except ObjectDoesNotExist:
+    except:
+        ObjectDoesNotExist:
         messages.error(request,"Das gewaehlte Thema existiert nicht mehr")
         return HttpResponseRedirect(reverse_lazy("home"))
 
@@ -366,6 +367,3 @@ def showPostToTheTheme(request,theme):
     except ObjectDoesNotExist:
         messages.error(request,"Du hast noch keine Kreise")
     return render(request,"home",{"posts_list":posts})
-
-class postDetailView(ListView,SuccessMessageMixin):
-    pass
