@@ -101,24 +101,23 @@
                                                 class="glyphicon glyphicon-remove"></span> Löschen</a>
                                     {% endif %}
                                 </div>
-
                                 <!-- the answers-->
-                                {% for answer_to in answer_list %}
+                                {% for answer_to in circlemessage.circle_message_set.all|slice:":3" %}
                                     <div class="media">
                                         <div class="media-left">
                                             <a href="{% url "view_profile" answer_to.creator.profile.pk %}">
                                                 <img height="64" width="64" class="media-object"
-                                                     src="{% url "profile_picture_small" answer_to.circlemessage.creator.profile.pk %}"
+                                                     src="{% url "profile_picture_small" answer_to.creator.profile.pk %}"
                                                      alt="Profilbild">
                                             </a>
                                         </div>
                                         <div class="media-body">
                                             <!-- the creator of the answer as well as the date will be shown -->
                                             <h4 class="media-heading"><a
-                                                    href="{% url "view_profile" answer_to.circlemessage.creator.pk %}">{{ answer_to.circlemessage.creator }}</a>
+                                                    href="{% url "view_profile" answer_to.creator.pk %}">{{ answer_to.creator }}</a>
                                                 antwortete
-                                                am {{ answer_to.circlemessage.created | date:'d.m.Y H:i' }}:</h4>
-                                            {{ answer_to.circlemessage.text }}
+                                                am {{ answer_to.created | date:'d.m.Y H:i' }}:</h4>
+                                            {{ answer_to.text }}
 
                                         </div>
 

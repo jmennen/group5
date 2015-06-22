@@ -79,17 +79,17 @@ def home(request):
     message_list = []
     # nachrichten von usern denen, wir folgen, und in deren kreis wir sind:
     for circle in circles_of_which_we_are_member:
-        message_list += (circle.messages.all())
+        message_list += (circle.messages.filter(answer_to=None).all())
     # public nachrichten von usern, denen wir folgen:
     followed_profiles = request.user.profile.follows.all()
     for followed_profile in followed_profiles:
-        public_messages_of_user = Circle_message.objects.filter(creator=followed_profile.user, public=True)
+        public_messages_of_user = Circle_message.objects.filter(creator=followed_profile.user, public=True, answer_to=None)
         message_list += public_messages_of_user.all()
 
     (settings, created) = Settings.objects.get_or_create(owner=request.user)
 
     if settings.show_own_messages_on_home_screen:
-        message_list += Circle_message.objects.filter(creator=request.user).all()
+        message_list += Circle_message.objects.filter(creator=request.user, answer_to=None).all()
 
     message_list.sort(key=lambda m: m.created, reverse=True)
 
