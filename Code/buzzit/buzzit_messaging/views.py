@@ -244,8 +244,8 @@ def unfollow(request, user_id):
     messages.success(request, "Du folgst %s nicht mehr" % unfollow_user.user.username)
     return HttpResponseRedirect(reverse_lazy('home'))
 
-
 """
+@login_required()
 class Answers(CreateView,SuccessMessageMixin):
 
     model = Circle_message
@@ -272,7 +272,6 @@ class Answers(CreateView,SuccessMessageMixin):
 
 def answer_to_circlemessage(request,message_id):
 
-
     try:
         messageanswerto = Circle_message.objects.get(pk=message_id)
     except ObjectDoesNotExist:
@@ -288,7 +287,7 @@ def answer_to_circlemessage(request,message_id):
     return HttpResponseRedirect(reverse_lazy('home'))
 
 
-
+@login_required()
 class Retweet(CreateView,SuccessMessageMixin):
     """
     add retweet to the circle messages
@@ -357,7 +356,6 @@ def showPostToTheTheme(request,theme):
         messages.error(request,"Du hast noch keine Kreise")
     return render(request,"home",{"posts_list":posts})
 
-
 class PostDetailsView(ListView,SuccessMessageMixin):
 
     """
@@ -368,7 +366,7 @@ class PostDetailsView(ListView,SuccessMessageMixin):
 
     def get_queryset(self):
 
-        currentcirclemessage = self.request.kwargs.get("message_id")
+        currentcirclemessage = self.request.kwargs.get("circlemessage_id")
         return Circle_message.objects.filter(answer_to = currentcirclemessage).order_by('username')
 
     def dispatch(self, request, *args, **kwargs):
