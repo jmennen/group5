@@ -42,100 +42,15 @@
                 <div class="well">
                     <h3>Kreisnachrichten</h3>
                     <!--space for creating a circle messages-->
-                    <form id="new_post_form" role="form" method="post" action="{% url "new_circlemessage" %}">
-                        {% csrf_token %}
-                        <p>
-                            <!-- choose circe/s to send the messages to -->
-                            <select multiple="multiple" name="circles" class="testselect1">
-                                {% for circle in circles %}
-                                    <option value="{{ circle.pk }}">{{ circle.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </p>
-
-                        <div class="input-group">
-                            <!-- inputfield for the messages you are going to send -->
-                            <input type="hidden" name="mentions"/>
-                            <input type="hidden" name="themes"/>
-                            <textarea required name="text" class="new_text_input" id="main_post_ta"
-                                      placeholder="Neue Kreisnachricht..."></textarea>
-
-                            <div class="input-group-btn">
-                                <button class="btn btn-info" type="submit">Senden</button>
-                            </div>
-
-                        </div>
-                    </form>
+                    {% include "buzzit_messaging/includes/new_tweet_form.html" %}
                     <hr>
                     {% load messagefilters %}
                     {% for circlemessage in message_list %}
                         <!-- messagefeed for the messages that are visible to you -->
-                        <div class="media">
-                            <div class="media-left">
-                                <a href="#">
-                                    <img height="64" width="64" class="media-object"
-                                         src="{% url "profile_picture_small" circlemessage.creator.profile.pk %}"
-                                         alt="Profilbild">
-                                </a>
-                            </div>
-                            <div class="media-body">
-                                <!-- the creator of the message as well as the date will be shown -->
-                                <h4 class="media-heading"><a
-                                        href="{% url "view_profile" circlemessage.creator.pk %}">{{ circlemessage.creator }}</a>
-                                    schrieb
-                                    am {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
-                                {{ circlemessage | messagefilter | safe }}
-
-                                <div align="right">
-                                    <a class="btn btn-info btn-xs" href="{% url "one_circlemessage" circlemessage.id %}">
-                                        <span class="glyphicon glyphicon-share-alt"></span>
-                                        Antworten
-                                    </a>
-                                    <a class="btn btn-info btn-xs"
-                                       href="{% url "repost_circlemessage" circlemessage.pk %}"><span
-                                            class="glyphicon glyphicon-retweet"></span> Retweet</a>
-                                    <!-- if you are the creator of the message, a delete button will be shown -->
-                                    {% if circlemessage.creator == user %}
-                                        <a class="btn btn-danger btn-xs"
-                                           href="{% url "delete_circlemessage" circlemessage.id %}"><span
-                                                class="glyphicon glyphicon-remove"></span> Löschen</a>
-                                    {% endif %}
-                                </div>
-                                <!-- the answers-->
-                                {% for answer_to in circlemessage.circle_message_set.all|slice:":3" %}
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <a href="{% url "view_profile" answer_to.creator.profile.pk %}">
-                                                <img height="64" width="64" class="media-object"
-                                                     src="{% url "profile_picture_small" answer_to.creator.profile.pk %}"
-                                                     alt="Profilbild">
-                                            </a>
-                                        </div>
-                                        <div class="media-body">
-                                            <!-- the creator of the answer as well as the date will be shown -->
-                                            <h4 class="media-heading"><a
-                                                    href="{% url "view_profile" answer_to.creator.pk %}">{{ answer_to.creator }}</a>
-                                                antwortete
-                                                am {{ answer_to.created | date:'d.m.Y H:i' }}:</h4>
-                                            {{ answer_to.text }}
-
-                                        </div>
-
-
-                                    </div>
-
-                                {% endfor %}
-
-                            </div>
-                        </div>
+                        {% include "buzzit_messaging/includes/circle_message.html" with circlemessage=circlemessage %}
                     {% endfor %}
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        $(document).ready(function () {
-            init_post_area("#main_post_ta", '#new_post_form');
-        });
-    </script>
 {% endblock %}

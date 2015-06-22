@@ -1,0 +1,11 @@
+{% extends "buzzit_messaging/extendables/new_tweet_form.html" %}
+{% block formbegin %}
+    <p>
+        <!-- choose circe/s to send the messages to -->
+        <select multiple="multiple" name="circles" class="testselect1">
+            {% for circle in circles %}
+                <option value="{{ circle.pk }}">{{ circle.name }}</option>
+            {% endfor %}
+        </select>
+    </p>
+{% endblock %}
