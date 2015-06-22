@@ -17,18 +17,18 @@
                 <th>Actions</th>
 
             </tr>
-            {% for user in O.user_list %}
+            {% for user in user_list %}
                 <tr>
                     <!--the name links to the user's profile-->
                     <td><a href="{% url "view_profile" user.pk %}">{{ user.username }}</a></td>
                     <!--profile_picture is resized-->
-                    <td><img src="{{ user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
+                    <td><img src="{% url "profile_picture_small" user.profile.pk %}" height="64" alt="Profilbild"></td>
                     <td>{{ user.profile.description | beautifulNone }}</td>
                     <td>
                         <form class="form-inline" role="form">
                             <button class="btn btn-info" type="button"><span
                                     class="glyphicon glyphicon-envelope"></span></button>
-                            {% if O.ownprofile.user != user %}
+                            {% if ownprofile.user != user %}
                                 <!-- if you are following the user an unfollow button will be shown -->
                                 {% if user.i_am_following %}
                                     <a class="btn btn-danger" role="form-control" method="post"

@@ -59,6 +59,7 @@
                     <form role="form" method="post" action="{% url "new_circlemessage" %}">
                         {% csrf_token %}
                         <input type="hidden" name="circles" value="{{ circle.pk }}">
+
                         <div class="input-group">
                             <!-- inputfield for the messages you are going to send -->
                             <input required type="text" name="text" id="text" class="form-control"
@@ -70,19 +71,21 @@
 
                         </div>
                     </form>
+                    {% load messagefilters %}
                     <!-- space for circle messages from this circle -->
                     {% for circlemessage in circle.messages.all %}
                         <div class="media">
                         <div class="media-left">
                             <a href="#">
                                 <img height="64" width="64" class="media-object"
-                                     src="{{ circlemessage.creator.profile.profile_picture }}" alt="Profilbild">
+                                     src="{% url "profile_picture_small" circlemessage.creator.profile.pk %}"
+                                     alt="Profilbild">
                             </a>
                         </div>
                         <div class="media-body">
                             <h4 class="media-heading">{{ circlemessage.creator }} schrieb
                                 am {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
-                            {{ circlemessage.text }}
+                            {{ circlemessage | messagefilter | safe }}
 
                             <div align="right">	
 								 <a class="btn btn-info btn-xs" href="#antworten" data-toggle="collapse"><span class="glyphicon glyphicon-share-alt"></span> Antworten</a>

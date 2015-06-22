@@ -29,7 +29,7 @@
                     <div class="cell"><a
                             href="{% url "view_profile" profile.pk %}">{{ profile.user.username }}</a></div>
                     <!--profile_picture is resized-->
-                    <div class="cell"><img src="{{ profile.profile_picture }}" height="64"
+                    <div class="cell"><img src="{% url "profile_picture_small" profile.pk %}" height="64"
                                                           alt="Profilbild"></div>
                     <div class="cell">
 					<!-- choose circles to add the user to them -->

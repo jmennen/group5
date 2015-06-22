@@ -1,5 +1,9 @@
+from io import BytesIO
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
+from django.views.generic.detail import SingleObjectMixin
+from django.core.files.images import ImageFile
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.forms.utils import ErrorList
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, render_to_response
@@ -22,6 +26,9 @@ from PIL import Image
 import imghdr
 import os
 from django.contrib import messages
+from django.core.mail import send_mail
+import hashlib
+from os import urandom
 
 
 def start(request):
@@ -74,11 +81,10 @@ def home(request):
     for circle in circles_of_which_we_are_member:
         message_list += (circle.messages.all())
     # public nachrichten von usern, denen wir folgen:
-    followed_profiles= request.user.profile.follows.all()
+    followed_profiles = request.user.profile.follows.all()
     for followed_profile in followed_profiles:
-        circles_of_user = Circle.objects.filter(owner=followed_profile.user)
-        messages_of_user = Circle_message.objects.filter(creator=followed_profile.user).exclude(circle__in=circles_of_user).distinct()
-        message_list += messages_of_user.all()
+        public_messages_of_user = Circle_message.objects.filter(creator=followed_profile.user, public=True)
+        message_list += public_messages_of_user.all()
 
     (settings, created) = Settings.objects.get_or_create(owner=request.user)
 
@@ -87,11 +93,10 @@ def home(request):
 
     message_list.sort(key=lambda m: m.created, reverse=True)
 
-
     return render(request, "logged_in/home.html", {"user": request.user,
                                                    "profile": Profile.objects.get(user=request.user.pk),
-                                                   "message_list" : message_list,
-                                                   "circles" : Circle.objects.filter(owner=request.user.pk)})
+                                                   "message_list": message_list,
+                                                   "circles": Circle.objects.filter(owner=request.user.pk)})
 
 
 @login_required
@@ -113,12 +118,12 @@ def view_profile(request, slug):
     # 1. alle circles
     circles_of_user = Circle.objects.filter(owner=profile.user)
     # 2. alle public nachrichten vom user
-    messages_of_user = Circle_message.objects.filter(creator=profile.user).exclude(circle__in=circles_of_user).distinct()
+    messages_of_user = Circle_message.objects.filter(creator=profile.user, public=True)
     message_list += (messages_of_user.all())
     message_list.sort(key=lambda m: m.created, reverse=True)
 
-    return render(request, "logged_in/view_profile.html", {"profile":profile,
-                                                           "message_list" : message_list,
+    return render(request, "logged_in/view_profile.html", {"profile": profile,
+                                                           "message_list": message_list,
                                                            "user": request.user})
 
 
@@ -145,21 +150,26 @@ class EditProfileView(SuccessMessageMixin, UpdateView):
         form.fields['image_file'].required = False
         return form
 
-    def __create_small_picture__(request, o_image_filename):
+    def __create_small_picture__(request):
         """
         Generates a smaller, standard size (128x128) picture of original image with filename <o_o_image_filename>.
         Filename of smaller file is <o_o_image_filename>_sm
         If this fails, the smaller file will we removed!
         :param request:  the originial request object
-        :param o_image_filename: the filename of original image
+        :param o_image: the filename of original image
         :return: True on success, False else
         """
-        outfile = o_image_filename + "_sm"
+        profile = request.user.profile
+        outfile = profile.profile_picture_full.path + "_sm"
         try:
-            im = Image.open(o_image_filename)
+            im = Image.open(request.user.profile.profile_picture_full.path)
             im.thumbnail((128, 128))
-            im.save(outfile, "JPEG")
-            im.close()
+            thumb_io = BytesIO()
+            im.save(thumb_io, format='JPEG')
+            thumb_file = InMemoryUploadedFile(thumb_io, None, 'pp.jpg', 'image/jpeg',
+                                              thumb_io.getbuffer().nbytes, None)
+            profile.profile_picture_small = thumb_file
+            profile.save()
             return True
         except IOError:
             logging.error("Fehler beim speichern des thumbnails")
@@ -178,27 +188,17 @@ class EditProfileView(SuccessMessageMixin, UpdateView):
         instance = form.save(commit=False)
         instance.user = self.request.user
         image_file = self.request.FILES.get('image_file', False)
-        image_file_name = "pp/pp_" + self.request.user.username
         if image_file:
             imgtype = imghdr.what(image_file)
             if imgtype in ["jpeg", "png", "gif"]:
-                try:
-                    f = open(image_file_name, "xb")
-                except FileExistsError:
-                    f = open(image_file_name, "wb")
-                for chunk in image_file.chunks():
-                    f.write(chunk)
-                f.close()
-                if not EditProfileView.__create_small_picture__(self.request, image_file_name):
-                    os.remove(image_file_name)
+                instance.profile_picture_full = image_file
+                instance.save()
+                if not EditProfileView.__create_small_picture__(self.request):
                     errors = form._errors.setdefault('image_file', ErrorList())
                     messages.warning(self.request, "Bild nicht gespeichert - altes Bild wurde geloescht")
                     errors.append(
                         "Das Thumbnail konnte nicht erzeugt werden; benutzen Sie ein anderes (jpg,png,gif(nicht animiert)) Bild.")
                     return super(EditProfileView, self).form_invalid(form)
-                else:
-                    instance.profile_picture = reverse("profile_picture_small", kwargs={"slug": self.request.user.pk})
-                    instance.save()
         return super(EditProfileView, self).form_valid(form)
 
     def get_object(self, queryset=None):
@@ -234,7 +234,14 @@ class UserSearchResultsView(ListView):
     """
     model = User
     template_name = "logged_in/usersearch_results.html"
-    context_object_name = "O"
+    # context_object_name = "O"
+
+    def get_context_data(self, **kwargs):
+        context = super(UserSearchResultsView, self).get_context_data(**kwargs)
+        ownprofile = self.request.user.profile
+        ownprofile.follows_list = ownprofile.follows.all()
+        context["ownprofile"] = ownprofile
+        return context
 
     def get_queryset(self):
         ownprofile = self.request.user.profile
@@ -246,7 +253,7 @@ class UserSearchResultsView(ListView):
             userset = User.objects.all().order_by("username")
         for user in userset:
             user.i_am_following = ownprofile.follows.all().filter(pk=user)
-        return {"user_list":userset, "ownprofile" : ownprofile }
+        return userset
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -272,13 +279,27 @@ def register(request):
                 first_name=form.cleaned_data.get('first_name', ''),
                 last_name=form.cleaned_data.get('last_name', ''),
             )
+            user.is_active = False
+            user.save()
             new_profile = Profile()
             new_profile.user = user
-            new_profile.profile_picture = "https://placehold.it/128x128"
             new_profile.gender = ""
             new_profile.description = ""
             new_profile.save()
-            messages.success(request, "Sie sind registriert und koennen sich nun einloggen!")
+            token = hashlib.sha1()
+            token.update(urandom(64))
+            token = token.hexdigest()
+            at = AccountActivation()
+            at.username = user
+            at.token = token
+            at.save()
+            activation_address = request.build_absolute_uri(reverse("activate_account", args=(at.username.username, at.token)))
+            send_mail("Aktiviere Deinen Account",
+                      message= "Gehe zu: '%s' um Deinen Account zu aktivieren. Danach kannst Du Dich einloggen!" % activation_address,
+                      html_message="<html><h3>Dein neues Passwort:</h3>" +
+                                   "<a href='%s'>Klicke hier um den Account zu aktivieren!</a>." % activation_address +
+                                   "</html>" ,from_email="AccountAktivierung@vps146949.ovh.net", recipient_list=(user.email,))
+            messages.success(request, "Sie sind registriert und haben eine EMail bekommen!\\nBestaetigen Sie dort die EMail Adresse")
             return HttpResponseRedirect(reverse("start"))
         else:
             messages.error(request, "Sie haben ungueltige Daten angegeben!")
@@ -332,10 +353,13 @@ def profilepicture_full(request, slug):
     :return:
     """
     try:
-        username = User.objects.get(pk=slug).username
+        profile = Profile.objects.get(pk=slug)
     except ObjectDoesNotExist:
         return __create_dummy_pic_response__()
-    image = "pp/pp_" + username
+    if profile.profile_picture_full:
+        image = profile.profile_picture_full.path
+    else:
+        image = Profile.objects.get(user__username="SYSTEM").profile_picture_full.path
     try:
         with open(image, "rb") as f:
             return HttpResponse(f.read(), content_type="image/jpeg")
@@ -352,10 +376,13 @@ def profilepicture_small(request, slug):
     :return:
     """
     try:
-        username = User.objects.get(pk=slug).username
+        profile = Profile.objects.get(pk=slug)
     except ObjectDoesNotExist:
         return __create_dummy_pic_response__()
-    image = "pp/pp_" + username + "_sm"
+    if profile.profile_picture_small:
+        image = profile.profile_picture_small.path
+    else:
+        image = Profile.objects.get(user__username="SYSTEM").profile_picture_small.path
     try:
         with open(image, "rb") as f:
             return HttpResponse(f.read(), content_type="image/jpeg")
@@ -376,3 +403,43 @@ def impressum(request):
         return render(request, "logged_in/impressum.html")
     else:
         return render(request, "guest/impressum.html")
+
+
+def reset_password(request):
+    if request.method == "POST":
+        username = request.POST.get("username", False)
+        email = request.POST.get("email", False)
+        if not (username or email):
+            return render(request, "forgot_password/forgot_password.html", {"errors": "Benutzername oder EMail fehlen"})
+        try:
+            user = User.objects.get(username=username, email=email)
+        except ObjectDoesNotExist:
+            return render(request, "forgot_password/forgot_password.html",
+                          {"errors": "Benutzername oder Email stimmen nicht"})
+        new_pwd = hashlib.sha1()
+        new_pwd.update(urandom(64))
+        new_pwd = new_pwd.hexdigest()
+        user.set_password(new_pwd)
+        user.save()
+        send_mail("Dein neues Password",
+                  message= "Deine neues Passwort lautet: '%s'. Log Dich ein, um es direkt zu aendern!" % new_pwd,
+                  html_message="<html><h3>Dein neues Passwort:</h3>" +
+                               "<p>%s</p><br />" % new_pwd +
+                               "<a href='%s'>Log Dich ein und aendere es!</a>." % request.build_absolute_uri(reverse("start")) +
+                               "</html>" ,from_email="PasswortAenderung@vps146949.ovh.net", recipient_list=(user.email,))
+        return render(request, "forgot_password/message_password_sent.html")
+    return render(request, "forgot_password/forgot_password.html")
+
+
+def activateaccount(request, username, token):
+    try:
+        activation_data = AccountActivation.objects.get(username_id=username, token=token)
+    except ObjectDoesNotExist:
+        messages.error(request, "Dieser Link ist ungueltig!")
+        return HttpResponseRedirect(reverse("start"))
+    user = activation_data.username
+    user.is_active = True
+    user.save()
+    activation_data.delete()
+    messages.success(request, "Dein Account wurde aktiviert! Logge Dich jetzt ein")
+    return HttpResponseRedirect(reverse("start"))

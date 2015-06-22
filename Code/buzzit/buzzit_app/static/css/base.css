@@ -50,3 +50,10 @@ span.glyphicon-envelope {
 footer {
     margin: 50px 0;
 }
+
+.highlight_theme {
+    background-color: #AAD7FF;
+}
+.highlight_contact {
+    background-color: #9AEEAC;
+}

@@ -19,7 +19,7 @@
         </div>
         <div class="row">
             <div class="thumbnail col-md-3">
-                <img class="img-responsive" src="{{ profile.profile_picture }}" alt="Profilbild">
+                <img class="img-responsive" src="{% url "profile_picture_small" user.profile.pk %}" alt="Profilbild">
                 <hr>
                 <p>Vorname: {{ user.first_name | beautifulNone }}</p>
                 <hr>
@@ -34,7 +34,6 @@
                 <p><a href="{% url "update_profile" %}">Profil bearbeiten</a></p>
 				<!-- leads to the follwing_userlist which contains the user you are following -->
                 <p><a href="{% url "list_follows" %}">Wem folge ich?</a></p>
-
             </div>
             <div class="col-md-9">
                 <div class="thumbnail">
@@ -43,10 +42,10 @@
                 <div class="well">
                     <h3>Kreisnachrichten</h3>
                     <!--space for creating a circle messages-->
-                    <form role="form" method="post" action="{% url "new_circlemessage" %}">
+                    <form id="new_post_form" role="form" method="post" action="{% url "new_circlemessage" %}">
                         {% csrf_token %}
                         <p>
-						<!-- choose circe/s to send the messages to -->
+                            <!-- choose circe/s to send the messages to -->
                             <select multiple="multiple" name="circles" class="testselect1">
                                 {% for circle in circles %}
                                     <option value="{{ circle.pk }}">{{ circle.name }}</option>
@@ -55,9 +54,11 @@
                         </p>
 
                         <div class="input-group">
-						<!-- inputfield for the messages you are going to send -->
-                            <input required type="text" name="text" id="text" class="form-control"
-                                   placeholder="Kreisnachricht...">
+                            <!-- inputfield for the messages you are going to send -->
+                            <input type="hidden" name="mentions"/>
+                            <input type="hidden" name="themes"/>
+                            <textarea required name="text" class="new_text_input"
+                                      placeholder="Neue Kreisnachricht..."></textarea>
 
                             <div class="input-group-btn">
                                 <button class="btn btn-info" type="submit">Senden</button>
@@ -66,13 +67,15 @@
                         </div>
                     </form>
                     <hr>
+                    {% load messagefilters %}
                     {% for circlemessage in message_list %}
-					<!-- messagefeed for the messages that are visible to you -->
+                        <!-- messagefeed for the messages that are visible to you -->
                         <div class="media">
                             <div class="media-left">
                                 <a href="#">
                                     <img height="64" width="64" class="media-object"
-                                         src="{{ circlemessage.creator.profile.profile_picture }}" alt="Profilbild">
+                                         src="{% url "profile_picture_small" circlemessage.creator.profile.pk %}"
+                                         alt="Profilbild">
                                 </a>
                             </div>
                             <div class="media-body">
@@ -129,4 +132,9 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+            init_post_area("textarea.new_text_input", '#new_post_form');
+        });
+    </script>
 {% endblock %}

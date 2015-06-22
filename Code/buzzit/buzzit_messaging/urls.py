@@ -12,7 +12,7 @@ urlpatterns = [
     url(r'^circle/(?P<slug>[0-9]+)/delete/$', views.RemoveCircleView.as_view(), name="delete_circle"),
     url(r'^circles/$', views.CircleOverviewView.as_view(), name="circle_overview"),
     url(r'^follows/$', views.listfollows, name="list_follows"),
-    url(r'^circlemessage/new/$', views.PostCirclemessageView.as_view(), name="new_circlemessage"),
+    url(r'^circlemessage/new/$', views.postCirclemessage, name="new_circlemessage"),
     url(r'^circlemessage/(?P<message_id>[0-9]+)/delete/$', views.delete_circle_message, name="delete_circlemessage"),
     url(r'^follow/(?P<user_id>[0-9]+)/$', views.follow, name="follow"),
     url(r'^unfollow/(?P<user_id>[0-9]+)/$', views.unfollow, name="unfollow"),
@@ -22,5 +22,8 @@ urlpatterns = [
     url(r'^circle/message/(?P<message_id>[0-9]+)/answer$', views.answer_to_circlemessage, name="answer_circlemessage"),
     url(r'^circle/message/(?P<original_message_id>[0-9]+)/repost$', views.repost_circlemessage, name="repost_circlemessage"),
     url(r'^chat/(?P<sender_id>[0-9]+)/$', views.direct_messages_details, name="chat"),
+    url(r'^chat/(?P<sender_id>[0-9]+)/poll/json$', views.chat_polling, name="chat_polling"),
     url(r'^chats/$', views.direct_messages_overview, name="all_chats"),
+    url(r'^search/user/(?P<query>[a-zA-Z0-9]+)/json$', views.search_user_json, name="search_user_json"),
+    url(r'^search/theme/(?P<query>[a-zA-Z0-9]+)/json$', views.search_theme_json, name="search_theme_json"),
 ]

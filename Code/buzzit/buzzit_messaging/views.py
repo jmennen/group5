@@ -1,17 +1,16 @@
-import string
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
-from django.middleware.common import logger
 from django.shortcuts import render
 from django.utils.datetime_safe import datetime
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, UpdateView, CreateView, DeleteView
+from django.views.generic import ListView, CreateView, DeleteView
 from django.http import HttpResponseRedirect, JsonResponse
 from buzzit_models.models import *
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse, reverse_lazy
 import django.contrib.messages as messages
-import logging
+import json
+from bleach import clean as html_clean
 
 
 @login_required
@@ -70,30 +69,63 @@ def listfollows(request):
                   )
 
 
-class PostCirclemessageView(CreateView, SuccessMessageMixin):
-    model = Circle_message
-    fields = ["text"]
-    success_message = "Kreisnachricht gespeichert"
-    success_url = reverse_lazy("home")
+@login_required
+def postCirclemessage(request):
+    if request.method == "POST":
+        newPost = Circle_message()
+        newPost.creator = request.user
+        newPost.created = datetime.now()
+        newPost.text = html_clean(request.POST.get("text"), tags=[])
+        if len(newPost.text) < 1:
+            messages.error("Es wurde kein Text angegeben")
+            return HttpResponseRedirect(reverse("home"))
+        newPost.save()  # save, to generate primary key to use RELs
 
-    def form_valid(self, form):
-        form.instance.creator = self.request.user
-        form.instance.created = datetime.now()
-        return super(PostCirclemessageView, self).form_valid(form)
+        # now that we have a pk in the newPost, we can push it to the circles
+        # or mark it as public if no circles were given
+        circle_ids = request.POST.getlist("circles", [])
+        if len(circle_ids) > 0:
+            # not public
+            for circle_id in circle_ids:
+                circle = Circle.objects.get(pk=circle_id)
+                circle.messages.add(newPost)
+        else:
+            # public
+            newPost.public = True
 
-    def get_success_url(self):
-        # nachricht in die circles
-        # TODO: Wenn exceptions auftreten nachricht loeschen oder so
-        circle_ids = self.request.POST.getlist("circles", [])
-        for circle_id in circle_ids:
-            logging.getLogger(__name__).error(circle_id)
-            circle = Circle.objects.get(pk=circle_id)
-            circle.messages.add(self.object.id)
-        return self.success_url
+        # add mentions, that were submitted
+        # ignore users, that are not registered
+        mentions = json.loads(request.POST.get("mentions", "[]"))
+        for mention in mentions:
+            try:
+                user_mentioned = User.objects.get(username=mention["name"])
+            except ObjectDoesNotExist:
+                continue
+            # inform mentioned user about mention
+            notification = Directmessage()
+            notification.created = datetime.now()
+            notification.creator = User.objects.get(username="SYSTEM")
+            notification.receiver = user_mentioned
+            notification.text = "Du wurdest in einem Post erwaehnt: <POST:%s>" % newPost.id
+            notification.save()
+            newPost.mentions.add(user_mentioned)
 
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(PostCirclemessageView, self).dispatch(request, *args, **kwargs)
+        # add themes, that were submitted
+        # create not found themes
+        themes = json.loads(request.POST.get("themes", "[]"))
+        for theme in themes:
+            theme["name"] = html_clean(theme["name"], tags=[])
+            theme_mentioned, created = Theme.objects.get_or_create(pk=theme["name"])
+            if created:
+                messages.info(request, "Du hast ein neues Thema erstellt: %s" % theme_mentioned.name)
+            newPost.themes.add(theme_mentioned)
+
+        # save all changes
+        newPost.save()
+
+        return HttpResponseRedirect(reverse("home"))
+    return render(request, "buzzit_models/circle_message_form.html")
+
 
 @login_required
 def delete_circle_message(request, message_id):
@@ -108,6 +140,7 @@ def delete_circle_message(request, message_id):
     message_to_del.delete()
     messages.success(request, "Nachricht geloescht")
     return HttpResponseRedirect(reverse_lazy('home'))
+
 
 class DeleteCirclemessageView(DeleteView):
     model = Circle_message
@@ -239,7 +272,6 @@ def unfollow(request, user_id):
     return HttpResponseRedirect(reverse_lazy('home'))
 
 
-
 @login_required
 def direct_messages_overview(request):
     """
@@ -314,4 +346,35 @@ def information_about_new_directmessages(request):
     :return:
     """
     notifications_count = Directmessage.objects.filter(receiver=request.user, read=False).count()
-    return JsonResponse({"new_notifications" : notifications_count})
+    return JsonResponse({"new_notifications": notifications_count})
+
+
+@login_required
+def search_user_json(request, query):
+    users = User.objects.filter(username__icontains=query).only('username')
+    usernamelist = []
+    for user in users[:10]:
+        pic_url = reverse("profile_picture_small", args=(user.pk,))
+        usernamelist.append(
+            {"name": user.username, "id": user.pk, "avatar": pic_url, "type": "contact"})
+    return JsonResponse({"symbol": "@", "list": usernamelist}, safe=False, )
+
+
+@login_required
+def search_theme_json(request, query):
+    themes = Theme.objects.filter(name__icontains=query).only('name')
+    if themes.count() < 1:
+        theme = Theme()
+        theme.name = query
+        theme.pk = query
+        themes = [theme]
+    themenamelist = []
+    for theme in themes[:10]:
+        themenamelist.append({"name": theme.name, "id": theme.pk, "avatar": "", "type": "theme"})
+    return JsonResponse({"symbol": "#", "list": themenamelist}, safe=False, )
+    pass
+
+
+@login_required
+def chat_polling(request, sender_id):
+    return JsonResponse({"sender_id" : sender_id, "new_chat_messages" : []})
