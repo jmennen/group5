@@ -16,6 +16,4 @@ urlpatterns = [
     url(r'^circlemessage/(?P<message_id>[0-9]+)/delete/$', views.delete_circle_message, name="delete_circlemessage"),
     url(r'^follow/(?P<user_id>[0-9]+)/$', views.follow, name="follow"),
     url(r'^unfollow/(?P<user_id>[0-9]+)/$', views.unfollow, name="unfollow"),
-    url(r'^home/(?P<message_id>[0-9]+)/antwort/$', views.Answers.as_view(), name="answers"),
-
 ]
