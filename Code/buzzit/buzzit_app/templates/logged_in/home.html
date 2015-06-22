@@ -57,7 +57,7 @@
                             <!-- inputfield for the messages you are going to send -->
                             <input type="hidden" name="mentions"/>
                             <input type="hidden" name="themes"/>
-                            <textarea required name="text" class="new_text_input"
+                            <textarea required name="text" class="new_text_input" id="main_post_ta"
                                       placeholder="Neue Kreisnachricht..."></textarea>
 
                             <div class="input-group-btn">
@@ -88,8 +88,10 @@
 
                                 <div align="right">
                                     <a class="btn btn-info btn-xs" href="#antworten{{ circlemessage.id }}"
-                                       data-toggle="collapse"><span class="glyphicon glyphicon-share-alt"></span>
-                                        Antworten</a>
+                                       data-toggle="collapse" onclick="init_post_area('#answer_{{ circlemessage.id }}_input', 'answer_{{ circlemessage.id }}_form');">
+                                        <span class="glyphicon glyphicon-share-alt"></span>
+                                        Antworten
+                                    </a>
                                     <a class="btn btn-info btn-xs"
                                        href="{% url "repost_circlemessage" circlemessage.pk %}"><span
                                             class="glyphicon glyphicon-retweet"></span> Retweet</a>
@@ -102,12 +104,16 @@
                                     <hr>
                                     <!-- erscheint, wenn auf antworten geklickt wird -->
                                     <div id="antworten{{ circlemessage.id }}" class="collapse">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="antworte hier..."/>
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-info" type="submit">Senden</button>
-                                            </span>
-                                        </div>
+                                        <form id="answer_{{ circlemessage.id }}_form" action="{% url "answer_circlemessage" circlemessage.id %}" method="post">
+                                            <div class="input-group">
+                                                <textarea name="text" type="text" class="new_text_input"
+                                                          id="answer_{{ circlemessage.id }}_input"
+                                                          placeholder="antworte hier..."></textarea>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-info" type="submit">Senden</button>
+                                                </span>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
 
@@ -145,7 +151,7 @@
     </div>
     <script>
         $(document).ready(function () {
-            init_post_area("textarea.new_text_input", '#new_post_form');
+            init_post_area("#main_post_ta", '#new_post_form');
         });
     </script>
 {% endblock %}
