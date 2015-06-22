@@ -340,30 +340,22 @@ class allPostTotheme(DetailView,SuccessMessageMixin):
 @login_required()
 def showPostToTheTheme(request,theme):
     """
-    klick on theme and show all the posts,check if the theme exits
+    klick on theme and show all the posts
 
     filter message which man should see
     :param request:
     :param theme:
     :return:
     """
-    circle_in_which_i_am_a_member = []
-    all_posts_which_i_can_see = []
-    posts = []
-
     try:
         theme = Theme.objects.get(pk = theme.name)
     except:
         ObjectDoesNotExist:
         messages.error(request,"Das gewaehlte Thema existiert nicht mehr")
-        return HttpResponseRedirect(reverse_lazy("home"))
 
     try:
-        circle_in_which_i_am_a_member = Circle.objects.filter(members = request.user.pk) # get the circle in which i am a member
-        for circle in circle_in_which_i_am_a_member:
-            all_posts_which_i_can_see += (circle.messages.all())
-
-        posts = all_posts_which_i_can_see.objects.filter(themes = theme)  # might takes a while because of the posts list
+        posts = Circle_message.objects.filter(themes=theme)
     except ObjectDoesNotExist:
-        messages.error(request,"Du hast noch keine Kreise")
+        pass
+    # where to display all the posts
     return render(request,"home",{"posts_list":posts})
