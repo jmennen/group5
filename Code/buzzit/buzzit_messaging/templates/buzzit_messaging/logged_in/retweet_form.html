@@ -47,7 +47,7 @@
                     <!-- inputfield for the messages you are going to send -->
                     <input type="hidden" name="mentions"/>
                     <input type="hidden" name="themes"/>
-                    <input type="hidden" name="original_message" value="" />
+                    <input type="hidden" name="original_message" value=""/>
                     <textarea required name="text" class="new_text_input" id="main_post_ta"
                               placeholder="Neue Kreisnachricht..."></textarea>
 
@@ -60,5 +60,10 @@
         </div>
     </div>
 
+    <script>
+        $(document).ready(function () {
+            init_post_area("#main_post_ta", '#new_post_form');
+        });
+    </script>
 
 {% endblock %}
