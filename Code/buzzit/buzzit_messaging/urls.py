@@ -18,12 +18,13 @@ urlpatterns = [
     url(r'^unfollow/(?P<user_id>[0-9]+)/$', views.unfollow, name="unfollow"),
     # new since sprint 4
     url(r'^are_there_new_notifications/$', views.information_about_new_directmessages, name="notification_polling"),
-    url(r'^circle/message/(?P<message_id>[0-9]+)/$', views.one_circlemessage, name="one_circlemessage"),
+    url(r'^circle/message/(?P<slug>[0-9]+)/$', views.one_circlemessage, name="one_circlemessage"),
     url(r'^circle/message/(?P<message_id>[0-9]+)/answer$', views.answer_to_circlemessage, name="answer_circlemessage"),
-    url(r'^circle/message/(?P<original_message_id>[0-9]+)/repost$', views.repost_circlemessage, name="repost_circlemessage"),
+    url(r'^circle/message/(?P<message_id>[0-9]+)/repost$', views.RepostView.as_view(), name="repost_circlemessage"),
     url(r'^chat/(?P<sender_id>[0-9]+)/$', views.direct_messages_details, name="chat"),
     url(r'^chat/(?P<sender_id>[0-9]+)/poll/json$', views.chat_polling, name="chat_polling"),
     url(r'^chats/$', views.direct_messages_overview, name="all_chats"),
     url(r'^search/user/(?P<query>[a-zA-Z0-9]+)/json$', views.search_user_json, name="search_user_json"),
     url(r'^search/theme/(?P<query>[a-zA-Z0-9]+)/json$', views.search_theme_json, name="search_theme_json"),
+    url(r'^search/theme/(?P<theme>[a-zA-Z0-9]+)', views.showPostsToTheTheme, name="search_theme"),
 ]
