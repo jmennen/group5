@@ -1,6 +1,7 @@
 from io import BytesIO
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
+from django.views.generic.base import ContextMixin
 from django.core.files.images import ImageFile
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.forms.utils import ErrorList
@@ -227,13 +228,20 @@ class EditUserdataView(SuccessMessageMixin, UpdateView):
         return super(EditUserdataView, self).dispatch(request, *args, **kwargs)
 
 
-class UserSearchResultsView(ListView):
+class UserSearchResultsView(ContextMixin, ListView):
     """
     Handles the results of a user search.
     """
     model = User
     template_name = "logged_in/usersearch_results.html"
     context_object_name = "O"
+
+    def get_context_data(self, **kwargs):
+        context = super(UserSearchResultsView, self).get_context_data(**kwargs)
+        ownprofile = self.request.user.profile
+        ownprofile.follows_list = ownprofile.follows.all()
+        context["ownprofile"] = ownprofile
+        return context
 
     def get_queryset(self):
         ownprofile = self.request.user.profile
@@ -245,7 +253,7 @@ class UserSearchResultsView(ListView):
             userset = User.objects.all().order_by("username")
         for user in userset:
             user.i_am_following = ownprofile.follows.all().filter(pk=user)
-        return {"user_list": userset, "ownprofile": ownprofile}
+        return userset
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
