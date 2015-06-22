@@ -314,7 +314,9 @@ def direct_messages_details(request, sender_id):
     """
     pass
 
-
+"""
+UNUSED
+"""
 class RepostView(SuccessMessageMixin, CreateView):
     """
     add retweet to the circle messages
@@ -356,6 +358,20 @@ class RepostView(SuccessMessageMixin, CreateView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(RepostView, self).dispatch(request, *args, **kwargs)
+
+@login_required
+def repost(request, message_id):
+    try:
+        omessage = Circle_message.objects.get(pk=message_id)
+    except ObjectDoesNotExist:
+        messages.error(request, "Die Original Nachricht existiert nicht")
+        return HttpResponseRedirect(reverse("home"))
+    if omessage.original_message:
+        omessage = omessage.original_message
+    if omessage.answer_to:
+        messages.error(request, "Antworten koennen nicht repostet werden")
+        return HttpResponseRedirect(reverse("home"))
+    return render(request, "buzzit_messaging/logged_in/retweet_form.html", {"circlemessage":omessage})
 
 
 @login_required
