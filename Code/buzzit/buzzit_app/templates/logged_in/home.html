@@ -88,7 +88,7 @@
 
                                 <div align="right">
                                     <a class="btn btn-info btn-xs" href="#antworten{{ circlemessage.id }}"
-                                       data-toggle="collapse" onload="init_post_area('#answer_{{ circlemessage.id }}_input', 'answer_{{ circlemessage.id }}_form');">
+                                       data-toggle="collapse">
                                         <span class="glyphicon glyphicon-share-alt"></span>
                                         Antworten
                                     </a>
@@ -115,6 +115,7 @@
                                             </div>
                                         </form>
                                     </div>
+                                    <script>init_post_area('#answer_{{ circlemessage.id }}_input', 'answer_{{ circlemessage.id }}_form');</script>
                                 </div>
 
                                 <!-- the answers-->
