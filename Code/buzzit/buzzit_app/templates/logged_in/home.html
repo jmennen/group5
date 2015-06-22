@@ -87,8 +87,7 @@
                                 {{ circlemessage | messagefilter | safe }}
 
                                 <div align="right">
-                                    <a class="btn btn-info btn-xs" href="#antworten{{ circlemessage.id }}"
-                                       data-toggle="collapse">
+                                    <a class="btn btn-info btn-xs" href="{% url "one_circlemessage" circlemessage.id %}">
                                         <span class="glyphicon glyphicon-share-alt"></span>
                                         Antworten
                                     </a>
@@ -101,21 +100,6 @@
                                            href="{% url "delete_circlemessage" circlemessage.id %}"><span
                                                 class="glyphicon glyphicon-remove"></span> Löschen</a>
                                     {% endif %}
-                                    <hr>
-                                    <!-- erscheint, wenn auf antworten geklickt wird -->
-                                    <div id="antworten{{ circlemessage.id }}" class="">
-                                        <form id="answer_{{ circlemessage.id }}_form" action="{% url "answer_circlemessage" circlemessage.id %}" method="post">
-                                            <div class="input-group">
-                                                <textarea name="text" type="text" class="new_text_input"
-                                                          id="answer_{{ circlemessage.id }}_input"
-                                                          placeholder="antworte hier..."></textarea>
-                                                <span class="input-group-btn">
-                                                    <button class="btn btn-info" type="submit">Senden</button>
-                                                </span>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <script>init_post_area('#answer_{{ circlemessage.id }}_input', 'answer_{{ circlemessage.id }}_form');</script>
                                 </div>
 
                                 <!-- the answers-->

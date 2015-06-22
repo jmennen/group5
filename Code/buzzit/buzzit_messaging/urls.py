@@ -19,7 +19,7 @@ urlpatterns = [
     # new since sprint 4
     url(r'^are_there_new_notifications/$', views.information_about_new_directmessages, name="notification_polling"),
     url(r'^circle/message/(?P<slug>[0-9]+)/$', views.PostDetailsView.as_view(), name="one_circlemessage"),
-    url(r'^circle/message/(?P<message_id>[0-9]+)/answer$', views.answer_to_circlemessage, name="answer_circlemessage"),
+    #url(r'^circle/message/(?P<message_id>[0-9]+)/answer$', views.answer_to_circlemessage, name="answer_circlemessage"),
     url(r'^circle/message/(?P<message_id>[0-9]+)/repost$', views.RepostView.as_view(), name="repost_circlemessage"),
     url(r'^chat/(?P<sender_id>[0-9]+)/$', views.direct_messages_details, name="chat"),
     url(r'^chat/(?P<sender_id>[0-9]+)/poll/json$', views.chat_polling, name="chat_polling"),

@@ -5,6 +5,7 @@
 
 {% block content %}
 
+    {% load messagefilters %}
     {% include "includes/navbar.html" %}
 
     <div class="container">
@@ -16,7 +17,7 @@
                 <div class="media-left">
                     <a href="#">
                         <img height="64" width="64" class="media-object"
-                             src="{% url "profile_picture_small" circlemessage.creator.profile.pk %}" alt="Profilbild">
+                             src="{% url "profile_picture_small" circlemessage.creator.pk %}" alt="Profilbild">
                     </a>
                 </div>
                 <div class="media-body">
@@ -25,18 +26,16 @@
                             href="{% url "view_profile" circlemessage.creator.pk %}">{{ circlemessage.creator }}</a>
                         schrieb
                         am {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
-                    {{ circlemessage.text }}
+                    {{ circlemessage | messagefilter |safe }}
 
                     <div align="right">
-                        <a class="btn btn-info btn-xs" href="#antworten" data-toggle="collapse"><span
-                                class="glyphicon glyphicon-share-alt"></span> Antworten</a>
                         <a class="btn btn-info btn-xs" href="#"><span class="glyphicon glyphicon-retweet"></span>
                             Retweet</a>
                         <!-- if you are the creator of the message, a delete button will be shown -->
                         {% if circlemessage.creator == user %}
                             <a class="btn btn-danger btn-xs"
                                href="{% url "delete_circlemessage" circlemessage.id %}"><span
-                                    class="glyphicon glyphicon-remove"></span> Löschen</a>
+                                    class="glyphicon glyphicon-remove"></span> L&ouml;schen</a>
                         {% endif %}
                         <hr>
                     </div>
@@ -47,17 +46,17 @@
                             <div class="media-left">
                                 <a href="#">
                                     <img height="64" width="64" class="media-object"
-                                         src="{% url "profile_picture_small" answer_to.circlemessage.creator.profile.pk %}"
+                                         src="{% url "profile_picture_small" answer_to.creator.pk %}"
                                          alt="Profilbild">
                                 </a>
                             </div>
                             <div class="media-body">
                                 <!-- the creator of the answer as well as the date will be shown -->
                                 <h4 class="media-heading"><a
-                                        href="{% url "view_profile" answer_to.circlemessage.creator.pk %}">{{ answer_to.circlemessage.creator }}</a>
+                                        href="{% url "view_profile" answer_to.creator.pk %}">{{ answer_to.creator }}</a>
                                     antwortete
-                                    am {{ answer_to.circlemessage.created | date:'d.m.Y H:i' }}:</h4>
-                                {{ answer_to.circlemessage.text }}
+                                    am {{ answer_to.created | date:'d.m.Y H:i' }}:</h4>
+                                {{ answer_to | messagefilter | safe }}
 
                             </div>
 
@@ -70,23 +69,33 @@
 
 
             <!-- erscheint, wenn auf antworten geklickt wird -->
-            <div id="antworten" class="collapse">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="antworte hier...">
-									<span class="input-group-btn">
-									<button class="btn btn-info" type="button">senden</button>
-									</span>
-                </div>
+            <div id="antworten">
+                <form id="new_post_form" role="form" method="post"
+                      action="{% url "new_circlemessage" %}">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <!-- inputfield for the messages you are going to send -->
+                        <input type="hidden" name="answer_to" value="{{ circlemessage.id }}">
+                        <input type="hidden" name="mentions"/>
+                        <input type="hidden" name="themes"/>
+                            <textarea required name="text" class="new_text_input" id="main_post_ta"
+                                      placeholder="Antworte hier..." name="text"></textarea>
+
+                        <div class="input-group-btn">
+                            <button class="btn btn-info" type="submit">Senden</button>
+                        </div>
+                    </div>
+                </form>
             </div>
 
 
         </div>
-
-    </div>
     </div>
 
 
-
+    <script>
+        init_post_area("#main_post_ta", "#new_post_form");
+    </script>
 
 
 {% endblock %}

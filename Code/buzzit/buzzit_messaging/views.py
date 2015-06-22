@@ -73,6 +73,16 @@ def listfollows(request):
 def postCirclemessage(request):
     if request.method == "POST":
         newPost = Circle_message()
+        ans = request.POST.get("answer_to", False)
+        rep = request.POST.get("original_id", False)
+        try:
+            if ans:
+                newPost.answer_to = Circle_message.objects.get(pk=ans)
+            elif rep:
+                newPost.original_message = Circle_message.objects.get(pk=ans)
+        except ObjectDoesNotExist:
+            messages.error(request, "Fehler")
+            return HttpResponseRedirect(reverse("home"))
         newPost.creator = request.user
         newPost.created = datetime.now()
         newPost.text = html_clean(request.POST.get("text"), tags=[])
@@ -160,11 +170,11 @@ def RemoveCircleView(request, slug):
         messages_to_del = circle_to_del.messages.all()
         for m in messages_to_del:
             if (not (Circle.objects.filter(messages=m).count() > 1)):
-                # TODO: achtung - wenn nachricht retweetet, dann nicht löschen!!
+                # TODO: achtung - wenn nachricht retweetet, dann nicht lÃ¶schen!!
                 # if not (Circle_message.objects.filter(original_message = m).count() > 0):
-                # antworten müssen gelöscht werden:
+                # antworten mÃ¼ssen gelÃ¶scht werden:
                 # Circle_message.objects.filter(answer_to = m).delete()
-                m.delete()  # TODO: muss später eingerückt werden
+                m.delete()  # TODO: muss spÃ¤ter eingerÃ¼ckt werden
         circle_to_del.delete()
     except Exception:
         messages.error(request, "Fehler beim loeschen")
@@ -349,27 +359,6 @@ class RepostView(SuccessMessageMixin, CreateView):
 
 
 @login_required
-def answer_to_circlemessage(request, message_id):
-    """
-    Answer to a message specified by message_id.
-    :param request:
-    :param message_id:
-    :return:
-    """
-    try:
-        messageanswerto = Circle_message.objects.get(pk=message_id)
-    except ObjectDoesNotExist:
-        messages.error(request, "Die Nachrichte, worauf du antwortest, existiert nicht mehr")
-        return HttpResponseRedirect(reverse_lazy('home'))
-    answer = Circle_message()  # so create a new object
-    answer.created = datetime.now()
-    answer.creator = request.user
-    answer.answer_to = messageanswerto
-    messages.info(request, "Du hast auf die Nachtichte geantwortet")
-    return HttpResponseRedirect(reverse_lazy('home'))
-
-
-@login_required
 def information_about_new_directmessages(request):
     """
     The function, that answers the client polling.
@@ -460,11 +449,12 @@ class PostDetailsView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(PostDetailsView, self).get_context_data(**kwargs)
-        currentcirclemessageid = self.request.kwargs.get("message_id")
+        currentcirclemessageid = self.kwargs.get("slug")
         context["circlemessage"] = Circle_message.objects.get(pk=currentcirclemessageid)
+        return context
 
     def get_queryset(self):
-        currentcirclemessageid = self.request.kwargs.get("message_id")
+        currentcirclemessageid = self.kwargs.get("slug")
         return Circle_message.objects.filter(answer_to__id=currentcirclemessageid).order_by('created')
 
     @method_decorator(login_required)
