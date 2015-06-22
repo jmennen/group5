@@ -414,3 +414,30 @@ class PostDetailsView(ListView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(PostDetailsView, self).dispatch(request, *args, **kwargs)
+
+
+
+@login_required
+def direct_messages_overview(request):
+    """
+    Overview of all direct messages.
+    Returns two objects:
+    1. directmessage_list : a list of all chats with one specific user
+    2. systemmessages : a list of all system messages
+
+    :param request:
+    :return:
+    """
+    return render(request, "buzzit_messaging/logged_in/direct_messages.html")
+
+
+@login_required
+def direct_messages_details(request, sender_id):
+    """
+    One specific chat. So this filters all messages from one specific sender.
+    Returns one object: directmessage_list, where sender was specified by user_id
+    and receiver is the logged in user and vice versa.
+    :param request:
+    :return:
+    """
+    pass
