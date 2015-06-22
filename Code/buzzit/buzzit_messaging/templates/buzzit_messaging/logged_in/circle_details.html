@@ -60,7 +60,7 @@
                     {% load messagefilters %}
                     <!-- space for circle messages from this circle -->
                     {% for circlemessage in circle.messages.all %}
-                        {% include "buzzit_messaging/includes/circle_message.html" with circlemessage=circlemessage %}
+                        {% include "buzzit_messaging/extendables/circle_message.html" with circlemessage=circlemessage %}
                     {% endfor %}
 
                     <!-- erscheint, wenn auf antworten geklickt wird -->
