@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Such Ergebnisse{% endblock %}
+{% block title %}Suchergebnisse{% endblock %}
 {% block content %}
     <!--imports the navigation bar-->
     {% include "includes/navbar.html" %}
@@ -12,9 +12,9 @@
         <table class="table table-bordered">
             <tr>
                 <th>Name</th>
-                <th>Picture</th>
-                <th>Description</th>
-                <th>Actions</th>
+                <th>Profilbild</th>
+                <th>Beschreibung</th>
+                <th>Aktionen</th>
 
             </tr>
             {% for user in O.user_list %}
