@@ -84,7 +84,7 @@
                                         href="{% url "view_profile" circlemessage.creator.pk %}">{{ circlemessage.creator }}</a>
                                     schrieb
                                     am {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
-                                {{ circlemessage | messagefilter | save }}
+                                {{ circlemessage | messagefilter | safe }}
 
                                 <div align="right">
                                     <a class="btn btn-info btn-xs" href="#antworten{{ circlemessage.id }}"
