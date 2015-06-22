@@ -343,11 +343,7 @@ def showPostToTheTheme(request,theme):
     :param theme:
     :return:
     """
-    try:
-        theme = Theme.objects.get(pk = theme.name)
-    except:
-        ObjectDoesNotExist:
-        messages.error(request,"Das geklickte Thema existiert nicht mehr")
+
     try:
         posts = Circle_message.objects.filter(themes=theme)
     except ObjectDoesNotExist:
