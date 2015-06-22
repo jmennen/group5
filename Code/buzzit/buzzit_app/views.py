@@ -112,13 +112,13 @@ def view_profile(request, slug):
     message_list = []
     # nachrichten, die in kreisen sind, denen ich zugeteilt wurde
     for circle in circles_im_in:
-        message_list += (circle.messages.all())
+        message_list += (circle.messages.filter(answer_to=None).all())
 
     # nachrichten, die keinem kreis zugeordnet sind - also public sind
     # 1. alle circles
     circles_of_user = Circle.objects.filter(owner=profile.user)
     # 2. alle public nachrichten vom user
-    messages_of_user = Circle_message.objects.filter(creator=profile.user, public=True)
+    messages_of_user = Circle_message.objects.filter(creator=profile.user, public=True, answer_to=None)
     message_list += (messages_of_user.all())
     message_list.sort(key=lambda m: m.created, reverse=True)
 

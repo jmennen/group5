@@ -66,55 +66,7 @@
                     {% load messagefilters %}
                     <!-- available messages of this user -->
                     {% for circlemessage in message_list %}
-                        <div class="media">
-                            <div class="media-left">
-                                <a href="#">
-                                    <img height="64" width="64" class="media-object"
-                                         src="{% url "profile_picture_small" circlemessage.creator.profile.pk %}"
-                                         alt="Profilbild">
-                                </a>
-                            </div>
-                            <!-- the creator of the message as well as the date will be shown -->
-                            <div class="media-body">
-                                <h4 class="media-heading">{{ circlemessage.creator }} schrieb hier
-                                    am {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
-                                {{ circlemessage | messagefilter | safe }}
-
-                                
-                                    <div align="right">
-										<a class="btn btn-info btn-xs" href="#antworten" data-toggle="collapse"><span class="glyphicon glyphicon-share-alt"></span> Antworten</a>
-										<a class="btn btn-info btn-xs" href="#"><span class="glyphicon glyphicon-retweet"></span> Retweet</a>
-									{% if circlemessage.creator == user %}
-                                        <a class="btn btn-danger btn-xs"
-                                           href="{% url "delete_circlemessage" circlemessage.id %}"><span class="glyphicon glyphicon-remove"></span> L&ouml;schen</a>
-									{% endif %}
-									<hr>
-                                    </div>
-                                
-						<!-- the answers-->
-						{% for answer_to in answer_list  %}	
-						<div class="media">
-                            <div class="media-left">
-                                <a href="#">
-                                    <img height="64" width="64" class="media-object"
-                                         src="{{ answer_to.circlemessage.creator.profile.profile_picture }}" alt="Profilbild">
-                                </a>
-                            </div>
-                            <div class="media-body">
-							<!-- the creator of the answer as well as the date will be shown -->
-                                <h4 class="media-heading"><a href="{% url "view_profile" answer_to.circlemessage.creator.pk %}">{{ answer_to.circlemessage.creator }}</a> antwortete
-                                    am {{ answer_to.circlemessage.created | date:'d.m.Y H:i' }}:</h4>
-                                {{ answer_to.circlemessage.text }}
-
-                            </div>
-						
-						
-						</div>
-						
-						{% endfor %}								
-								
-                            </div>
-                        </div>
+                        {% include "buzzit_messaging/includes/circle_message.html" %}
                     {% endfor %}
                     <!-- /available messages of this user -->
 					
