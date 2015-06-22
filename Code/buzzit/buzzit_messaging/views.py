@@ -244,8 +244,8 @@ def unfollow(request, user_id):
     messages.success(request, "Du folgst %s nicht mehr" % unfollow_user.user.username)
     return HttpResponseRedirect(reverse_lazy('home'))
 
-
 """
+
 class Answers(CreateView,SuccessMessageMixin):
 
     model = Circle_message
@@ -268,7 +268,7 @@ class Answers(CreateView,SuccessMessageMixin):
     def dispatch(self, request, *args, **kwargs):
         return super(Answers, self).dispatch(request, *args, **kwargs)
 
-"""
+
 
 def answer_to_circlemessage(request,message_id):
 
@@ -279,21 +279,18 @@ def answer_to_circlemessage(request,message_id):
         messages.error(request,"Die Nachrichte, worauf du antwortest, existiert nicht mehr")
         return HttpResponseRedirect(reverse_lazy('home'))
 
-    answer = Circle_message() # so create a new object
-    answer.created = datetime.now()
-    answer.creator = request.user
-    answer.answer_to.add(messageanswerto)
-    Circle_message.add(answer)
+    answer = Circle_message(creator = request.user,created = datetime.now(),answer_to = messageanswerto) # so create a new object
     messages.info(request,"Du hast auf die Nachtichte geantwortet")
+    #context = {"answers":answer}
     return HttpResponseRedirect(reverse_lazy('home'))
 
-
-
+"""
 class Retweet(CreateView,SuccessMessageMixin):
     """
     add retweet to the circle messages
     """
     model = Circle_message
+    template_name = "buzzit_messaging/logged_in/retweet_form.html"
     fields = ['text']
     success_url = reverse_lazy("home")
     success_message = "du hast etwas retweetet"
@@ -309,8 +306,6 @@ class Retweet(CreateView,SuccessMessageMixin):
             return HttpResponseRedirect(reverse_lazy("home"))
 
         form.instance.original_message = original_message
-        cirle_which_currentUser_belongs_to = Circle.objects.get(members = self.request.user) # get the circle which current user belongs to
-        cirle_which_currentUser_belongs_to.messages.add(form.instance) # add retweet as circle message to the circle
         return super(Retweet, self).form_valid(form)
 
     def get_success_url(self):

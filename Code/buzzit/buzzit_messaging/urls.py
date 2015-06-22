@@ -16,6 +16,8 @@ urlpatterns = [
     url(r'^circlemessage/(?P<message_id>[0-9]+)/delete/$', views.delete_circle_message, name="delete_circlemessage"),
     url(r'^follow/(?P<user_id>[0-9]+)/$', views.follow, name="follow"),
     url(r'^unfollow/(?P<user_id>[0-9]+)/$', views.unfollow, name="unfollow"),
-    url(r'^circle/message/(?P<message_id>[0-9]+)/answer$', views.answer_to_circlemessage, name="answer_circlemessage"),
+    #url(r'^circle/message/(?P<message_id>[0-9]+)/answer$', views.Answers.as_view(), name="answer_circlemessage"),
+    url(r'^circle/message/repost$', views.Retweet.as_view(), name="repost_circlemessage"),
+
 
 ]

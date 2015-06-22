@@ -89,16 +89,19 @@
                                            href="{% url "delete_circlemessage" circlemessage.id %}">Löschen</a>
                                     </div>
                                 {% endif %}
+                                <!-- if there is any answers to the message show it-->
+                                {% if circlemessage.answer_to %}
+                                    <div align="middle">
+                                        {{ circlemessage.answer_to }}
+                                    </div>
+                                {% endif %}
                                 <!-- if you are not the creator of the message, then you can answer it -->
                                 {% if circlemessage.creator != user %}
-                                    <form method="post" action="{% url "answer_circlemessage" circlemessage.id%}">
-                                        {% csrf_token %}
-                                        <input type="text" name="text" class="form-control"/>
 
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-info" type="submit">Antworten</button>
-                                        </div>
-                                    </form>
+                                    <div align="right">
+                                        <a class="btn btn-danger btn-xs"
+                                           href="{% url "repost_circlemessage" %}">Retweeten</a>
+                                    </div>
                                 {% endif %}
                             </div>
                         </div>
