@@ -1,0 +1,4 @@
+{% extends "buzzit_messaging/extendables/new_tweet_form.html" %}
+{% block formbegin %}
+    <input type="hidden" name="circles" value="{{ circle.pk }}">
+{% endblock %}
