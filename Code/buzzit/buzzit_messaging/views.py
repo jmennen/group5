@@ -370,18 +370,5 @@ def showPostToTheTheme(request,theme):
         messages.error(request,"Du hast noch keine Kreise")
     return render(request,"home",{"posts_list":posts})
 
-class postDetailsView(ListView,SuccessMessageMixin):
-
-    """
-    show all the circle messge to the given message
-    """
-    model = Circle_message
-    template_name = "buzzit_messaging/logged_in/post_details.html"
-
-    def get_queryset(self):
-
-        currentcirclemessage = self.request.kwargs.get("circlemessage_id")
-        return Circle_message.objects.filter(answer_to = currentcirclemessage).order_by('username')
-
-    def dispatch(self, request, *args, **kwargs):
-        return super(postDetailsView, self).dispatch(request,*args,**kwargs)
+class postDetailView(ListView,SuccessMessageMixin):
+    pass
