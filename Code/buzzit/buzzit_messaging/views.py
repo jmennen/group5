@@ -466,7 +466,7 @@ def direct_messages_overview(request):
     else:
         # no specific chat given; show notifications
         active_conversation_partner = "SYSTEM"
-        conversation = Directmessage.objects.filter(creator__username="SYSTEM", receiver=request.user)
+        conversation = Directmessage.objects.filter(creator__username="SYSTEM", receiver=request.user).order_by("created")
     return render(request, "buzzit_messaging/logged_in/direct_messages.html",
                   {
                       "chats": chats,
