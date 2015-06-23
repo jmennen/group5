@@ -443,6 +443,7 @@ def direct_messages_overview(request):
     for cm in all_chat_messages_for_me:
         if cm.creator == request.user:
             chats[cm.receiver.username] = cm
+            # muss gleich raus
             if not cm.read:
                 if chatsMsgCount.get(cm.receiver.username):
                     chatsMsgCount[cm.receiver.username] += 1
@@ -463,7 +464,7 @@ def direct_messages_overview(request):
             Q(creator=request.user, receiver__username=active_conversation_partner)) \
             .order_by("created")
         if conversation.count() > 0:
-            conversation.update(read=True)
+            conversation.filter(receiver=request.user).update(read=True)
             conversation=conversation.all()
         else:
             # new conversation
