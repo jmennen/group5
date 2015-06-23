@@ -438,7 +438,7 @@ def direct_messages_overview(request):
         Q(receiver=request.user) | Q(creator=request.user), ~Q(creator__username="SYSTEM")).order_by("created").all()
     chats = {}
     newest_systemmessage_date = Directmessage.objects.filter(receiver=request.user, creator__username="SYSTEM").all()
-    newest_systemmessage_date.aggregate(Max("created"))["created"]
+    newest_systemmessage_date.aggregate(Max("created"))["created_max"]
     chats["SYSTEM"] =Directmessage.objects.get(receiver=request.user, creator__username="SYSTEM", created=newest_systemmessage_date)
     chatsMsgCount = {"SYSTEM" : Directmessage.objects.filter(receiver=request.user, creator__username="SYSTEM", read=False).count()}
     for cm in all_chat_messages_for_me:
