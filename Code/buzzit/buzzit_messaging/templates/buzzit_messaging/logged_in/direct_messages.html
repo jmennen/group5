@@ -12,34 +12,30 @@
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <a href="{% url "all_chats" %}?active_conversation=SYSTEM" class="
+                <div class="list-group">
+                    <a href="{% url "all_chats" %}?active_conversation=SYSTEM" class="list-group-item
                         {% if "SYSTEM" == active_conversation_partner %}
                         active
                         {% endif %}
                         " id="chat_SYSTEM">
-                            Notifications
-                            <span class="badge">{{ system_messages|keyval:"count" }}</span>
+                        Notifications
+                        <span class="badge">{{ system_messages|keyval:"count" }}</span>
 
-                            <p><h6><i>{{ system_messages|keyval:"msg"|objval:"text" }}</i></h6></p>
-                        </a>
-                    </li>
+                        <p><h6><i>{{ system_messages|keyval:"msg"|objval:"text" }}</i></h6></p>
+                    </a>
                     {% for conversationpartner in chats %}
-                        <li class="list-group-item">
-                            <a href="{% url "all_chats" %}?active_conversation={{ conversationpartner }}" class="list-group-item
+                        <a href="{% url "all_chats" %}?active_conversation={{ conversationpartner }}" class="list-group-item
                         {% if conversationpartner == active_conversation_partner %}
                         active
                         {% endif %}
                         " id="chat_{{ conversationpartner }}">
-                                {{ chats|keyval:conversationpartner|objval:"creator"|objval:"username" }}
-                                <span class="badge">{{ chatsMsgCount|keyval:conversationpartner }}</span>
+                            {{ chats|keyval:conversationpartner|objval:"creator"|objval:"username" }}
+                            <span class="badge">{{ chatsMsgCount|keyval:conversationpartner }}</span>
 
-                                <p><h6><i>{{ chats|keyval:conversationpartner|objval:"text" }}</i></h6></p>
-                            </a>
-                        </li>
+                            <p><h6><i>{{ chats|keyval:conversationpartner|objval:"text" }}</i></h6></p>
+                        </a>
                     {% endfor %}
-                </ul>
+                </div>
             </div>
             <div class="col-md-9">
                 <!-- <h3> Deine Nachrichten mit...</h3> -->
@@ -80,7 +76,7 @@
         </div>
     </div>
     <script>
-    var objDiv = document.getElementsByClassName("area")[0];
-    objDiv.scrollTop = objDiv.scrollHeight;
+        var objDiv = document.getElementsByClassName("area")[0];
+        objDiv.scrollTop = objDiv.scrollHeight;
     </script>
 {% endblock %}
