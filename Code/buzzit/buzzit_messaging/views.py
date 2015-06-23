@@ -11,6 +11,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 import django.contrib.messages as messages
 import json
 from bleach import clean as html_clean
+from django.db.models import Max
 
 
 @login_required
@@ -436,7 +437,9 @@ def direct_messages_overview(request):
     all_chat_messages_for_me = Directmessage.objects.filter(
         Q(receiver=request.user) | Q(creator=request.user), ~Q(creator__username="SYSTEM")).order_by("created").all()
     chats = {}
-    chats["SYSTEM"] = Directmessage.objects.filter(receiver=request.user, creator__username="SYSTEM")[:1]
+    newest_systemmessage_date = Directmessage.objects.filter(receiver=request.user, creator__username="SYSTEM").all()
+    newest_systemmessage_date.aggregate(Max("created"))["created"]
+    chats["SYSTEM"] =Directmessage.objects.get(receiver=request.user, creator__username="SYSTEM", created=newest_systemmessage_date)
     chatsMsgCount = {"SYSTEM" : Directmessage.objects.filter(receiver=request.user, creator__username="SYSTEM", read=False).count()}
     for cm in all_chat_messages_for_me:
         if cm.creator == request.user:
