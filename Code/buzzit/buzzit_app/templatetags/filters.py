@@ -45,3 +45,19 @@ def iAmFollowing(otherprofile, myprofile):
     return myprofile.follows.all().filter(pk=otherprofile)
 
 register.filter('i_am_following', iAmFollowing)
+
+def keyvalue(dict, key):
+    try:
+        return dict[key]
+    except KeyError:
+        return ''
+
+register.filter('keyval', keyvalue)
+
+def objectvalue(obj, attr):
+    try:
+        return getattr(obj,attr)
+    except Exception:
+        return ""
+
+register.filter('objval', objectvalue)

@@ -12,7 +12,7 @@
 
 
 
-
+{% load filters %}
     <div class="container">
         <div class="row">
 
@@ -21,7 +21,9 @@
                 <div class="list-group">
 
                     {% for conversationpartner in chats %}
-                        <a href="#" class="list-group-item">{{ chats.keyconversationpartner.creator.username }}<span class="badge">14</span>
+                        <a href="#" class="list-group-item">
+                            {{ chats | keyval: conversationpartner | objval: "creator" | objval: "username" }}
+                            <span class="badge">14</span>
                             <p><h6><i>{{ chats.conversationpartner.text }}</i></h6></p>
                         </a>
                     {% endfor %}
