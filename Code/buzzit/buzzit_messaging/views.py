@@ -456,7 +456,7 @@ def direct_messages_overview(request):
                 else:
                     chatsMsgCount[cm.creator.username] = 1
     active_conversation_partner = request.GET.get("active_conversation")  # string
-    if active_conversation_partner:
+    if active_conversation_partner and active_conversation_partner != "SYSTEM":
         # client wants so see one specific chat
         conversation = Directmessage.objects.filter(
             Q(receiver=request.user, creator__username=active_conversation_partner) |
