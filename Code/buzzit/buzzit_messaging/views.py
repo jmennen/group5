@@ -12,7 +12,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse, reverse_lazy
 import django.contrib.messages as messages
 import logging
-
+from django.db.models import Q
 
 @login_required
 def beingFollowedByView(request):
@@ -268,7 +268,7 @@ class Answers(CreateView,SuccessMessageMixin):
     def dispatch(self, request, *args, **kwargs):
         return super(Answers, self).dispatch(request, *args, **kwargs)
 
-
+"""
 
 def answer_to_circlemessage(request,message_id):
 
@@ -280,11 +280,11 @@ def answer_to_circlemessage(request,message_id):
         return HttpResponseRedirect(reverse_lazy('home'))
 
     answer = Circle_message(creator = request.user,created = datetime.now(),answer_to = messageanswerto) # so create a new object
+    answer.save()
     messages.info(request,"Du hast auf die Nachtichte geantwortet")
-    #context = {"answers":answer}
     return HttpResponseRedirect(reverse_lazy('home'))
 
-"""
+
 class Retweet(CreateView,SuccessMessageMixin):
     """
     add retweet to the circle messages
@@ -387,3 +387,23 @@ def one_circlemessage(request, message_id):
     all_answers = Circle_message.objects.filter(answer_to = circle_message)
     return render(request,"buzzit_messaging/logged_in/post_details.html",
                   {"answers": all_answers})
+
+@login_required
+def direct_messages_details(request, sender_id):
+    """
+    One specific chat. So this filters all messages from one specific sender.
+    Returns one object: directmessage_list, where sender was specified by sender_id
+    and receiver is the logged in user and vice versa.
+    :param request:
+    :return:
+    """
+    message_list_from_sender = []
+    try:
+        sender = User.objects.get(pk=sender_id)
+    except ObjectDoesNotExist:
+        messages.error(request,"Der Benutzer existiert nicht ")
+        return HttpResponseRedirect(reverse_lazy('home'))
+
+    message_list_from_sender = Directmessage.objects.filter(creator = sender, receiver = request.user).all()
+    return render(request,"buzzit_messaging/logged_in/direct_messages.html",
+                  {"message_list":message_list_from_sender})
