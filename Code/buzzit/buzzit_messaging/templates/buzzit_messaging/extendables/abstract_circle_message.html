@@ -30,10 +30,12 @@
                 </div>
             </div>
         {% endif %}
-        <h4 class="media-heading"><a
-                href="{% url "view_profile" circlemessage.creator.pk %}">{{ circlemessage.creator }}</a>
-            schrieb
-            am {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
+        <h4 class="media-heading">
+            <a href="{% url "view_profile" circlemessage.creator.pk %}">{{ circlemessage.creator }}</a>
+            {% if circlemessage.original_message %} repostete am
+            {% else %} schrieb am
+            {% endif %}
+            {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
         {{ circlemessage | messagefilter | safe }}
 
         <div align="right">
