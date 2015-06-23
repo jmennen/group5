@@ -459,7 +459,9 @@ def direct_messages_overview(request):
         conversation = Directmessage.objects.filter(
             Q(receiver=request.user, creator__username=active_conversation_partner) |
             Q(creator=request.user, receiver__username=active_conversation_partner)) \
-            .order_by("-created").all()
+            .order_by("-created")
+        conversation.update(read=True)
+        conversation=conversation.all()
     else:
         # no specific chat given; show notifications
         active_conversation_partner = "SYSTEM"
