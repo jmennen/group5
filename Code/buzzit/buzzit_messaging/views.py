@@ -385,11 +385,11 @@ def chat_polling(request, username):
     chats = {}
     # naive sorting
     for cm in all_chat_messages_for_me:
-        chats[cm.creator.username] = {"text": cm.text}
-        if chats[cm.creator.username].get("count"):
+        if chats.get(cm.creator.username):
+            chats[cm.creator.username]["text"] = cm.text
             chats[cm.creator.username]["count"] += 1
         else:
-            chats[cm.creator.username]["count"] = 1
+            chats[cm.creator.username] = {"text": cm.text, "count":1}
     return JsonResponse({"username": username, "new_chat_messages": msg, "chats": chats}, safe=False)
 
 
