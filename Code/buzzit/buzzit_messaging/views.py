@@ -153,6 +153,9 @@ def delete_circle_message(request, message_id):
     if request.user != message_to_del.creator:
         messages.error(request, "Diese Kreisnachricht duerfen Sie nicht loeschen")
         return HttpResponseRedirect(reverse_lazy('home'))
+    answers = Circle_message.objects.filter(answer_to=message_to_del)
+    # TODO entscheiden was mit retweets passiert
+    answers.delete()
     message_to_del.delete()
     messages.success(request, "Nachricht geloescht")
     return HttpResponseRedirect(reverse_lazy('home'))
