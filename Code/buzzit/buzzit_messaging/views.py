@@ -483,7 +483,22 @@ def direct_messages_details(request, sender_id):
     :param request:
     :return:
     """
-    pass
+    if request.method == "POST":
+        message_content = request.POST.get("text", False)
+        if (not message_content) or len(message_content) < 1:
+            messages.error(request, "Kein Text angegeben")
+            return HttpResponseRedirect(reverse("home"))
+        message_var = Directmessage()
+        message_var.creator = request.user
+        message_var.created = datetime.now()
+        message_var.text = message_content
+        try:
+            message_var.receiver = User.objects.get(pk=sender_id)
+        except ObjectDoesNotExist:
+            messages.error(request, "Den Empfaenger gibt es nicht")
+            return HttpResponseRedirect(reverse("home"))
+        message_var.save()
+        return HttpResponseRedirect("%s?active_conversation=%s" % (reverse("chats"), message_var.receiver.username))
 
 
 def __send_system__message__(receiver, message, level="info"):
