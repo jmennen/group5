@@ -5,9 +5,9 @@ body {
 
 .list-group {
 	background-color:#FFF7F7;
-	margin-top:57px;
+	/*margin-top:57px;
 	position:absolute;
-	height:550px;
+	height:550px;*/
 	border-radius:4px;
 	overflow: auto;
 }
@@ -43,7 +43,7 @@ body {
   margin-top:10px;
   border-radius:15px;
   padding:5px; 
-  position:relative:
+  position:relative;
 }
 
 .systemmessage-info{
@@ -61,7 +61,7 @@ body {
   margin-top:10px;
   border-radius:15px;
   padding:5px; 
-  position:relative:
+  position:relative;
 }
 
 .systemmessage-news{
@@ -79,7 +79,7 @@ body {
   margin-top:10px;
   border-radius:15px;
   padding:5px; 
-  position:relative:
+  position:relative;
 }
 
 .theirmessage{
@@ -96,7 +96,7 @@ body {
   border-radius:15px;
   padding:5px; 
   float: left;  
-  position:relative:
+  position:relative;
 }
 
 .mymessage{

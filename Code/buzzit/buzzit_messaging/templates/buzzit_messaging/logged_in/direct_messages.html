@@ -13,30 +13,30 @@
         <div class="row">
             <div class="col-md-3">
                 <ul class="list-group">
-                <li class="list-group-item">
-                    <a href="#" class="
+                    <li class="list-group-item">
+                        <a href="#" class="
                         {% if "SYSTEM" == active_conversation_partner %}
                         active
                         {% endif %}
                         " id="chat_SYSTEM">
-                        Notifications
-                        <span class="badge">{{ system_messages|keyval:"count" }}</span>
+                            Notifications
+                            <span class="badge">{{ system_messages|keyval:"count" }}</span>
 
-                        <p><h6><i>{{ system_messages|keyval:"msg"|objval:"text" }}</i></h6></p>
-                    </a>
-                </li>
+                            <p><h6><i>{{ system_messages|keyval:"msg"|objval:"text" }}</i></h6></p>
+                        </a>
+                    </li>
                     {% for conversationpartner in chats %}
                         <li class="list-group-item">
-                        <a href="{% url "all_chats" %}?active_conversation={{ conversationpartner }}" class="list-group-item
+                            <a href="{% url "all_chats" %}?active_conversation={{ conversationpartner }}" class="list-group-item
                         {% if conversationpartner == active_conversation_partner %}
                         active
                         {% endif %}
                         " id="chat_{{ conversationpartner }}">
-                            {{ chats|keyval:conversationpartner|objval:"creator"|objval:"username" }}
-                            <span class="badge">{{ chatsMsgCount|keyval:conversationpartner }}</span>
+                                {{ chats|keyval:conversationpartner|objval:"creator"|objval:"username" }}
+                                <span class="badge">{{ chatsMsgCount|keyval:conversationpartner }}</span>
 
-                            <p><h6><i>{{ chats|keyval:conversationpartner|objval:"text" }}</i></h6></p>
-                        </a>
+                                <p><h6><i>{{ chats|keyval:conversationpartner|objval:"text" }}</i></h6></p>
+                            </a>
                         </li>
                     {% endfor %}
                 </ul>
