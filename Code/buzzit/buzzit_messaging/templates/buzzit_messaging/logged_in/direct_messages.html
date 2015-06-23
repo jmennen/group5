@@ -24,7 +24,7 @@
                         <p><h6><i>{{ system_messages|keyval:"msg"|objval:"text" }}</i></h6></p>
                     </a>
                     {% for conversationpartner in chats %}
-                        <a href="{% url "chat" %}?active_conversation={{ conversationpartner }}" class="list-group-item
+                        <a href="{% url "chats" %}?active_conversation={{ conversationpartner }}" class="list-group-item
                         {% if conversationpartner == active_conversation_partner %}
                         active
                         {% endif %}
