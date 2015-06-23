@@ -141,7 +141,6 @@ def postCirclemessage(request):
             original_message = Circle_message.objects.get(pk=rep)
             __send_system__message__(answer_to.creator, "Dein Post <id:%s> wurde gepostet" % original_message.pk)
 
-
         return HttpResponseRedirect(reverse("home"))
     return render(request, "buzzit_models/circle_message_form.html")
 
@@ -363,14 +362,19 @@ def search_theme_json(request, query):
     pass
 
 
+from django.template.loader import render_to_string
+
+
 @login_required
 def chat_polling(request, username):
-    new_messages = Directmessage.objects.filter(receiver=request.user, creator__username=username, read=False)
+    new_messages = Directmessage.objects.filter(receiver=request.user, creator__username=username, read=False).order_by("created")
     if new_messages.count() > 0:
-        new_messages = new_messages.all()
+        msg = []
+        for m in new_messages:
+            render_to_string("buzzit_messaging/includes/chat/partner_chat_message.html", {"message": m})
     else:
-        new_messages = []
-    return JsonResponse({"username": username, "new_chat_messages": new_messages}, safe=False)
+        msg = []
+    return JsonResponse({"username": username, "new_chat_messages": msg}, safe=False)
 
 
 @login_required
@@ -474,7 +478,7 @@ def direct_messages_overview(request):
             .order_by("created")
         if conversation.count() > 0:
             conversation.filter(receiver=request.user).update(read=True)
-            conversation=conversation.all()
+            conversation = conversation.all()
         else:
             # new conversation
             conversation = []
@@ -489,12 +493,13 @@ def direct_messages_overview(request):
     else:
         # no specific chat given; show notifications
         active_conversation_partner = "SYSTEM"
-        conversation = Directmessage.objects.filter(creator__username="SYSTEM", receiver=request.user).order_by("created")
+        conversation = Directmessage.objects.filter(creator__username="SYSTEM", receiver=request.user).order_by(
+            "created")
     sorted_chats = list(chats)
     sorted_chats.sort()
     return render(request, "buzzit_messaging/logged_in/direct_messages.html",
                   {
-                      "chats_sorted" : sorted_chats,
+                      "chats_sorted": sorted_chats,
                       "chats": chats,
                       "chatsMsgCount": chatsMsgCount,
                       "active_conversation_partner": active_conversation_partner,
