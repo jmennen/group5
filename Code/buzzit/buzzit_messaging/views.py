@@ -437,7 +437,7 @@ def direct_messages_overview(request):
     sysMsgCount = Directmessage.objects.filter(receiver=request.user, creator__username="SYSTEM", read=False).count()
 
     all_chat_messages_for_me = Directmessage.objects.filter(
-        Q(receiver=request.user) | Q(creator=request.user), ~Q(creator__username="SYSTEM")).order_by("-created").all()
+        Q(receiver=request.user) | Q(creator=request.user), ~Q(creator__username="SYSTEM")).order_by("created").all()
     chats = {}
     for cm in all_chat_messages_for_me:
         if cm.creator == request.user:
