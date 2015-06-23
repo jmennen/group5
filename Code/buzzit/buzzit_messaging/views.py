@@ -461,13 +461,13 @@ def direct_messages_overview(request):
         conversation = Directmessage.objects.filter(
             Q(receiver=request.user, creator__username=active_conversation_partner) |
             Q(creator=request.user, receiver__username=active_conversation_partner)) \
-            .order_by("-created")
+            .order_by("created")
         conversation.update(read=True)
         conversation=conversation.all()
     else:
         # no specific chat given; show notifications
         active_conversation_partner = "SYSTEM"
-        conversation = Directmessage.objects.filter(creator__username="SYSTEM", receiver=request.user).order_by("-created")
+        conversation = Directmessage.objects.filter(creator__username="SYSTEM", receiver=request.user).order_by("created")
     return render(request, "buzzit_messaging/logged_in/direct_messages.html",
                   {
                       "chats": chats,
