@@ -368,7 +368,7 @@ from django.template.loader import render_to_string
 @login_required
 def chat_polling(request, username):
     new_messages = Directmessage.objects.filter(receiver=request.user, creator__username=username, read=False).order_by(
-        "created")
+        "created").all()
     if new_messages.count() > 0:
         msg = []
         for m in new_messages:
