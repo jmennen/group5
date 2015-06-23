@@ -434,11 +434,20 @@ def direct_messages_overview(request):
     """
     all_chat_meesages_for_me = Directmessage.objects.filter(Q(receiver=request.user) | Q(creator=request.user)).order_by("-created").all()
     chats = {}
+    chatsMsgCount = {}
     for cm in all_chat_meesages_for_me:
         if cm.creator == request.user:
             chats[cm.receiver.username] = cm
+            if chatsMsgCount[cm.receiver.username]:
+                chatsMsgCount[cm.receiver.username] += 1
+            else:
+                chatsMsgCount[cm.receiver.username] = 1
         else:
             chats[cm.creator.username] = cm
+            if chatsMsgCount[cm.creator.username]:
+                chatsMsgCount[cm.creator.username] += 1
+            else:
+                chatsMsgCount[cm.creator.username] = 1
     return render(request, "buzzit_messaging/logged_in/direct_messages.html", {"chats": chats})
 
 
