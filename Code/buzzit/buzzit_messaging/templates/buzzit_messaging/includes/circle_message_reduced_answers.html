@@ -1,4 +1,5 @@
 {% extends "buzzit_messaging/extendables/abstract_circle_message.html" %}
+{% load messagefilters %}
 {% block answers %}
     {% for answer_to in circlemessage.circle_message_set.all|slice:":3" %}
         <div class="media">
