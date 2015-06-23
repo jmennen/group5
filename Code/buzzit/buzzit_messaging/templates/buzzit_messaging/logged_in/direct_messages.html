@@ -12,8 +12,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <div class="list-group">
-                    <a href="#" class="list-group-item
+                <ul class="list-group">
+                <li class="list-group-item">
+                    <a href="#" class="
                         {% if "SYSTEM" == active_conversation_partner %}
                         active
                         {% endif %}
@@ -23,7 +24,9 @@
 
                         <p><h6><i>{{ system_messages|keyval:"msg"|objval:"text" }}</i></h6></p>
                     </a>
+                </li>
                     {% for conversationpartner in chats %}
+                        <li class="list-group-item">
                         <a href="{% url "all_chats" %}?active_conversation={{ conversationpartner }}" class="list-group-item
                         {% if conversationpartner == active_conversation_partner %}
                         active
@@ -34,8 +37,9 @@
 
                             <p><h6><i>{{ chats|keyval:conversationpartner|objval:"text" }}</i></h6></p>
                         </a>
+                        </li>
                     {% endfor %}
-                </div>
+                </ul>
             </div>
             <div class="col-md-9">
                 <!-- <h3> Deine Nachrichten mit...</h3> -->
@@ -73,8 +77,6 @@
                     </form>
                 {% endif %}
             </div>
-
-
         </div>
     </div>
 
