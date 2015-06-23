@@ -379,7 +379,18 @@ def chat_polling(request, username):
         new_messages.update(read=True)
     else:
         msg = []
-    return JsonResponse({"username": username, "new_chat_messages": msg}, safe=False)
+    # look for other messages
+    all_chat_messages_for_me = Directmessage.objects.filter(~Q(creator__username=username), receiver=request.user,
+                                                            read=False).order_by("created").all()
+    chats = {}
+    # naive sorting
+    for cm in all_chat_messages_for_me:
+        chats[cm.creator.username] = {"text": cm.text}
+        if chats[cm.creator.username].get("count"):
+            chats[cm.creator.username]["count"] += 1
+        else:
+            chats[cm.creator.username]["count"] = 1
+    return JsonResponse({"username": username, "new_chat_messages": msg, "chats": chats}, safe=False)
 
 
 @login_required
