@@ -76,6 +76,9 @@
         </div>
     </div>
     <script>
+        $(document).ready(function () {
+            $('a.active').find('.badge').fadeOut();
+        });
         var objDiv = document.getElementsByClassName("area")[0];
         objDiv.scrollTop = objDiv.scrollHeight;
         {% include "buzzit_messaging/includes/chat/chat_polling.js" %}
