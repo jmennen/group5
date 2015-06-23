@@ -15,7 +15,7 @@
                         href="{% url "view_profile" answer_to.creator.pk %}">{{ answer_to.creator }}</a>
                     antwortete
                     am {{ answer_to.created | date:'d.m.Y H:i' }}:</h4>
-                {{ answer_to.text }}
+                {{ answer_to | messagefilter |safe }}
             </div>
         </div>
         {% if answer_to.creator == user %}
