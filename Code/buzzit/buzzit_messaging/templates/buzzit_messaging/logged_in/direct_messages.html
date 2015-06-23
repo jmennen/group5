@@ -63,13 +63,14 @@
                         {% endfor %}
                     {% endif %}
                 </div>
-
-                <div class="textfield">
-                    <textarea class="form-control" rows="5"></textarea>
-                    <button id="messagebutton" type="submit" class="btn btn-default">Senden</button>
-
-                </div>
-
+                {% if active_conversation_partner != "SYSTEM" %}
+                    <form method="post" action="{% url "chat" active_conversation_partner %}">
+                        <div class="textfield">
+                            <textarea class="form-control" name="text" rows="5"></textarea>
+                            <button id="messagebutton" type="submit" class="btn btn-default">Senden</button>
+                        </div>
+                    </form>
+                {% endif %}
             </div>
 
 

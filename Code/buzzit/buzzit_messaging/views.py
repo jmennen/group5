@@ -493,7 +493,7 @@ def direct_messages_details(request, sender_id):
         message_var.created = datetime.now()
         message_var.text = message_content
         try:
-            message_var.receiver = User.objects.get(pk=sender_id)
+            message_var.receiver = User.objects.get(username=sender_id)
         except ObjectDoesNotExist:
             messages.error(request, "Den Empfaenger gibt es nicht")
             return HttpResponseRedirect(reverse("home"))
