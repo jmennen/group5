@@ -366,8 +366,12 @@ def search_theme_json(request, query):
 @login_required
 def chat_polling(request, username):
     new_messages = Directmessage.objects.filter(receiver=request.user, creator__username=username, read=False)
-    new_messages.update(read=True)
-    return JsonResponse({"username": username, "new_chat_messages": new_messages.all()}, safe=False)
+    if new_messages.count() > 0:
+        new_messages.update(read=True)
+        new_messages = new_messages.all()
+    else:
+        new_messages = []
+    return JsonResponse({"username": username, "new_chat_messages": new_messages}, safe=False)
 
 
 @login_required
