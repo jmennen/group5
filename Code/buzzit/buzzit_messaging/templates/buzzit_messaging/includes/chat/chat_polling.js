@@ -11,7 +11,7 @@ function get_one_poll_func(username) {
             // d is json data
             if (d && chat.data("username") == d.username && d.new_chat_messages && d.new_chat_messages.length) {
                 // d.new_chat_messages : array of new messages for chat
-                d.new_chat_message.forEach(function (html, i) {
+                d.new_chat_messages.forEach(function (html, i) {
                     var new_message = $(html);
                     $('.area').append(new_message);
                 });
