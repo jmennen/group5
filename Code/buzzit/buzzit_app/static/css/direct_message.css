@@ -14,8 +14,8 @@ body {
 
 .area
     {		
-	height:450px;
-	width:825px;
+	max-height:450px;
+	/*width:825px;*/
 	background-color:#FFF7F7;
 	border-radius:5px;
 	margin-bottom:10px;
@@ -23,7 +23,7 @@ body {
 }
 	
 .show_message{
-  width:800px;
+  max-width:800px;
   display:table;
 }
 
