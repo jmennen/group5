@@ -118,12 +118,7 @@ def postCirclemessage(request):
             except ObjectDoesNotExist:
                 continue
             # inform mentioned user about mention
-            notification = Directmessage()
-            notification.created = datetime.now()
-            notification.creator = User.objects.get(username="SYSTEM")
-            notification.receiver = user_mentioned
-            notification.text = "Du wurdest in einem Post erwaehnt: <POST:%s>" % newPost.id
-            notification.save()
+            __send_system__message__(user_mentioned, "Du wurdest in einem Post erwaehnt: <POST:%s>" % newPost.id)
             newPost.mentions.add(user_mentioned)
 
         # add themes, that were submitted
