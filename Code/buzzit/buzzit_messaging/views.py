@@ -367,7 +367,6 @@ def search_theme_json(request, query):
 def chat_polling(request, username):
     new_messages = Directmessage.objects.filter(receiver=request.user, creator__username=username, read=False)
     if new_messages.count() > 0:
-        new_messages.update(read=True)
         new_messages = new_messages.all()
     else:
         new_messages = []
