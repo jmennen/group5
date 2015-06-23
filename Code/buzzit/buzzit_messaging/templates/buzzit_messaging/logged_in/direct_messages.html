@@ -78,7 +78,7 @@
     <script>
         var objDiv = document.getElementsByClassName("area")[0];
         objDiv.scrollTop = objDiv.scrollHeight;
+        {% include "buzzit_messaging/includes/chat/chat_polling.js" %}
+        start_chat_polling({{ active_conversation_partner }});
     </script>
-    {% include "buzzit_messaging/includes/chat/chat_polling.js" %}
-    start_chat_polling({{ active_conversation_partner }});
 {% endblock %}
