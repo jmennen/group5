@@ -485,3 +485,23 @@ def direct_messages_details(request, sender_id):
     :return:
     """
     pass
+
+
+def __send_system__message__(receiver, message, level="info"):
+    system_user = User.objects.get(username="SYSTEM")
+    try:
+        receiver = User.objects.get(pk=receiver)
+    except ObjectDoesNotExist:
+        # TODO log internen fehler
+        return
+    sysMsg = Directmessage(creator=system_user, created=datetime.now(), receiver=receiver)
+    level_msgs = {
+        "info" : "I%s",
+        "news" : "N%s",
+        "danger" : "D%s"
+    }
+    try:
+        sysMsg.text = level_msgs[level] % message
+    except KeyError:
+        sysMsg.text = level_msgs["info"] % message
+    sysMsg.save()
