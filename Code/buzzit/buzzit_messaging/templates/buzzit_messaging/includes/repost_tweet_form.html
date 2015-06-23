@@ -1,5 +1,5 @@
 {% extends "buzzit_messaging/includes/new_tweet_form.html" %}
 {% block formbegin %}
-    {% super.formbegin %}
+    {{ super.formbegin }}
     <input type="hidden" name="original_id" value="{{ circlemessage.pk }}"/>
 {% endblock %}
