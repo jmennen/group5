@@ -433,11 +433,12 @@ def direct_messages_overview(request):
     :param request:
     :return:
     """
-    all_chat_meesages_for_me = Directmessage.objects.filter(
-        Q(receiver=request.user) | Q(creator=request.user)).order_by("created").all()
+    all_chat_messages_for_me = Directmessage.objects.filter(
+        Q(receiver=request.user) | Q(creator=request.user), ~Q(creator__username="SYSTEM")).order_by("created").all()
     chats = {}
+    chats["SYSTEM"] = Directmessage.objects.filter(receiver=request.user, creator__username="SYSTEM")
     chatsMsgCount = {}
-    for cm in all_chat_meesages_for_me:
+    for cm in all_chat_messages_for_me:
         if cm.creator == request.user:
             chats[cm.receiver.username] = cm
             if not cm.read:
@@ -452,7 +453,7 @@ def direct_messages_overview(request):
                     chatsMsgCount[cm.creator.username] += 1
                 else:
                     chatsMsgCount[cm.creator.username] = 1
-    active_conversation_partner = request.GET.get("active_conversation") # string
+    active_conversation_partner = request.GET.get("active_conversation")  # string
     if active_conversation_partner:
         # client wants so see one specific chat
         conversation = Directmessage.objects.filter(
@@ -468,7 +469,7 @@ def direct_messages_overview(request):
                       "chats": chats,
                       "chatsMsgCount": chatsMsgCount,
                       "active_conversation_partner": active_conversation_partner,
-                      "conversation" : conversation
+                      "conversation": conversation
                   })
 
 
