@@ -48,6 +48,7 @@
                     {% for circlemessage in message_list %}
                         <!-- messagefeed for the messages that are visible to you -->
                         {% include "buzzit_messaging/includes/circle_message_reduced_answers.html" with circlemessage=circlemessage %}
+                        <hr>
                     {% endfor %}
                 </div>
             </div>
