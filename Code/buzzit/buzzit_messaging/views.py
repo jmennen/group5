@@ -434,7 +434,7 @@ def direct_messages_overview(request):
     :return:
     """
     all_chat_meesages_for_me = Directmessage.objects.filter(
-        Q(receiver=request.user) | Q(creator=request.user)).order_by("-created").all()
+        Q(receiver=request.user) | Q(creator=request.user)).order_by("created").all()
     chats = {}
     chatsMsgCount = {}
     for cm in all_chat_meesages_for_me:
