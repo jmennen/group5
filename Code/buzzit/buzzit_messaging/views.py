@@ -436,7 +436,9 @@ def direct_messages_overview(request):
     all_chat_messages_for_me = Directmessage.objects.filter(
         Q(receiver=request.user) | Q(creator=request.user), ~Q(creator__username="SYSTEM")).order_by("created").all()
     chats = {}
-    chatsMsgCount = {"SYSTEM" : Directmessage.objects.filter(receiver=request.user, creator__username="SYSTEM", read=False).count()}
+    chatsMsgCount = {}
+    sysMsg = Directmessage.objects.filter(receiver=request.user, creator__username="SYSTEM").order_by("-created")[0]
+    sysMsgCount = Directmessage.objects.filter(receiver=request.user, creator__username="SYSTEM", read=False).count()
     for cm in all_chat_messages_for_me:
         if cm.creator == request.user:
             chats[cm.receiver.username] = cm
@@ -463,13 +465,13 @@ def direct_messages_overview(request):
         # no specific chat given; show notifications
         active_conversation_partner = "SYSTEM"
         conversation = Directmessage.objects.filter(creator__username="SYSTEM", receiver=request.user)
-    chats["SYSTEM"] = Directmessage.objects.filter(receiver=request.user, creator__username="SYSTEM").order_by("-created")[0]
     return render(request, "buzzit_messaging/logged_in/direct_messages.html",
                   {
                       "chats": chats,
                       "chatsMsgCount": chatsMsgCount,
                       "active_conversation_partner": active_conversation_partner,
-                      "conversation": conversation
+                      "conversation": conversation,
+                      "system_messages" : {"count" : sysMsgCount, "msg" : sysMsg}
                   })
 
 
