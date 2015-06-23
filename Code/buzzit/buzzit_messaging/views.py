@@ -77,8 +77,10 @@ def postCirclemessage(request):
         rep = request.POST.get("original_id", False)
         try:
             if ans:
+                messages.error(request, "antwort")
                 newPost.answer_to = Circle_message.objects.get(pk=ans)
             if rep:
+                messages.error(request, "repost")
                 newPost.original_message = Circle_message.objects.get(pk=ans)
         except ObjectDoesNotExist:
             messages.error(request, "Fehler")
