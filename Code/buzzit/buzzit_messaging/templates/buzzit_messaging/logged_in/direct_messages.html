@@ -80,8 +80,7 @@
         </div>
     </div>
     <script>
-    $(document).ready(function(){
-        $('.area').find('.show_message').last().scroll();
-    });
+    var objDiv = document.getElementsByClassName("area")[0];
+    objDiv.scrollTop = objDiv.scrollHeight;
     </script>
 {% endblock %}
