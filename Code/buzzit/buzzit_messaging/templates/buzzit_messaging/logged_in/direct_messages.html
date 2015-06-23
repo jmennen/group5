@@ -53,6 +53,14 @@
                                 {% include "buzzit_messaging/includes/notifications/info.html" with message=m slice=0 %}
                             {% endif %}
                         {% endfor %}
+                    {% else %}
+                        {% for m in conversation %}
+                            {% if m.creator == user %}
+                                {% include "buzzit_messaging/includes/chat/own_chat_message.html" with message=m %}
+                            {% else %}
+                                {% include "buzzit_messaging/includes/chat/partner_chat_message.html" with message=m %}
+                            {% endif %}
+                        {% endfor %}
                     {% endif %}
                 </div>
 
