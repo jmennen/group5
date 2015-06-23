@@ -406,9 +406,10 @@ def direct_messages_details(request, sender_id):
         return HttpResponseRedirect(reverse_lazy('home'))
 
     message_list_from_sender = Directmessage.objects.filter(
-        creator = sender, receiver = request.user).order_by("created").all()
+        creator=sender, receiver=request.user).order_by("created").all()
+
     my_message_list = Directmessage.objects.filter(
-        creator=request,receiver = sender).order_by("created").all()
+        creator=request,receiver=sender).order_by("created").all()
 
     return render(request,"buzzit_messaging/logged_in/direct_messages.html",
                   {"message_list":message_list_from_sender,
