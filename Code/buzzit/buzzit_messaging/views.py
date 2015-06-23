@@ -448,7 +448,7 @@ def direct_messages_overview(request):
                 chatsMsgCount[cm.creator.username] += 1
             else:
                 chatsMsgCount[cm.creator.username] = 1
-    return render(request, "buzzit_messaging/logged_in/direct_messages.html", {"chats": chats})
+    return render(request, "buzzit_messaging/logged_in/direct_messages.html", {"chats": chats, "chatsMsgCount":chatsMsgCount})
 
 
 @login_required
