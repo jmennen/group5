@@ -479,7 +479,7 @@ def direct_messages_overview(request):
             Q(creator=request.user, receiver__username=active_conversation_partner)) \
             .order_by("created")
         if conversation.count() > 0:
-            conversation.filter(receiver=request.user).update(read=True)
+            conversation.filter(receiver=request.user).all().update(read=True)
             conversation = conversation.all()
         else:
             # new conversation
