@@ -372,7 +372,10 @@ def chat_polling(request, username):
     if new_messages.count() > 0:
         msg = []
         for m in new_messages:
-            msg.append(render_to_string("buzzit_messaging/includes/chat/partner_chat_message.html", {"message": m}))
+            if m.creator.username == "SYSTEM":
+                msg.append(render_to_string("buzzit_messaging/includes/notifications/news.html", {"message": m}))
+            else:
+                msg.append(render_to_string("buzzit_messaging/includes/chat/partner_chat_message.html", {"message": m}))
         new_messages.update(read=True)
     else:
         msg = []
