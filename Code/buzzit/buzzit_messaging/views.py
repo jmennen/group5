@@ -428,9 +428,6 @@ def direct_messages_overview(request):
     :param request:
     :return:
     """
-    all_chat_messages_for_me = Directmessage.objects.filter(
-        Q(receiver=request.user) | Q(creator=request.user), ~Q(creator__username="SYSTEM")).order_by("created").all()
-    chats = {}
     chatsMsgCount = {}
     sysMsg = Directmessage.objects.filter(receiver=request.user, creator__username="SYSTEM").order_by("-created")
     if sysMsg.count() > 0:
@@ -438,6 +435,10 @@ def direct_messages_overview(request):
     else:
         sysMsg = []
     sysMsgCount = Directmessage.objects.filter(receiver=request.user, creator__username="SYSTEM", read=False).count()
+
+    all_chat_messages_for_me = Directmessage.objects.filter(
+        Q(receiver=request.user) | Q(creator=request.user), ~Q(creator__username="SYSTEM")).order_by("-created").all()
+    chats = {}
     for cm in all_chat_messages_for_me:
         if cm.creator == request.user:
             chats[cm.receiver.username] = cm
