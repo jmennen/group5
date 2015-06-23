@@ -11,7 +11,7 @@
         <!-- the creator of the message as well as the date will be shown -->
         {% if circlemessage.original_message %}
             <div class="media">
-                <div class="media-right">
+                <div class="media-left">
                     <a href="{% url "view_profile" circlemessage.original_message.creator.profile.pk %}">
                         <img height="64" width="64" class="media-object"
                              src="{% url "profile_picture_small" circlemessage.original_message.creator.profile.pk %}"
@@ -20,10 +20,12 @@
                 </div>
                 <div class="media-body">
                     <!-- the creator of the answer as well as the date will be shown -->
-                    <h4 class="media-heading"><a
-                            href="{% url "view_profile" circlemessage.original_message.creator.pk %}">{{ circlemessage.original_message.creator }}</a>
-                        antwortete
-                        am {{ circlemessage.original_message.created | date:'d.m.Y H:i' }}:</h4>
+                    <h4 class="media-heading">
+
+                        <a href="{% url "view_profile" circlemessage.original_message.creator.pk %}">
+                            <span class="glyphicon glyphicon-retweet"></span>
+                            {{ circlemessage.original_message.creator }}</a>
+                        {{ circlemessage.original_message.created | date:'d.m.Y H:i' }}:</h4>
                     {{ circlemessage.original_message | messagefilter | safe }}
                 </div>
             </div>
