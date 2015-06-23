@@ -14,6 +14,8 @@ function get_one_poll_func(username) {
                 d.new_chat_messages.forEach(function (html, i) {
                     var new_message = $(html);
                     $('.area').append(new_message);
+                    var objDiv = document.getElementsByClassName("area")[0];
+                    objDiv.scrollTop = objDiv.scrollHeight;
                 });
             }
         });
