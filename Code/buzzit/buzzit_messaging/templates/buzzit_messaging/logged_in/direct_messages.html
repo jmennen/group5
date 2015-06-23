@@ -14,7 +14,11 @@
             <div class="col-md-3">
                 <div class="list-group">
                     {% for conversationpartner in chats %}
-                        <a href="#" class="list-group-item">
+                        <a href="#" class="list-group-item
+                        {% if conversationpartner == active_conversation_partner %}
+                        active
+                        {% endif %}
+                        " id="chat_{{ conversationpartner }}">
                             {{ chats|keyval:conversationpartner|objval:"creator"|objval:"username" }}
                             <span class="badge">{{ chatsMsgCount|keyval:conversationpartner }}</span>
 
