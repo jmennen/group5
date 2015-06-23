@@ -118,7 +118,7 @@ def postCirclemessage(request):
             except ObjectDoesNotExist:
                 continue
             # inform mentioned user about mention
-            __send_system__message__(user_mentioned, "Du wurdest in einem Post erwaehnt: <POST:%s>" % newPost.id)
+            __send_system__message__(user_mentioned.pk, "Du wurdest in einem Post erwaehnt: <POST:%s>" % newPost.id)
             newPost.mentions.add(user_mentioned)
 
         # add themes, that were submitted
@@ -136,10 +136,10 @@ def postCirclemessage(request):
 
         if ans:
             answer_to = Circle_message.objects.get(pk=ans)
-            __send_system__message__(answer_to.creator, "Dein Post <id:%s> hat eine neue Antwort" % answer_to.pk)
+            __send_system__message__(answer_to.creator.pk, "Dein Post <id:%s> hat eine neue Antwort" % answer_to.pk)
         if rep:
             original_message = Circle_message.objects.get(pk=rep)
-            __send_system__message__(answer_to.creator, "Dein Post <id:%s> wurde gepostet" % original_message.pk)
+            __send_system__message__(answer_to.creator.pk, "Dein Post <id:%s> wurde gepostet" % original_message.pk)
 
         return HttpResponseRedirect(reverse("home"))
     return render(request, "buzzit_models/circle_message_form.html")
@@ -283,7 +283,7 @@ def follow(request, user_id):
         return HttpResponseRedirect(reverse_lazy('home'))
     my_profile.follows.add(follow_user.pk)
     messages.success(request, "Du folgst jetzt %s" % follow_user.user.username)
-    __send_system__message__(follow_user.user, "%s folgt Dir jetzt" % request.user.username)
+    __send_system__message__(follow_user.user.pk, "%s folgt Dir jetzt" % request.user.username)
     return HttpResponseRedirect(reverse_lazy('home'))
 
 
@@ -298,7 +298,7 @@ def unfollow(request, user_id):
         circle.members.remove(my_profile.pk)
     my_profile.follows.remove(unfollow_user.pk)
     messages.success(request, "Du folgst %s nicht mehr" % unfollow_user.user.username)
-    __send_system__message__(unfollow_user.user, "%s folgt Dir nicht mehr" % request.user.username)
+    __send_system__message__(unfollow_user.user.pk, "%s folgt Dir nicht mehr" % request.user.username)
     return HttpResponseRedirect(reverse_lazy('home'))
 
 
