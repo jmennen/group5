@@ -371,7 +371,7 @@ def chat_polling(request, username):
     if new_messages.count() > 0:
         msg = []
         for m in new_messages:
-            render_to_string("buzzit_messaging/includes/chat/partner_chat_message.html", {"message": m})
+            msg.append(render_to_string("buzzit_messaging/includes/chat/partner_chat_message.html", {"message": m}))
     else:
         msg = []
     return JsonResponse({"username": username, "new_chat_messages": msg}, safe=False)
