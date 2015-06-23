@@ -43,14 +43,14 @@
                 <div class="area">
                     {% if active_conversation_partner == "SYSTEM" %}
                         {% for m in conversation %}
-                            {% if m|startswith:"I" %}
+                            {% if m.text|startswith:"I" %}
                                 {% include "buzzit_messaging/includes/notifications/info.html" with message=m %}
-                            {% elif m|startswith:"N" %}
+                            {% elif m.text|startswith:"N" %}
                                 {% include "buzzit_messaging/includes/notifications/news.html" with message=m %}
-                            {% elif m|startswith:"D" %}
+                            {% elif m.text|startswith:"D" %}
                                 {% include "buzzit_messaging/includes/notifications/danger.html" with message=m %}
                             {% else %}
-                                {% include "buzzit_messaging/includes/notifications/info.html" with message=m %}
+                                {% include "buzzit_messaging/includes/notifications/info.html" with message=m slice=0 %}
                             {% endif %}
                         {% endfor %}
                     {% endif %}
