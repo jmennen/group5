@@ -18,6 +18,13 @@ function get_one_poll_func(username) {
                     objDiv.scrollTop = objDiv.scrollHeight;
                 });
             }
+            if (d && d.chats) {
+                for (var username in d.chats) {
+                    var shortinfo = d.chats[username];
+                    $('#chat_' + username).find('.badge').text(shortinfo.count);
+                    $('#chat_' + username).find('i').text(shortinfo.text);
+                }
+            }
         });
         setTimeout(poll_func, 5000);
     }
