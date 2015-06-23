@@ -437,7 +437,11 @@ def direct_messages_overview(request):
         Q(receiver=request.user) | Q(creator=request.user), ~Q(creator__username="SYSTEM")).order_by("created").all()
     chats = {}
     chatsMsgCount = {}
-    sysMsg = Directmessage.objects.filter(receiver=request.user, creator__username="SYSTEM").order_by("-created")[0]
+    sysMsg = Directmessage.objects.filter(receiver=request.user, creator__username="SYSTEM").order_by("-created")
+    if sysMsg.count() > 0:
+        sysMsg = sysMsg[0]
+    else:
+        sysMsg = []
     sysMsgCount = Directmessage.objects.filter(receiver=request.user, creator__username="SYSTEM", read=False).count()
     for cm in all_chat_messages_for_me:
         if cm.creator == request.user:
@@ -471,7 +475,7 @@ def direct_messages_overview(request):
                       "chatsMsgCount": chatsMsgCount,
                       "active_conversation_partner": active_conversation_partner,
                       "conversation": conversation,
-                      "system_messages" : {"count" : sysMsgCount, "msg" : sysMsg}
+                      "system_messages": {"count": sysMsgCount, "msg": sysMsg}
                   })
 
 
@@ -496,9 +500,9 @@ def __send_system__message__(receiver, message, level="info"):
         return
     sysMsg = Directmessage(creator=system_user, created=datetime.now(), receiver=receiver)
     level_msgs = {
-        "info" : "I%s",
-        "news" : "N%s",
-        "danger" : "D%s"
+        "info": "I%s",
+        "news": "N%s",
+        "danger": "D%s"
     }
     try:
         sysMsg.text = level_msgs[level] % message
