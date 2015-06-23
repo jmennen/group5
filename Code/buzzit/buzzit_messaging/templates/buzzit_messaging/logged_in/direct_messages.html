@@ -29,7 +29,7 @@
                         active
                         {% endif %}
                         " id="chat_{{ conversationpartner }}">
-                            {{ chats|keyval:conversationpartner|objval:"creator"|objval:"username" }}
+                            {{ conversationpartner }}
                             <span class="badge">{{ chatsMsgCount|keyval:conversationpartner }}</span>
 
                             <p><h6><i>{{ chats|keyval:conversationpartner|objval:"text" }}</i></h6></p>
