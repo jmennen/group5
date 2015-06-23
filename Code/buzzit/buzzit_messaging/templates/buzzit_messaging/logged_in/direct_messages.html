@@ -23,7 +23,7 @@
                     {% for conversationpartner in chats %}
                         <a href="#" class="list-group-item">
                             {{ chats|keyval:conversationpartner|objval:"creator"|objval:"username" }}
-                            <span class="badge">{{ chatsMsgCount|keyval:conversationpartner }}</span>
+                            <span class="badge">0</span>
                             <p><h6><i>{{ chats|keyval:conversationpartner|objval:"text" }}</i></h6></p>
                         </a>
                     {% endfor %}
