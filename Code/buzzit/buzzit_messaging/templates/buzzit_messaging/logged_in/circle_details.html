@@ -40,9 +40,9 @@
                             <!-- remove user from this circle -->
                             <form action="{% url "remove_user_from_circle" user.pk circle.pk %}">
                                 <div class="btn-group">
-                                    <button class="btn btn-info" type="button">
+                                    <a href="{% url "all_chats" %}?active_conversation={{ user.username }}" class="btn btn-info" type="button">
                                         <span class="glyphicon glyphicon-envelope"></span>
-                                    </button>
+                                    </a>
                                     <button class="btn btn-danger" type="submit">Entfernen</button>
                                 </div>
                             </form>
