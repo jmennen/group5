@@ -33,7 +33,7 @@ span.glyphicon-envelope {
 }
 
 .row {
-    display: table-row;
+    /* display: table-row; */
 }
 
 .cell {
