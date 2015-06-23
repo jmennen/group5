@@ -21,7 +21,7 @@
                         Notifications
                         <span class="badge">{{ system_messages|keyval:"count" }}</span>
 
-                        <p><h6><i>{{ system_messages|keyval:"msg" }}</i></h6></p>
+                        <p><h6><i>{{ system_messages|keyval:"msg"|objval:"text" }}</i></h6></p>
                     </a>
                     {% for conversationpartner in chats %}
                         <a href="#" class="list-group-item
