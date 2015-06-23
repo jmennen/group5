@@ -469,6 +469,11 @@ def direct_messages_overview(request):
             # new conversation
             conversation = []
             dummy_msg = Directmessage()
+            try:
+                dummy_msg.receiver = User.objects.get(username=active_conversation_partner)
+            except ObjectDoesNotExist:
+                messages.error("Der Benutzer existiert nicht")
+                return HttpResponseRedirect(reverse("home"))
             dummy_msg.text = "NEU"
             chats[active_conversation_partner] = dummy_msg
     else:
