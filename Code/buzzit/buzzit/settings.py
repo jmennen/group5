@@ -77,18 +77,8 @@ WSGI_APPLICATION = 'buzzit.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sn',
-        'USER': 'sn',
-        'PASSWORD': 'NXgXKshqycEICozd8LOxsYkpqXDg5dgY',
-        'HOST': 'vps146949.ovh.net',  # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
-    }
-}
+from .mysql import get_db_config
+DATABASES = get_db_config()
 
 
 # Internationalization
