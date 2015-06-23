@@ -498,7 +498,7 @@ def direct_messages_details(request, sender_id):
             messages.error(request, "Den Empfaenger gibt es nicht")
             return HttpResponseRedirect(reverse("home"))
         message_var.save()
-        return HttpResponseRedirect("%s?active_conversation=%s" % (reverse("chats"), message_var.receiver.username))
+        return HttpResponseRedirect("%s?active_conversation=%s" % (reverse("all_chats"), message_var.receiver.username))
 
 
 def __send_system__message__(receiver, message, level="info"):
