@@ -41,67 +41,19 @@
                 <h3> Deine Nachrichten mit...</h3>
 
                 <div class="area">
-                    <div class="show_message">
-                        <div class="systemmessage-danger">
-                            <a href="#">
-                                <img height="40" width="40" src="{{ .profile_picture }}" alt="Profilbild">
-                            </a>
-                            {{ creator }} schrieb:
-                            <p>Dein Beitrag wurde von einem Admin gelöscht!</p>
-                        </div>
-                    </div>
-
-                    <div class="show_message">
-                        <div class="systemmessage-info">
-                            <a href="#">
-                                <img height="40" width="40" src="{{ .profile_picture }}" alt="Profilbild">
-                            </a>
-                            {{ creator }} schrieb:
-                            <p>DU wurdest soeben von Cheng gefolgt!</p>
-                        </div>
-                    </div>
-
-                    <div class="show_message">
-                        <div class="systemmessage-news">
-                            <a href="#">
-                                <img height="40" width="40" src="{{ .profile_picture }}" alt="Profilbild">
-                            </a>
-                            {{ creator }} schrieb:
-                            <p>DU wurdest soeben in einem Beitrag erwähnt!</p>
-                        </div>
-                    </div>
-
-
-                    <div class="show_message">
-                        <div class="theirmessage">
-                            <a href="#">
-                                <img height="40" width="40" src="{{ .profile_picture }}" alt="Profilbild">
-                            </a>
-                            {{ creator }} schrieb:
-                            <p>asdasd asdassadas asdasdsad asdsadsasdasd asdasdassa asdasdsadas asdsasdsa</p>
-                        </div>
-                    </div>
-
-                    <div class="show_message">
-                        <div class="mymessage">
-                            <a href="#">
-                                <img height="40" width="40" src="{{ .profile_picture }}" alt="Profilbild">
-                            </a>
-                            {{ creator }} schrieb:
-                            <p>asdsssssssssssssssss´sssssasd sdfssssssssssss</p>
-                        </div>
-                    </div>
-                    <div class="show_message">
-                        <div class="mymessage">
-                            <a href="#">
-                                <img height="40" width="40" src="{{ .profile_picture }}" alt="Profilbild">
-                            </a>
-                            {{ creator }} schrieb:
-                            <p>asdsssssssssssssssss´sssssasd sdfssssssssssss</p>
-                        </div>
-                    </div>
-
-
+                    {% if active_conversation_partner == "SYSTEM" %}
+                        {% for m in conversation %}
+                            {% if m|startswith:"I" %}
+                                {% include "buzzit_messaging/includes/notifications/info.html" with message=m %}
+                            {% elif m|startswith:"N" %}
+                                {% include "buzzit_messaging/includes/notifications/news.html" with message=m %}
+                            {% elif m|startswith:"D" %}
+                                {% include "buzzit_messaging/includes/notifications/danger.html" with message=m %}
+                            {% else %}
+                                {% include "buzzit_messaging/includes/notifications/info.html" with message=m %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                 </div>
 
                 <div class="textfield">

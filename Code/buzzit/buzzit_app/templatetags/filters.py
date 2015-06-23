@@ -61,3 +61,13 @@ def objectvalue(obj, attr):
         return ""
 
 register.filter('objval', objectvalue)
+
+def startswith(val, char):
+    return val[0] == char
+
+register.filter('startswith', startswith)
+
+def withoutFirstChar(val):
+    return val[1:]
+
+register.filter('withoutFirstChar', withoutFirstChar)
