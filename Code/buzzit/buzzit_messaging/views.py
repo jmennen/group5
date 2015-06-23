@@ -462,8 +462,15 @@ def direct_messages_overview(request):
             Q(receiver=request.user, creator__username=active_conversation_partner) |
             Q(creator=request.user, receiver__username=active_conversation_partner)) \
             .order_by("created")
-        conversation.update(read=True)
-        conversation=conversation.all()
+        if conversation.count() > 0:
+            conversation.update(read=True)
+            conversation=conversation.all()
+        else:
+            # new conversation
+            conversation = []
+            dummy_msg = Directmessage()
+            dummy_msg.text = "NEU"
+            chats[active_conversation_partner] = dummy_msg
     else:
         # no specific chat given; show notifications
         active_conversation_partner = "SYSTEM"
