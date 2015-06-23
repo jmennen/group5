@@ -26,8 +26,8 @@
                     <td>{{ user.profile.description | beautifulNone }}</td>
                     <td>
                         <form class="form-inline" role="form">
-                            <button class="btn btn-info" type="button"><span
-                                    class="glyphicon glyphicon-envelope"></span></button>
+                            <a href="{% url "all_chats" %}?active_conversation={{ user.username }}" class="btn btn-info" type="button"><span
+                                    class="glyphicon glyphicon-envelope"></span></a>
                             {% if ownprofile.user != user %}
                                 <!-- if you are following the user an unfollow button will be shown -->
                                 {% if user.i_am_following %}
