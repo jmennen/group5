@@ -443,12 +443,6 @@ def direct_messages_overview(request):
     for cm in all_chat_messages_for_me:
         if cm.creator == request.user:
             chats[cm.receiver.username] = cm
-            # muss gleich raus
-            if not cm.read:
-                if chatsMsgCount.get(cm.receiver.username):
-                    chatsMsgCount[cm.receiver.username] += 1
-                else:
-                    chatsMsgCount[cm.receiver.username] = 1
         else:
             chats[cm.creator.username] = cm
             if not cm.read:
@@ -483,7 +477,7 @@ def direct_messages_overview(request):
         conversation = Directmessage.objects.filter(creator__username="SYSTEM", receiver=request.user).order_by("created")
     return render(request, "buzzit_messaging/logged_in/direct_messages.html",
                   {
-                      "chats": chats,
+                      "chats": sorted(chats),
                       "chatsMsgCount": chatsMsgCount,
                       "active_conversation_partner": active_conversation_partner,
                       "conversation": conversation,
