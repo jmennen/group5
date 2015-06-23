@@ -37,7 +37,7 @@ body {
   font-size: 13px;
   font-weight:lighter;
   line-height: 20px;
-  width:807px;
+  width:100%;
   border:1px solid #f0f0f0;
   background-color:#FFADAD;
   margin-top:10px;
@@ -55,7 +55,7 @@ body {
   font-size: 13px;
   font-weight:lighter;
   line-height: 20px;
-  width:807px;
+  width:100%;
   border:1px solid #f0f0f0;
   background-color:#88EB8F;
   margin-top:10px;
@@ -73,7 +73,7 @@ body {
   font-size: 13px;
   font-weight:lighter;
   line-height: 20px;
-  width:807px;
+  width:100%;
   border:1px solid #f0f0f0;
   background-color:#FFB669;
   margin-top:10px;
@@ -118,7 +118,7 @@ body {
 	
 .textfield{
 
-	width:825px;
+	width:100%;
 	border-radius:4px;
     position:relative;
 }
