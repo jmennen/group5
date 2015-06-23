@@ -364,8 +364,8 @@ def search_theme_json(request, query):
 
 
 @login_required
-def chat_polling(request, sender_id):
-    return JsonResponse({"sender_id": sender_id, "new_chat_messages": []})
+def chat_polling(request, username):
+    return JsonResponse({"username": username, "new_chat_messages": []})
 
 
 @login_required

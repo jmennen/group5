@@ -3,10 +3,10 @@
  */
 
 var chat, poll_func;
-function get_one_poll_func(sender_id) {
+function get_one_poll_func(username) {
     // return the poll_func
     return function () {
-        var url = "/messaging/chat/" + sender_id + "/poll/json";
+        var url = "/messaging/chat/" + username + "/poll/json";
         $.get(url, {}, function (d) {
             // d is json data
             if (d && chat.data("sender_id") == d.sender_id && d.new_chat_messages && d.new_chat_messages.length) {
@@ -22,8 +22,8 @@ function get_one_poll_func(sender_id) {
         setTimeout(poll_func, 5000);
     }
 }
-function start_chat_polling(sender_id) {
-    chat = $('#chat_' + sender_id);
-    poll_func = get_one_poll_func(sender_id);
+function start_chat_polling(username) {
+    chat = $('#chat_' + username);
+    poll_func = get_one_poll_func(username);
     poll_func();
 }
