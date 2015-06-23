@@ -7,75 +7,23 @@
 {% block title %}Direktnachrichten{% endblock %}
 
 {% block content %}
-
     {% include "includes/navbar.html" %}
-
-
-
-{% load filters %}
+    {% load filters %}
     <div class="container">
         <div class="row">
-
             <div class="col-md-3">
-
                 <div class="list-group">
-
                     {% for conversationpartner in chats %}
                         <a href="#" class="list-group-item">
                             {{ chats|keyval:conversationpartner|objval:"creator"|objval:"username" }}
                             <span class="badge">{{ chatsMsgCount|keyval:conversationpartner }}</span>
+
                             <p><h6><i>{{ chats|keyval:conversationpartner|objval:"text" }}</i></h6></p>
                         </a>
                     {% endfor %}
-
-
-                    <a href="#" class="list-group-item">Jan<span class="badge">14</span>
-
-                        <p><h6><i>paar Wörter von der Nachricht</i></h6></p>
-                    </a>
-
-                    <a href="#" class="list-group-item">David<span class="badge">14</span>
-
-                        <p><h6><i>paar Wörter von der Nachricht</i></h6></p>
-                    </a>
-
-                    <a href="#" class="list-group-item">Florian<span class="badge">14</span>
-
-                        <p><h6><i>paar Wörter von der Nachricht</i></h6></p>
-                    </a>
-
-                    <a href="#" class="list-group-item">
-
-                        Dong<span class="badge">14</span>
-
-                        <p><h6><i>paar Wörter von der Nachricht</i></h6></p>
-                    </a>
-
-                    <a href="#" class="list-group-item">Jan<span class="badge">14</span>
-
-                        <p><h6><i>paar Wörter von der Nachricht</i></h6></p>
-                    </a>
-
-                    <a href="#" class="list-group-item">David<span class="badge">14</span>
-
-                        <p><h6><i>paar Wörter von der Nachricht</i></h6></p>
-                    </a>
-
-                    <a href="#" class="list-group-item">Florian<span class="badge">14</span>
-
-                        <p><h6><i>paar Wörter von der Nachricht</i></h6></p>
-                    </a>
-                    <a href="#" class="list-group-item">Florian<span class="badge">14</span>
-
-                        <p><h6><i>paar Wörter von der Nachricht</i></h6></p>
-                    </a>
-
-
                 </div>
             </div>
-
             <div class="col-md-9">
-
                 <h3> Deine Nachrichten mit...</h3>
 
                 <div class="area">
