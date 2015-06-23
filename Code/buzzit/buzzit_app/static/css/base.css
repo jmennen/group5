@@ -6,7 +6,6 @@ span.glyphicon-envelope {
     font-size: 1.0em;
 }
 
-
 .thumbnail img {
     width: 75%;
 }
@@ -26,7 +25,6 @@ span.glyphicon-envelope {
     border-width: thin;
 
 }
-
 
 .heading {
     display: table-row;
@@ -54,10 +52,11 @@ footer {
 .highlight_theme {
     background-color: #AAD7FF;
 }
+
 .highlight_contact {
     background-color: #9AEEAC;
 }
 
 .repost {
-    padding: 20px;
+    padding: 0px 0px 40px 40px;
 }
