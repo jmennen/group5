@@ -419,6 +419,7 @@ class PostDetailsView(ListView):
         return super(PostDetailsView, self).dispatch(request, *args, **kwargs)
 
 
+from django.db.models import Q
 
 @login_required
 def direct_messages_overview(request):
@@ -431,7 +432,14 @@ def direct_messages_overview(request):
     :param request:
     :return:
     """
-    return render(request, "buzzit_messaging/logged_in/direct_messages.html")
+    all_chat_meesages_for_me = Directmessage.objects.filter(Q(receiver=request.user) | Q(creator=request.user)).order_by("-created").all()
+    chats = {}
+    for cm in all_chat_meesages_for_me:
+        if cm.creator == request.user:
+            chats[cm.receiver.username] = cm
+        else:
+            chats[cm.creator.username] = cm
+    return render(request, "buzzit_messaging/logged_in/direct_messages.html", {"chats": chats})
 
 
 @login_required
