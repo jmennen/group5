@@ -139,7 +139,7 @@ def postCirclemessage(request):
             __send_system__message__(answer_to.creator.pk, "Dein Post <id:%s> hat eine neue Antwort" % answer_to.pk)
         if rep:
             original_message = Circle_message.objects.get(pk=rep)
-            __send_system__message__(answer_to.creator.pk, "Dein Post <id:%s> wurde gepostet" % original_message.pk)
+            __send_system__message__(original_message.creator.pk, "Dein Post <id:%s> wurde gepostet" % original_message.pk)
 
         return HttpResponseRedirect(reverse("home"))
     return render(request, "buzzit_models/circle_message_form.html")
