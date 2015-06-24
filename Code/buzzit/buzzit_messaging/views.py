@@ -288,8 +288,15 @@ def follow(request, user_id):
     return HttpResponseRedirect(reverse_lazy('home'))
 
 
-@login_required()
+@login_required
 def unfollow(request, user_id):
+    """
+    views, that manages the unfollowing process.
+    so this gets called, when a logged in user want to unfollow the user identified by <user_id>
+    :param request:
+    :param user_id:
+    :return:
+    """
     # TODO: exceptions fuer nicht gefundene user usw (wie follow())
     unfollow_user = Profile.objects.get(pk=user_id)
     my_profile = Profile.objects.get(pk=request.user.pk)
@@ -305,6 +312,13 @@ def unfollow(request, user_id):
 
 @login_required
 def repost(request, message_id):
+    """
+    view, that allows reposting of a existing post, that is identified by <message_id>.
+    if <message_id> cannot get verified the user is redirected and receives an error message.
+    :param request:
+    :param message_id:
+    :return:
+    """
     try:
         omessage = Circle_message.objects.get(pk=message_id)
     except ObjectDoesNotExist:
@@ -339,6 +353,24 @@ def information_about_new_directmessages(request):
 
 @login_required
 def search_user_json(request, query):
+    """
+    view for searching available users whose usernames contain query.
+    returns JSON data like
+    {
+        "symbol": "@",
+        "list": [
+                    {
+                        "name": <name of matching user>,
+                        "id" : <id of matching user>,
+                        "avatar" : <url of small profile picture>,
+                        "type" : "contact"
+                    }
+                }
+    }
+    :param request:
+    :param query:
+    :return:
+    """
     users = User.objects.filter(username__icontains=query).only('username')
     usernamelist = []
     for user in users[:10]:
@@ -350,6 +382,25 @@ def search_user_json(request, query):
 
 @login_required
 def search_theme_json(request, query):
+    """
+    view for searching available themes.
+    If theme is new, the new themename will be returned; so always returns something
+    returns JSON data like
+    {
+        "symbol": "#",
+        "list": [
+                    {
+                        "name": <name of matching theme>,
+                        "id" : <id (also name) of matching theme>,
+                        "avatar" : "" --- currently not used,
+                        "type" : "theme"
+                    }
+                }
+    }
+    :param request:
+    :param query:
+    :return:
+    """
     themes = Theme.objects.filter(name__icontains=query).only('name')
     if themes.count() < 1:
         theme = Theme()
@@ -368,14 +419,38 @@ from django.template.loader import render_to_string
 
 @login_required
 def chat_polling(request, username):
+    """
+    get info for UNREAD messages of the current chat and shortinfo for all other chats
+    TODO on clientside: currently new conversations will not be displayed correctly
+    :param request:
+    :param username:
+    :return: JSON data like
+        {
+            "username": username, --- the username of current conversation
+            "new_chat_messages":    [
+                                        <rendered unread direct message of current conversation>
+                                    ],
+            "chats":    {
+                            "usernameX" :   {
+                                                "text" : <text of latest unread chat message>,
+                                                "count" : <count of unread messages>
+                                            },
+                            "usernameY" : ...
+                        }
+        }
+    """
     new_messages = Directmessage.objects.filter(receiver=request.user, creator__username=username, read=False).order_by(
         "created").all()
     if new_messages.count() > 0:
         msg = []
+        # msg holds the messages for current chat
         for m in new_messages:
+            # pre render the new direct message according to its type
             if m.creator.username == "SYSTEM":
+                # it is a notification
                 msg.append(render_to_string("buzzit_messaging/includes/notifications/news.html", {"message": m}))
             else:
+                # it is a direct message from a real user
                 msg.append(render_to_string("buzzit_messaging/includes/chat/partner_chat_message.html", {"message": m}))
         new_messages.update(read=True)
     else:
@@ -383,6 +458,7 @@ def chat_polling(request, username):
     # look for other messages
     all_chat_messages_for_me = Directmessage.objects.filter(~Q(creator__username=username), receiver=request.user,
                                                             read=False).order_by("created").all()
+    # build short info for chats, that are not the current conversation
     chats = {}
     # naive sorting
     for cm in all_chat_messages_for_me:
@@ -554,6 +630,7 @@ def direct_messages_overview(request):
             "created")
         # and mark them as read
         conversation.update(read=True)
+    # key the usernames of all chats and sort them
     sorted_chats = list(chats)
     sorted_chats.sort()
     return render(request, "buzzit_messaging/logged_in/direct_messages.html",
@@ -570,17 +647,19 @@ def direct_messages_overview(request):
 @login_required
 def direct_messages_details(request, sender_id):
     """
-    One specific chat. So this filters all messages from one specific sender.
-    Returns one object: directmessage_list, where sender was specified by user_id
-    and receiver is the logged in user and vice versa.
+    method to accept new directmessage.
+    accepts only post request.
     :param request:
     :return:
     """
     if request.method == "POST":
+        # look for posted text
         message_content = request.POST.get("text", False)
         if (not message_content) or len(message_content) < 1:
+            # if there is no text or the text is too short redirect and show error
             messages.error(request, "Kein Text angegeben")
             return HttpResponseRedirect(reverse("home"))
+        # create a new direct message and fill in data, then save it, if successful
         message_var = Directmessage()
         message_var.creator = request.user
         message_var.created = datetime.now()
@@ -595,10 +674,20 @@ def direct_messages_details(request, sender_id):
 
 
 def __send_system__message__(receiver, message, level="info"):
+    """
+    convenience method for sending system messages/notifications
+    :param receiver: the id of the receiver
+    :param message: the message content
+    :param level: the level, currently supported are one of: info, news, danger
+    :return:
+    """
     system_user = User.objects.get(username="SYSTEM")
     try:
         receiver = User.objects.get(pk=receiver)
     except ObjectDoesNotExist:
+        # this should not happen, as we are sending notifications only after successful operations,
+        # so the user was found before, but not yet.
+        # seems to be an internal error or the user just deleted his account
         # TODO log internen fehler
         return
     sysMsg = Directmessage(creator=system_user, created=datetime.now(), receiver=receiver)
