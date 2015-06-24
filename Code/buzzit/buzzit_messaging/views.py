@@ -136,11 +136,11 @@ def postCirclemessage(request):
 
         if ans:
             answer_to = Circle_message.objects.get(pk=ans)
-            __send_system__message__(answer_to.creator.pk, "Dein Post <id:%s> hat eine neue Antwort" % answer_to.pk)
+            __send_system__message__(answer_to.creator.pk, "Dein Post <POST:%s> hat eine neue Antwort" % answer_to.pk)
         if rep:
             original_message = Circle_message.objects.get(pk=rep)
             __send_system__message__(original_message.creator.pk,
-                                     "Dein Post <id:%s> wurde repostet" % original_message.pk)
+                                     "Dein Post <POST:%s> wurde repostet" % original_message.pk)
 
         return HttpResponseRedirect(reverse("home"))
     return render(request, "buzzit_models/circle_message_form.html")
@@ -284,7 +284,7 @@ def follow(request, user_id):
         return HttpResponseRedirect(reverse_lazy('home'))
     my_profile.follows.add(follow_user.pk)
     messages.success(request, "Du folgst jetzt %s" % follow_user.user.username)
-    __send_system__message__(follow_user.user.pk, "%s folgt Dir jetzt" % request.user.username)
+    __send_system__message__(follow_user.user.pk, "<USER:%s> folgt Dir jetzt" % request.user.username)
     return HttpResponseRedirect(reverse_lazy('home'))
 
 
@@ -299,7 +299,7 @@ def unfollow(request, user_id):
         circle.members.remove(my_profile.pk)
     my_profile.follows.remove(unfollow_user.pk)
     messages.success(request, "Du folgst %s nicht mehr" % unfollow_user.user.username)
-    __send_system__message__(unfollow_user.user.pk, "%s folgt Dir nicht mehr" % request.user.username)
+    __send_system__message__(unfollow_user.user.pk, "<USER:%s> folgt Dir nicht mehr" % request.user.username)
     return HttpResponseRedirect(reverse_lazy('home'))
 
 
@@ -401,11 +401,13 @@ from itertools import chain
 def showPostsToTheTheme(request, theme):
     """
     klick on theme and show all the posts,check if the theme exits
-    filter message which man should see
+    filter message which man should see.
+    returns <posts>, a list containing all posts with the theme
     :param request:
     :param theme:
     :return:
     """
+    # look if the clicked theme exist, if not then redirect with an error message
     try:
         theme = Theme.objects.get(pk=theme)
     except ObjectDoesNotExist:
@@ -415,12 +417,19 @@ def showPostsToTheTheme(request, theme):
     # get all available messages with this theme
     # 1. get public messages
     # 2. get circled messages
+    # 1. get the public messages with theme
     public_messages = Circle_message.objects.filter(public=True, themes=theme)
+    # 2.
+    # 2.1 get circles where logged user is put into
     circles_im_in = Circle.objects.filter(members=request.user)
+    # 2.2 look if i am in any circle
     if circles_im_in.count() > 0:
+        # 2.3 if so, get the messages from these circles with theme
         circled_messages = Circle_message.objects.filter(public=False, themes=theme, circle__set=circles_im_in)
     else:
+        # 2.3 if not, there are no circled messages
         circled_messages = []
+    # put all messages together and sort them by created date
     posts = sorted(list(chain(public_messages, circled_messages)), key=lambda instance: instance.created)
     return render(request, "buzzit_messaging/logged_in/theme_details.html", {"post_list": posts})
 
@@ -428,6 +437,7 @@ def showPostsToTheTheme(request, theme):
 class PostDetailsView(ListView):
     """
     Gives the ability to view details about the circlemessage by message_id.
+    returns an <answer_list> with all answers and the <circlemessge> queried
     :param request:
     :param message_id:
     :return:
@@ -439,7 +449,12 @@ class PostDetailsView(ListView):
     def get_context_data(self, **kwargs):
         context = super(PostDetailsView, self).get_context_data(**kwargs)
         currentcirclemessageid = self.kwargs.get("slug")
-        context["circlemessage"] = Circle_message.objects.get(pk=currentcirclemessageid)
+        # add <circlemessage> to the templates context
+        try:
+            context["circlemessage"] = Circle_message.objects.get(pk=currentcirclemessageid)
+        except ObjectDoesNotExist:
+            messages.error("Post existiert nicht")
+            return HttpResponseRedirect(reverse_lazy("home"))
         return context
 
     def get_queryset(self):
@@ -458,24 +473,38 @@ from django.db.models import Q
 def direct_messages_overview(request):
     """
     Overview of all direct messages.
-    Returns two objects:
-    1. directmessage_list : a list of all chats with one specific user
-    2. systemmessages : a list of all system messages
+    Returns context:
+    {
+        "chats_sorted": sorted_chats, --- list with usernames of conversation partners sorted by username
+        "chats": chats, --- unsorted dict with username-keys and latest message as value
+        "chatsMsgCount": chatsMsgCount, --- unsorted dict with username-keys and unread messages count as value
+        "active_conversation_partner": active_conversation_partner, --- username of current conversation
+        "conversation": conversation, --- the chat itself with <conversationpartner>
+        "system_messages": { --- shortinfo about systemmessages/notifications
+            "count": sysMsgCount,  --- count of unread notifications
+            "msg": sysMsg --- latest notification
+        }
+    }
 
     :param request:
     :return:
     """
-    chatsMsgCount = {}
+    chatsMsgCount = {} # this will hold count for unread messages with by key <username>
+    # get latest notification
     sysMsg = Directmessage.objects.filter(receiver=request.user, creator__username="SYSTEM").order_by("-created")
     if sysMsg.count() > 0:
         sysMsg = sysMsg[0]
     else:
         sysMsg = []
+    # get amount of unread notifications
     sysMsgCount = Directmessage.objects.filter(receiver=request.user, creator__username="SYSTEM", read=False).count()
 
+    # receive all chatmessages for me and sort them by date created
     all_chat_messages_for_me = Directmessage.objects.filter(
         Q(receiver=request.user) | Q(creator=request.user), ~Q(creator__username="SYSTEM")).order_by("created").all()
     chats = {}
+    # from these chatmessages only store the latest one and
+    # count unread messages (own unread messages are ignored - they were sent by the logged in user)
     # naive sorting
     for cm in all_chat_messages_for_me:
         if cm.creator == request.user:
@@ -487,20 +516,28 @@ def direct_messages_overview(request):
                     chatsMsgCount[cm.creator.username] += 1
                 else:
                     chatsMsgCount[cm.creator.username] = 1
+    # look if one specific conversation is requested
     active_conversation_partner = request.GET.get("active_conversation")  # string
+    # if there is a conversation partner and its not SYSTEM (notifications)
     if active_conversation_partner and active_conversation_partner != "SYSTEM":
-        # client wants so see one specific chat
+        # the client wants so see one specific chat
+        # so get this specific chat
         conversation = Directmessage.objects.filter(
             Q(receiver=request.user, creator__username=active_conversation_partner) |
             Q(creator=request.user, receiver__username=active_conversation_partner)) \
             .order_by("created")
+        # and look if there are any messages yes
         if conversation.count() > 0:
+            # if so, thenn mark the messages from the conversation partner as read
+            # (they are received right now, so the user will read them)
             conversation.filter(receiver=request.user).all().update(read=True)
             conversation = conversation.all()
         else:
+            # if there are no messages we have a
             # new conversation
             conversation = []
             dummy_msg = Directmessage()
+            # so we create a dummy message, that will not be saved, but allows easy use of template
             try:
                 dummy_msg.receiver = User.objects.get(username=active_conversation_partner)
             except ObjectDoesNotExist:
@@ -510,9 +547,13 @@ def direct_messages_overview(request):
             chats[active_conversation_partner] = dummy_msg
     else:
         # no specific chat given; show notifications
+        # so set the conversationpartner to SYSTEM (notifications)
         active_conversation_partner = "SYSTEM"
+        # and get the notifications
         conversation = Directmessage.objects.filter(creator__username="SYSTEM", receiver=request.user).order_by(
             "created")
+        # and mark them as read
+        conversation.update(read=True)
     sorted_chats = list(chats)
     sorted_chats.sort()
     return render(request, "buzzit_messaging/logged_in/direct_messages.html",
