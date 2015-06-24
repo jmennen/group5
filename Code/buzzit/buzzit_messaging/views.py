@@ -392,7 +392,7 @@ def chat_polling(request, username):
             chats[cm.creator.username] = {"text": cm.text, "count":1}
     return JsonResponse({"username": username, "new_chat_messages": msg, "chats": chats}, safe=False)
 
-
+from itertools import chain
 @login_required
 def showPostsToTheTheme(request, theme):
     """
@@ -413,13 +413,20 @@ def showPostsToTheTheme(request, theme):
         return HttpResponseRedirect(reverse_lazy("home"))
 
     # get all available messages with this theme
-    try:
-        circle_in_which_i_am_a_member = Circle.objects.filter(
-            members=request.user)  # get the circle in which i am a member
-        for circle in circle_in_which_i_am_a_member:
-            all_posts_which_i_can_see += (circle.messages.filter(themes=theme).all())
-    except ObjectDoesNotExist:
-        messages.error(request, "Du hast noch keine Kreise")
+    # 1. get public messages
+    # 2. get circled messages
+    # ---
+    # 1.:
+    public_messages = Circle_message.objects.filter(public=True, themes=Theme)
+    circled_messages = Circle_message.objects.filter(public=False, themes=Theme, circles__set__members=request.user)
+    posts = sorted(list(chain(public_messages, circled_messages)), key=lambda instance: instance.created)
+    #try:
+    #    circle_in_which_i_am_a_member = Circle.objects.filter(
+    #        members=request.user)  # get the circle in which i am a member
+    #    for circle in circle_in_which_i_am_a_member:
+    #        all_posts_which_i_can_see += (circle.messages.filter(themes=theme).all())
+    #except ObjectDoesNotExist:
+    #    messages.error(request, "Du hast noch keine Kreise")
     return render(request, "buzzit_messaging/logged_in/theme_details.html", {"post_list": posts})
 
 
