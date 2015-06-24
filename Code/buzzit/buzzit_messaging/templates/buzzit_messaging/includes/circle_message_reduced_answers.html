@@ -27,4 +27,7 @@
             </div>
         {% endif %}
     {% endfor %}
+    {% if circlemessage.circle_message_set.all|length > 3 %}
+        <a href="{% url "one_circlemessage" circlemessage.pk %}">Zeige alle Antworten</a>
+    {% endif %}
 {% endblock %}
