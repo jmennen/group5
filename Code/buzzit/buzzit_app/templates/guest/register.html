@@ -25,7 +25,12 @@
                 {% csrf_token %}
                 <div class="form-group">
                     <!-- textfield for username -->
-                    <label class="control-label col-sm-2" for="benutzername">Benutzername:</label>
+                    <label class="control-label col-sm-2" for="benutzername">*Benutzername:
+					
+				
+					<span class="glyphicon glyphicon-info-sign" href="#info" data-toggle="collapse"></span>
+						
+					</label>
 
                     <div class="col-sm-10">
                         <input required type="text" name="username" value="{{ form.username.value | emptyNone }}"
@@ -33,11 +38,14 @@
                                placeholder="gewünschter Benutzername">
                         {{ form.username.errors }}
                     </div>
+					<div id="info" class="collapse">
+						<p>Dein Benutzername ist später nicht mehr änderbar und wird überall angezeigt!</p>
+					</div>
                 </div>
 
                 <div class="form-group">
                     <!-- textfield for password, password will not be shown -->
-                    <label class="control-label col-sm-2" for="passwort">Passwort:</label>
+                    <label class="control-label col-sm-2" for="passwort">*Passwort:</label>
 
                     <div class="col-sm-10">
                         <input required type="password" name="password1" class="form-control" id="passwort"
@@ -48,7 +56,7 @@
 
                 <div class="form-group">
                     <!-- it is required to repeat the password for safety reasons -->
-                    <label class="control-label col-sm-2" for="passwort_wiederholen">Passwort wiederholen:</label>
+                    <label class="control-label col-sm-2" for="passwort_wiederholen">*Passwort wiederholen:</label>
 
                     <div class="col-sm-10">
                         <input required type="password" name="password2" class="form-control" id="passwort_wiederholen"
@@ -81,7 +89,7 @@
 
                 <div class="form-group">
                     <!-- optionally for email -->
-                    <label class="control-label col-sm-2" for="email">E-Mail:</label>
+                    <label class="control-label col-sm-2" for="email">*E-Mail:</label>
 
                     <div class="col-sm-10">
                         <input required type="text" value="{{ form.email.value | emptyNone }}" name="email" class="form-control"
@@ -92,10 +100,11 @@
 
 
                 <p></p>
-
+				<div align="right"><i> * diese Felder sind erforderlich</i>
+				</div>
                 <!--the button for submitting the registration information, a user with the credentials will be created -->
-                <button class="btn btn-info" type="submit">registrieren</button>
-
+                <button class="btn btn-info" type="submit">Registrieren</button>
+				
 
             </form>
         </div>

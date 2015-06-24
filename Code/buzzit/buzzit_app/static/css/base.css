@@ -5,6 +5,10 @@ body {
 span.glyphicon-envelope {
     font-size: 1.0em;
 }
+span.glyphicon-info-sign {
+
+	color:#64AFDE;
+}
 
 .thumbnail img {
     width: 75%;
