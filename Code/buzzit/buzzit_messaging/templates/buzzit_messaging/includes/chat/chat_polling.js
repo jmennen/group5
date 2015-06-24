@@ -21,8 +21,20 @@ function get_one_poll_func(username) {
             if (d && d.chats) {
                 for (var username in d.chats) {
                     var shortinfo = d.chats[username];
-                    $('#chat_' + username).find('.badge').text(shortinfo.count);
-                    $('#chat_' + username).find('i').text(shortinfo.text);
+                    if ($('#chat_' + username).length) {
+                        $('#chat_' + username).find('.badge').text(shortinfo.count);
+                        $('#chat_' + username).find('i').text(shortinfo.text);
+                    } else {
+                        new_a = $("<a>");
+                        new_a
+                            .prop("id", "chat_"+username)
+                            .prop("href", "/messaging/chats/?active_conversation="+username)
+                            .addClass("list-group-item")
+                            .text(username)
+                            .append($('<span>').addClass("badge").text("1"))
+                            .append($('<h6>').append($('<i>').text(shortinfo.text)));
+                        $('.list-group').append(new_a);
+                    }
                 }
             }
         });
