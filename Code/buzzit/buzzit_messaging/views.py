@@ -139,7 +139,8 @@ def postCirclemessage(request):
             __send_system__message__(answer_to.creator.pk, "Dein Post <id:%s> hat eine neue Antwort" % answer_to.pk)
         if rep:
             original_message = Circle_message.objects.get(pk=rep)
-            __send_system__message__(original_message.creator.pk, "Dein Post <id:%s> wurde repostet" % original_message.pk)
+            __send_system__message__(original_message.creator.pk,
+                                     "Dein Post <id:%s> wurde repostet" % original_message.pk)
 
         return HttpResponseRedirect(reverse("home"))
     return render(request, "buzzit_models/circle_message_form.html")
@@ -389,10 +390,13 @@ def chat_polling(request, username):
             chats[cm.creator.username]["text"] = cm.text
             chats[cm.creator.username]["count"] += 1
         else:
-            chats[cm.creator.username] = {"text": cm.text, "count":1}
+            chats[cm.creator.username] = {"text": cm.text, "count": 1}
     return JsonResponse({"username": username, "new_chat_messages": msg, "chats": chats}, safe=False)
 
+
 from itertools import chain
+
+
 @login_required
 def showPostsToTheTheme(request, theme):
     """
@@ -402,10 +406,6 @@ def showPostsToTheTheme(request, theme):
     :param theme:
     :return:
     """
-    circle_in_which_i_am_a_member = []
-    all_posts_which_i_can_see = []
-    posts = []
-
     try:
         theme = Theme.objects.get(pk=theme)
     except ObjectDoesNotExist:
@@ -415,19 +415,13 @@ def showPostsToTheTheme(request, theme):
     # get all available messages with this theme
     # 1. get public messages
     # 2. get circled messages
-    # ---
-    # 1.:
     public_messages = Circle_message.objects.filter(public=True, themes=theme)
     circles_im_in = Circle.objects.filter(members=request.user)
-    circled_messages = Circle_message.objects.filter(public=False, themes=theme, circle__set=circles_im_in)
+    if circles_im_in.count() > 0:
+        circled_messages = Circle_message.objects.filter(public=False, themes=theme, circle__set=circles_im_in)
+    else:
+        circled_messages = []
     posts = sorted(list(chain(public_messages, circled_messages)), key=lambda instance: instance.created)
-    #try:
-    #    circle_in_which_i_am_a_member = Circle.objects.filter(
-    #        members=request.user)  # get the circle in which i am a member
-    #    for circle in circle_in_which_i_am_a_member:
-    #        all_posts_which_i_can_see += (circle.messages.filter(themes=theme).all())
-    #except ObjectDoesNotExist:
-    #    messages.error(request, "Du hast noch keine Kreise")
     return render(request, "buzzit_messaging/logged_in/theme_details.html", {"post_list": posts})
 
 
