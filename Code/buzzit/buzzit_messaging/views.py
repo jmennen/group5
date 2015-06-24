@@ -417,8 +417,9 @@ def showPostsToTheTheme(request, theme):
     # 2. get circled messages
     # ---
     # 1.:
-    public_messages = Circle_message.objects.filter(public=True, themes=Theme)
-    circled_messages = Circle_message.objects.filter(public=False, themes=Theme, circles__set__members=request.user)
+    public_messages = Circle_message.objects.filter(public=True, themes=theme)
+    circles_im_in = Circle.objects.filter(members=request.user)
+    circled_messages = Circle_message.objects.filter(public=False, themes=theme, circle__set=circles_im_in)
     posts = sorted(list(chain(public_messages, circled_messages)), key=lambda instance: instance.created)
     #try:
     #    circle_in_which_i_am_a_member = Circle.objects.filter(
