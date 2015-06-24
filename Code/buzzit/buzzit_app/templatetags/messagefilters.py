@@ -18,7 +18,7 @@ def messagefilter(message):
         message_text = re.sub(r"\b%s\b" % mention.username, link, message_text)
     #parse themes
     for theme in message.themes.all():
-        link = "#"
+        link = reverse("search_theme", args=(theme.pk,))
         link = "<a href='%s'>%s</a>" % (link, theme.name)
         message_text = re.sub(r"\b%s\b" % theme.name, link, message_text)
     return message_text
