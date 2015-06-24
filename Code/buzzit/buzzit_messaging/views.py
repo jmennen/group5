@@ -272,6 +272,13 @@ def remove_user_from_circle(request, user_id, circle_id):
 
 @login_required()
 def follow(request, user_id):
+    """
+    views, that manages the following process.
+    so this gets called, when a logged in user want to follow the user identified by <user_id>
+    :param request:
+    :param user_id:
+    :return:
+    """
     try:
         follow_user = Profile.objects.get(pk=user_id)
     except ObjectDoesNotExist:
