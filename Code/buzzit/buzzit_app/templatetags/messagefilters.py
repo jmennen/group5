@@ -2,6 +2,7 @@ __author__ = 'User'
 from django import template
 from django.core.urlresolvers import reverse
 import re
+from buzzit_models.models import User, Circle_message
 
 register = template.Library()
 
@@ -31,14 +32,22 @@ def notificationfilter(message_text):
     post_ids = re.finditer("\<POST:(?P<id>[0-9]+)\>", message_text)
     for post_id in post_ids:
         id = post_id.groupdict()["id"]
-        link_to_post = reverse("one_circlemessage", args=(id,))
-        message_text = re.sub("\<POST:(?P<id>[0-9]+)\>", "<a href='%s'>(link)</a>" % link_to_post, message_text)
+        try:
+            id = Circle_message.objects.get(pk=id)
+            link_to_post = "<a href='%s'>(link)</a>" % reverse("one_circlemessage", args=(id,))
+        except:
+            link_to_post = "<a href='#'>(geloescht)</a>"
+        message_text = re.sub("\<POST:(?P<id>[0-9]+)\>", link_to_post, message_text)
 
-    user_ids = re.finditer("\<USER:(?P<id>[0-9]+)\>", message_text)
+    user_ids = re.finditer("\<USER:(?P<id>[a-zA-Z0-9]+)\>", message_text)
     for user_id in user_ids:
         id = user_id.groupdict()["id"]
-        link_to_user = reverse("view_profile", args=(id,))
-        message_text = re.sub("\<USER:(?P<id>[0-9]+)\>", "<a href='%s'>(link)</a>" % link_to_user, message_text)
+        try:
+            id = User.objects.get(username=id)
+            link_to_user = reverse("view_profile", args=(id.pk,))
+        except:
+            link_to_user = "<a href='#'>(geloescht)</a>";
+        message_text = re.sub("\<USER:(?P<id>[a-zA-Z0-9]+)\>", link_to_user , message_text)
     # ersetze user
     return message_text
 
