@@ -507,8 +507,9 @@ def showPostsToTheTheme(request, theme):
     circles_im_in = Circle.objects.filter(members=request.user)
     # 2.2 look if i am in any circle
     if circles_im_in.count() > 0:
-        # 2.3 if so, get the messages from these circles with theme
-        circled_messages = Circle_message.objects.filter(public=False, themes=theme, circle__set=circles_im_in)
+        # 2.3 if so, get the messages from these circles with theme (also self created
+        circled_messages = Circle_message.objects.filter(Q(circle__set=circles_im_in) | Q(creator=request.user),
+                                                         public=False, themes=theme)
     else:
         # 2.3 if not, there are no circled messages
         circled_messages = []
@@ -572,7 +573,7 @@ def direct_messages_overview(request):
     :param request:
     :return:
     """
-    chatsMsgCount = {} # this will hold count for unread messages with by key <username>
+    chatsMsgCount = {}  # this will hold count for unread messages with by key <username>
     # get latest notification
     sysMsg = Directmessage.objects.filter(receiver=request.user, creator__username="SYSTEM").order_by("-created")
     if sysMsg.count() > 0:
