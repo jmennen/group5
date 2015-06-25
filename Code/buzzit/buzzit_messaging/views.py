@@ -11,6 +11,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 import django.contrib.messages as messages
 import json
 from bleach import clean as html_clean
+from django.db.models import Q
 
 
 @login_required
@@ -562,10 +563,6 @@ class PostDetailsView(ListView):
             return super(PostDetailsView, self).dispatch(request, *args, **kwargs)
         except Exception:
             return HttpResponseRedirect(reverse_lazy("home"))
-
-
-from django.db.models import Q
-
 
 @login_required
 def direct_messages_overview(request):
