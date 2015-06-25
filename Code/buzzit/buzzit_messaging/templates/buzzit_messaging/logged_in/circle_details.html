@@ -27,8 +27,8 @@
             </form>
             <table class="table table-bordered">
                 <tr>
-                    <th>Members<h6></h6></th>
-                    <th>Actions</th>
+                    <th>Mitglieder<h6></h6></th>
+                    <th>Aktionen</th>
                 </tr>
                 {% for user in circle.members.all %}
                     <tr>
@@ -37,7 +37,7 @@
                             <a href="{% url "view_profile" user.pk %}">{{ user.username }}</a>
                         </td>
                         <td>
-                            <!-- remove user from this circle -->
+                            <!-- button to remove user from this circle -->
                             <form action="{% url "remove_user_from_circle" user.pk circle.pk %}">
                                 <div class="btn-group">
                                     <a href="{% url "all_chats" %}?active_conversation={{ user.username }}" class="btn btn-info" type="button">
@@ -55,7 +55,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h3>Kreisnachrichten</h3>
-                    <!-- nachricht nur in diesen kreis schreiben -->
+                    <!-- post a single message to this circle alone -->
                     {% include "buzzit_messaging/includes/new_tweet_form_one_circle.html" %}
                     {% load messagefilters %}
                     <!-- space for circle messages from this circle -->
@@ -63,7 +63,7 @@
                         {% include "buzzit_messaging/includes/circle_message_reduced_answers.html" with circlemessage=circlemessage %}
                     {% endfor %}
 
-                    <!-- erscheint, wenn auf antworten geklickt wird -->
+                    <!-- an text input collapses to write a reply to a circle message -->
                     <div id="antworten" class="collapse">
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="antworte hier...">

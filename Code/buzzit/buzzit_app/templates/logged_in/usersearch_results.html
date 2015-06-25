@@ -1,20 +1,20 @@
 {% extends "base.html" %}
-{% block title %}Such Ergebnisse{% endblock %}
+{% block title %}Suchergebnisse{% endblock %}
 {% block content %}
     <!--imports the navigation bar-->
     {% include "includes/navbar.html" %}
     {% load filters %}
 
-    <!-- Page Content -->
+
     <!--table for the results from the search. displays the name, picture, description and the gender-->
     <div class="container">
         <h3>Ihre Suche ergab folgendes Ergebnis...</h3>
         <table class="table table-bordered">
             <tr>
                 <th>Name</th>
-                <th>Picture</th>
-                <th>Description</th>
-                <th>Actions</th>
+                <th>Profilbild</th>
+                <th>Beschreibung</th>
+                <th>Aktionen</th>
 
             </tr>
             {% for user in user_list %}

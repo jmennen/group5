@@ -12,7 +12,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-3">
+			 <!-- a list of users you had direct messages with -->
                 <div class="list-group">
+				 <!-- system notifications will be shown via direct messages -->
                     <a href="{% url "all_chats" %}?active_conversation=SYSTEM" class="list-group-item
                         {% if "SYSTEM" == active_conversation_partner %}
                         active
@@ -23,6 +25,7 @@
                         <h6><i>{{ system_messages|keyval:"msg"|objval:"text" }}</i></h6>
                     </a>
                     {% for conversationpartner in chats_sorted %}
+					  <!-- last message in the conversation will be shown -->
                         <a href="{% url "all_chats" %}?active_conversation={{ conversationpartner }}" class="list-group-item
                         {% if conversationpartner == active_conversation_partner %}
                         active
@@ -36,8 +39,10 @@
                 </div>
             </div>
             <div class="col-md-9">
-                <!-- <h3> Deine Nachrichten mit...</h3> -->
-
+               
+				<!-- the chat between the logged in user and an other one
+					 their messages are yellow, your messages are blue
+					 the chat intervall refresh is 5 seconds -->
                 <div class="area">
                     {% if active_conversation_partner == "SYSTEM" %}
                         {% for m in conversation %}
