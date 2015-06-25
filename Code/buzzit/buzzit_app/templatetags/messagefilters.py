@@ -34,12 +34,7 @@ def notificationfilter(message_text):
     # => [.....] <a href="link_zum_post">Post</a>
     post_ids = re.finditer("\<POST:(?P<id>[0-9]+)\>", message_text)
     for post_id in post_ids:
-        id = int(post_id.groupdict()["id"])
-        try:
-            id = Circle_message.objects.get(pk=id)
-            link_to_post = "<a href='%s'>(link)</a>" % reverse("one_circlemessage", args=(id,))
-        except Exception:
-            link_to_post = "<a href='#'>(geloescht)</a>"
+        link_to_post = "<a href='%s'>(link)</a>" % reverse("one_circlemessage", args=(id,))
         message_text = re.sub("\<POST:(?P<id>[0-9]+)\>", link_to_post, message_text)
 
     user_ids = re.finditer("\<USER:(?P<id>[a-zA-Z0-9]+)\>", message_text)
@@ -47,7 +42,7 @@ def notificationfilter(message_text):
         id = user_id.groupdict()["id"]
         try:
             id = User.objects.get(username=id)
-            link_to_user = "<a href='%s'>%s</a>" % (id.username, reverse("view_profile", args=(id.pk,)))
+            link_to_user = "<a href='%s'>%s</a>" % (reverse("view_profile", args=(id.pk,)), id.username )
         except Exception:
             link_to_user = "<a href='#'>(geloescht)</a>";
         message_text = re.sub("\<USER:(?P<id>[a-zA-Z0-9]+)\>", link_to_user, message_text)
