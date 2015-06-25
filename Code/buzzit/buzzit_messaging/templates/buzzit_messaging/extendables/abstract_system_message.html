@@ -1,11 +1,12 @@
 {% load filters %}
+{% load messagefilters %}
 <div class="show_message">
     <div class="systemmessage-{% block level %}info{% endblock %}">
         <p>{{ message.created }}</p>
         {% if slice|default:1 == 1 %}
-            <p>{{ message.text|withoutFirstChar }}</p>
+            <p>{{ message.text|withoutFirstChar|notificationfilter|safe }}</p>
         {% else %}
-            <p>{{ message.text }}</p>
+            <p>{{ message.text|notificationfilter|safe }}</p>
         {% endif %}
     </div>
 </div>

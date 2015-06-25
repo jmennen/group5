@@ -4,46 +4,41 @@
 {% block title %}Kreisübersicht{% endblock %}
 
 {% block content %}
-
     {% load messagefilters %}
     {% include "includes/navbar.html" %}
+    {% if circlemessage %}
+        <div class="container">
+            <div class="well">
 
-    <div class="container">
+                <!-- one single clicked post with its replys -->
+                {% include "buzzit_messaging/includes/circle_message_all_answers.html" %}
 
-        <div class="well">
-
-            <!-- one single clicked post with its replys -->
-            {% include "buzzit_messaging/includes/circle_message_all_answers.html" %}
-
-            <!-- input textfield to reply to the message -->
-            <div id="antworten">
-                <form id="new_post_form" role="form" method="post"
-                      action="{% url "new_circlemessage" %}">
-                    {% csrf_token %}
-                    <div class="input-group">
-                        <!-- inputfield for the messages you are going to send
-							 mentions @ and themes # are recognized and will be linked -->
-                        <input type="hidden" name="answer_to" value="{{ circlemessage.id }}">
-                        <input type="hidden" name="mentions"/>
-                        <input type="hidden" name="themes"/>
+                <!-- input textfield to reply to the message -->
+                <div id="antworten">
+                    <form id="new_post_form" role="form" method="post"
+                          action="{% url "new_circlemessage" %}">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <!-- inputfield for the messages you are going to send
+                                 mentions @ and themes # are recognized and will be linked -->
+                            <input type="hidden" name="answer_to" value="{{ circlemessage.id }}">
+                            <input type="hidden" name="mentions"/>
+                            <input type="hidden" name="themes"/>
                             <textarea required name="text" class="new_text_input" id="main_post_ta"
-                                      placeholder="Antworte hier..." name="text"></textarea>
-						
-                        <div class="input-group-btn">
-                            <button class="btn btn-info" type="submit">Senden</button>
+                                      placeholder="Antworte hier..." ></textarea>
+
+                            <div class="input-group-btn">
+                                <button class="btn btn-info" type="submit">Senden</button>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
+
+
             </div>
-
-
         </div>
-    </div>
-
-
-    <script>
-        init_post_area("#main_post_ta", "#new_post_form");
-    </script>
-
-
+        <script>
+            init_post_area("#main_post_ta", "#new_post_form");
+        </script>
+    {% endif %}
 {% endblock %}

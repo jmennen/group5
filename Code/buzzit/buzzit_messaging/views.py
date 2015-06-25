@@ -531,23 +531,37 @@ class PostDetailsView(ListView):
     context_object_name = "answer_list"
 
     def get_context_data(self, **kwargs):
-        context = super(PostDetailsView, self).get_context_data(**kwargs)
+        try:
+            context = super(PostDetailsView, self).get_context_data(**kwargs)
+        except Exception:
+            messages.error(self.request, "Post existiert nicht")
+            return HttpResponseRedirect(reverse_lazy("home"))
         currentcirclemessageid = self.kwargs.get("slug")
         # add <circlemessage> to the templates context
         try:
             context["circlemessage"] = Circle_message.objects.get(pk=currentcirclemessageid)
-        except ObjectDoesNotExist:
-            messages.error("Post existiert nicht")
-            return HttpResponseRedirect(reverse_lazy("home"))
+        except Exception:
+            messages.error(self.request, "Post existiert nicht")
+            context["answer_list"] = []
+            return context
         return context
 
     def get_queryset(self):
+        return HttpResponseRedirect(reverse_lazy("home"))
         currentcirclemessageid = self.kwargs.get("slug")
-        return Circle_message.objects.filter(answer_to__id=currentcirclemessageid).order_by('created')
+        try:
+            Circle_message.objects.get(pk=currentcirclemessageid)
+            return Circle_message.objects.filter(answer_to__id=currentcirclemessageid).order_by('created')
+        except Exception:
+            messages.error(self.request, "Post existiert nicht")
+            return HttpResponseRedirect(reverse_lazy("home"))
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        return super(PostDetailsView, self).dispatch(request, *args, **kwargs)
+        try:
+            return super(PostDetailsView, self).dispatch(request, *args, **kwargs)
+        except Exception:
+            return HttpResponseRedirect(reverse_lazy("home"))
 
 
 from django.db.models import Q
