@@ -513,7 +513,8 @@ def showPostsToTheTheme(request, theme):
                                                          public=False, themes=theme).distinct()
     else:
         # 2.3 if not, there are no circled messages
-        circled_messages = []
+        circled_messages = Circle_message.objects.filter(creator=request.user,
+                                                         public=False, themes=theme).distinct()
     # put all messages together and sort them by created date
     posts = sorted(list(chain(public_messages, circled_messages)), key=lambda instance: instance.created)
     return render(request, "buzzit_messaging/logged_in/theme_details.html", {"post_list": posts})
@@ -563,6 +564,7 @@ class PostDetailsView(ListView):
             return super(PostDetailsView, self).dispatch(request, *args, **kwargs)
         except Exception:
             return HttpResponseRedirect(reverse_lazy("home"))
+
 
 @login_required
 def direct_messages_overview(request):
