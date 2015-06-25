@@ -32,12 +32,13 @@ def notificationfilter(message_text):
     for post_id in post_ids:
         id = post_id.groupdict()["id"]
         link_to_post = reverse("one_circlemessage", args=(id,))
-        message_text = re.sub("\<POST:[0-9]+\>", "<a href='%s'>(link)</a>" % link_to_post, message_text)
+        message_text = re.sub("\<POST:(?P<id>[0-9]+)\>", "<a href='%s'>(link)</a>" % link_to_post, message_text)
+
     user_ids = re.finditer("\<USER:(?P<id>[0-9]+)\>", message_text)
     for user_id in user_ids:
         id = user_id.groupdict()["id"]
-        link_to_post = reverse("view_profile", args=(id,))
-        message_text = re.sub("\<USER:[0-9]+\>", "<a href='%s'>(link)</a>" % link_to_post, message_text)
+        link_to_user = reverse("view_profile", args=(id,))
+        message_text = re.sub("\<USER:(?P<id>[0-9]+)\>", "<a href='%s'>(link)</a>" % link_to_user, message_text)
     # ersetze user
     return message_text
 
