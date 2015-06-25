@@ -1,13 +1,13 @@
 {% load messagefilters %}
 <div class="media">
+    <div class="media-left{% if circlemessage.original_message %} media-middle{% endif %}">
+        <a href="#">
+            <img height="64" width="64" class="media-object"
+                 src="{% url "profile_picture_small" circlemessage.creator.profile.pk %}"
+                 alt="Profilbild">
+        </a>
+    </div>
     {% if circlemessage.original_message %}
-        <div class="media-left{% if circlemessage.original_message %} media-middle{% endif %}">
-            <a href="#">
-                <img height="64" width="64" class="media-object"
-                     src="{% url "profile_picture_small" circlemessage.creator.profile.pk %}"
-                     alt="Profilbild">
-            </a>
-        </div>
         <div class="media-body">
             <!-- the creator of the message as well as the date will be shown -->
             <div class="media repost">
@@ -32,11 +32,7 @@
         </div>
     {% endif %}
     <h4 class="media-heading">
-        <a href="{% url "view_profile" circlemessage.creator.pk %}">
-            <img height="64" width="64" class="media-object"
-                 src="{% url "profile_picture_small" circlemessage.creator.profile.pk %}"
-                 alt="Profilbild">
-            {{ circlemessage.creator }}</a>
+        <a href="{% url "view_profile" circlemessage.creator.pk %}">{{ circlemessage.creator }}</a>
         {% if circlemessage.original_message %} repostete am
         {% else %} schrieb am
         {% endif %}
