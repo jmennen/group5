@@ -29,6 +29,7 @@ Qi Yang | Frontend Entwicklung | flouza@hotmail.de
  - In den Beschreibungen (oder Kommentaren) der Issues sind detailiertere Informationen zu den Stories zu finden.
  - Change Requests sind mit dem Label CHANGE versehen. Die Beschreibung der Änderung findet in den Kommentaren statt.
  - Auch einsehbar unter: https://waffle.io/jmennen/group5
+* Das Github Wiki dieses Repositories. Dort finden Sie die Dokumentation aller Funktionen des sozialen Netzwerks Buzzit.
 * Das Google Docs Sheet:
  - Dort zu finden sind die Tasks für sämtliche Sprints mit einem Status und eventuell dem Fertigstellungsdatum.
  - Das Glossar
@@ -56,6 +57,7 @@ Dieses Projekt steht unter der BSD-Lizenz. Siehe Licence.md
 * django 1.8
 * python Pillow 
 * python mySQLClient
+* python bleach
 
 --
 
@@ -65,6 +67,7 @@ Dieses Projekt steht unter der BSD-Lizenz. Siehe Licence.md
 <li>Install Django (pip install django) -- The Django Framework</li>
 <li>Install Pillow (pip install pillow) -- Image Manipulation Library</li>
 <li>Install MySQLClient (pip install mysqlclient) -- MySQL DB-Connector</li>
+<li>Install Bleach (pip install bleach)</li>
 <li>Download this project</li>
 <li>Create a folder pp in the parent folder of the django project called "buzzit". 
 <li>Have Fun</li>

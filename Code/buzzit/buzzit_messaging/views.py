@@ -172,7 +172,6 @@ class DeleteCirclemessageView(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super(DeleteCirclemessageView, self).dispatch(request, *args, **kwargs)
 
-
 def RemoveCircleView(request, slug):
     """
     pick up the circle primary key from template and remove the circle with the given object
