@@ -510,7 +510,7 @@ def showPostsToTheTheme(request, theme):
     if circles_im_in.count() > 0:
         # 2.3 if so, get the messages from these circles with theme (also self created
         circled_messages = Circle_message.objects.filter(Q(circle__set=circles_im_in) | Q(creator=request.user),
-                                                         public=False, themes=theme)#.distinct()
+                                                         public=False, themes=theme).distinct()
     else:
         # 2.3 if not, there are no circled messages
         circled_messages = []
