@@ -32,7 +32,11 @@
         </div>
     {% endif %}
     <h4 class="media-heading">
-        <a href="{% url "view_profile" circlemessage.creator.pk %}">{{ circlemessage.creator }}</a>
+        <a href="{% url "view_profile" circlemessage.creator.pk %}">
+            <img height="64" width="64" class="media-object"
+                 src="{% url "profile_picture_small" circlemessage.creator.profile.pk %}"
+                 alt="Profilbild">
+            {{ circlemessage.creator }}</a>
         {% if circlemessage.original_message %} repostete am
         {% else %} schrieb am
         {% endif %}
