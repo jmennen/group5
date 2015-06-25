@@ -3,8 +3,6 @@
 {% block content %}
 <!--imports the navigation bar-->
 {% include "includes/navbar.html" %}
-
-	<!-- Page Content -->
 	
 	<!-- template to edit your profile -->
     <div class="container">
@@ -33,7 +31,7 @@
                 <label>Profilbild ändern:</label>
 
                 <div class="thumbnail">
-                    <img class="img-responsive" height="128" style="width: auto;" src="{{ profile.profile_picture }}" alt="">
+                    <img class="img-responsive" height="128" style="width: auto;" src="{% url "profile_picture_small" profile.pk %}" alt="">
                 </div>
 
                 <div class="input-group">
@@ -51,12 +49,13 @@
 			<!--textarea for changing the description with old being shown-->
             <div class="col-md-7">
                 <div class="form-group">
-                    <label for="comment">Description:</label>
+                    <label for="comment">Beschreibung:</label>
                     <textarea class="form-control" rows="6" name="description" id="comment">{{ profile.description }}</textarea>
                 </div>
 			
 				<!--button for saving the changes-->
                 <button type="submit" class="btn btn-info">Änderung speichern</button>
+				<a class="btn btn-default" href="{% url "start" %}">Abbrechen</a>
 
             </div>
         </form>

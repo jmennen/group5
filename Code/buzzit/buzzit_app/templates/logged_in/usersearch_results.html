@@ -1,34 +1,34 @@
 {% extends "base.html" %}
-{% block title %}Such Ergebnisse{% endblock %}
+{% block title %}Suchergebnisse{% endblock %}
 {% block content %}
     <!--imports the navigation bar-->
     {% include "includes/navbar.html" %}
     {% load filters %}
 
-    <!-- Page Content -->
+
     <!--table for the results from the search. displays the name, picture, description and the gender-->
     <div class="container">
         <h3>Ihre Suche ergab folgendes Ergebnis...</h3>
         <table class="table table-bordered">
             <tr>
                 <th>Name</th>
-                <th>Picture</th>
-                <th>Description</th>
-                <th>Actions</th>
+                <th>Profilbild</th>
+                <th>Beschreibung</th>
+                <th>Aktionen</th>
 
             </tr>
-            {% for user in O.user_list %}
+            {% for user in user_list %}
                 <tr>
                     <!--the name links to the user's profile-->
                     <td><a href="{% url "view_profile" user.pk %}">{{ user.username }}</a></td>
                     <!--profile_picture is resized-->
-                    <td><img src="{{ user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
+                    <td><img src="{% url "profile_picture_small" user.profile.pk %}" height="64" alt="Profilbild"></td>
                     <td>{{ user.profile.description | beautifulNone }}</td>
                     <td>
                         <form class="form-inline" role="form">
-                            <button class="btn btn-info" type="button"><span
-                                    class="glyphicon glyphicon-envelope"></span></button>
-                            {% if O.ownprofile.user != user %}
+                            <a href="{% url "all_chats" %}?active_conversation={{ user.username }}" class="btn btn-info" type="button"><span
+                                    class="glyphicon glyphicon-envelope"></span></a>
+                            {% if ownprofile.user != user %}
                                 <!-- if you are following the user an unfollow button will be shown -->
                                 {% if user.i_am_following %}
                                     <a class="btn btn-danger" role="form-control" method="post"

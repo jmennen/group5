@@ -1,0 +1,47 @@
+<!-- form for retweets(messages you want to quote and publish yourself with a link to the creator ). 
+     original message will be shown and highlighted -->
+{% extends "base.html" %}
+
+{% block title %}Retweet{% endblock %}
+
+{% block content %}
+
+    {% include "includes/navbar.html" %}
+    {% load messagefilters %}
+    <div class="container">
+
+        <h3>Du retweetest...</h3>
+		 <!-- the message to be retweeted will be shown in this well -->
+        <div class="well col-md-4">
+            <div class="media">
+                <div class="media-left">
+                    <a href="#">
+                        <img height="64" width="64" class="media-object"
+                             src="{% url "profile_picture_small" circlemessage.creator.profile.pk %}" alt="Profilbild">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <!-- the creator of the message as well as the date will be shown -->
+					 <!-- the user is linked to its profile via his name -->
+                    <h4 class="media-heading">
+                        <a href="{% url "view_profile" circlemessage.creator.pk %}">{{ circlemessage.creator }}</a>
+                        schrieb am {{ circlemessage.created | date:'d.m.Y H:i' }}:
+                    </h4>
+                    {{ circlemessage | messagefilter | safe }}
+                </div>
+            </div>
+        </div>
+
+        <div class="well col-md-10">
+		 <!-- the retweetform is included in this part. you can add a comment to the retweeted message -->
+            {% include "buzzit_messaging/includes/repost_tweet_form.html" %}
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            init_post_area("#main_post_ta", '#new_post_form');
+        });
+    </script>
+
+{% endblock %}

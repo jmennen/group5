@@ -19,7 +19,7 @@
         </div>
         <div class="row">
             <div class="thumbnail col-md-3">
-                <img class="img-responsive" src="{{ profile.profile_picture }}" alt="Profilbild">
+                <img class="img-responsive" src="{% url "profile_picture_small" user.profile.pk %}" alt="Profilbild">
                 <hr>
                 <p>Vorname: {{ user.first_name | beautifulNone }}</p>
                 <hr>
@@ -31,10 +31,9 @@
                 <hr>
 
                 <!--leads to edit_own_profile site-->
-                <p><a href="{% url "update_profile" %}">edit profile</a></p>
-				<!-- leads to the follwing_userlist which contains the user you are following -->
-                <p><a href="{% url "list_follows" %}">wem folge ich?</a></p>
-
+                <p><a href="{% url "update_profile" %}">Profil bearbeiten</a></p>
+                <!-- leads to the follwing_userlist which contains the user you are following -->
+                <p><a href="{% url "list_follows" %}">Wem folge ich?</a></p>
             </div>
             <div class="col-md-9">
                 <div class="thumbnail">
@@ -43,51 +42,13 @@
                 <div class="well">
                     <h3>Kreisnachrichten</h3>
                     <!--space for creating a circle messages-->
-                    <form role="form" method="post" action="{% url "new_circlemessage" %}">
-                        {% csrf_token %}
-                        <p>
-						<!-- choose circe/s to send the messages to -->
-                            <select multiple="multiple" name="circles" class="testselect1">
-                                {% for circle in circles %}
-                                    <option value="{{ circle.pk }}">{{ circle.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </p>
-
-                        <div class="input-group">
-						<!-- inputfield for the messages you are going to send -->
-                            <input required type="text" name="text" id="text" class="form-control"
-                                   placeholder="Kreisnachricht...">
-
-                            <div class="input-group-btn">
-                                <button class="btn btn-info" type="submit">Senden</button>
-                            </div>
-
-                        </div>
-                    </form>
+                    {% include "buzzit_messaging/includes/new_tweet_form.html" %}
                     <hr>
+                    {% load messagefilters %}
                     {% for circlemessage in message_list %}
-					<!-- messagefeed for the messages that are visible to you -->
-                        <div class="media">
-                            <div class="media-left">
-                                <a href="#">
-                                    <img height="64" width="64" class="media-object"
-                                         src="{{ circlemessage.creator.profile.profile_picture }}" alt="Profilbild">
-                                </a>
-                            </div>
-                            <div class="media-body">
-							<!-- the creator of the message as well as the date will be shown -->
-                                <h4 class="media-heading"><a href="{% url "view_profile" circlemessage.creator.pk %}">{{ circlemessage.creator }}</a> schrieb hier
-                                    am {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
-                                {{ circlemessage.text }}
-								<!-- if you are the creator of the message, a delete button will be shown -->
-                                {% if circlemessage.creator == user %}
-                                    <div align="right">
-                                        <a class="btn btn-danger btn-xs" href="{% url "delete_circlemessage" circlemessage.id %}">Löschen</a>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
+                        <!-- messagefeed for the messages that are visible to you -->
+                        {% include "buzzit_messaging/includes/circle_message_reduced_answers.html" with circlemessage=circlemessage %}
+                        <hr>
                     {% endfor %}
                 </div>
             </div>

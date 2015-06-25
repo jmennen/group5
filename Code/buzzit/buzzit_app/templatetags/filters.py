@@ -45,3 +45,29 @@ def iAmFollowing(otherprofile, myprofile):
     return myprofile.follows.all().filter(pk=otherprofile)
 
 register.filter('i_am_following', iAmFollowing)
+
+def keyvalue(dict, key):
+    try:
+        return dict[key]
+    except KeyError:
+        return ''
+
+register.filter('keyval', keyvalue)
+
+def objectvalue(obj, attr):
+    try:
+        return getattr(obj,attr)
+    except Exception:
+        return ""
+
+register.filter('objval', objectvalue)
+
+def startswith(val, char):
+    return val[0] == char
+
+register.filter('startswith', startswith)
+
+def withoutFirstChar(val):
+    return val[1:]
+
+register.filter('withoutFirstChar', withoutFirstChar)

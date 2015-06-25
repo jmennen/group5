@@ -3,7 +3,7 @@
 
 {% load filters %}
 
-{% block title %}du followst{% endblock %}
+{% block title %}du folgst{% endblock %}
 
 {% block content %}
 
@@ -16,8 +16,8 @@
             <tr>
                 <th>Name</th>
                 <th>Profilbild</th>
-                <th>Description</th>
-                <th>Actions</th>
+                <th>Beschreibung</th>
+                <th>Aktionen</th>
 
             </tr>
               {% for followed_profile in follows %}
@@ -26,13 +26,13 @@
 				<!--the name links to the user's profile-->
                     <td><a href="{% url "view_profile" followed_profile.user.pk %}">{{ followed_profile.user.username }}</a></td>
 				<!--profile_picture is resized-->
-                    <td><img src="{{ followed_profile.user.profile.profile_picture }}" height="64" alt="Profilbild"></td>
+                    <td><img src="{% url "profile_picture_small" followed_profile.user.profile.pk %}" height="64" alt="Profilbild"></td>
                     <td>{{ followed_profile.user.profile.description | beautifulNone }}</td>
                     <td>
 
 						<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-envelope"></span></button>
 						<!-- button to unfollow this user -->
-						<a class="btn btn-danger" href="{% url "unfollow" followed_profile.pk %}">Entfolgen</a>
+						<a class="btn btn-danger" href="{% url "unfollow" followed_profile.pk %}"><span class="glyphicon glyphicon-remove-circle"></span> Entfolgen</a>
 					</td>
 
                 </tr>

@@ -11,15 +11,15 @@
     <div class="container">
 
         <!--information and picture of this profile-->
-        <p class="lead">{{ profile.user.username }}
-            <!--button for sending a message to this user-->
-            <button type="button" class="btn btn-primary">Diesem Benutzer eine Nachricht senden</button>
-        </p>
+		<div class="container">
+        <h3> {{ profile.user.username }}
+        </h3>
+        </div>
         <div>
             <div class="col-md-5">
 
                 <div class="thumbnail">
-                    <img class="img-responsive" src="{{ profile.profile_picture }}" alt="Profilbild">
+                    <img class="img-responsive" src="{% url "profile_picture_small" profile.pk %}" alt="Profilbild">
                 </div>
 
                 <div class="well">
@@ -32,17 +32,18 @@
 
                     <form class="form-inline" role="form" method="post">
                         {% csrf_token %}
-                        <button class="btn btn-info" type="button"><span class="glyphicon glyphicon-envelope"></span>
-                        </button>
+						<!--button for sending a message to this user-->
+                        <a href="{% url "all_chats" %}?active_conversation={{ profile.user.username }}" class="btn btn-info" type="button"><span class="glyphicon glyphicon-envelope"></span>
+                        </a>
 
                         {% if profile.user != user %}
                             {% if profile.i_am_following %}
                                 <a class="btn btn-danger" role="form-control" method="post"
-                                   href="{% url "unfollow" profile.pk %}" type="submit">Entfolgen
+                                   href="{% url "unfollow" profile.pk %}" type="submit"><span class="glyphicon glyphicon-remove-circle"></span> Entfolgen
                                 </a>
                             {% else %}
                                 <a class="btn btn-info" role="form-control" method="post"
-                                   href="{% url "follow" profile.pk %}" type="submit"> Folgen
+                                   href="{% url "follow" profile.pk %}" type="submit"><span class="glyphicon glyphicon-circle-arrow-right"></span> Folgen 
                                 </a>
                             {% endif %}
                         {% endif %}
@@ -62,31 +63,22 @@
                         <div class="col-md-12">
                         </div>
                     </div>
+                    {% load messagefilters %}
                     <!-- available messages of this user -->
                     {% for circlemessage in message_list %}
-                        <div class="media">
-                            <div class="media-left">
-                                <a href="#">
-                                    <img height="64" width="64" class="media-object"
-                                         src="{{ circlemessage.creator.profile.profile_picture }}" alt="Profilbild">
-                                </a>
-                            </div>
-                            <!-- the creator of the message as well as the date will be shown -->
-                            <div class="media-body">
-                                <h4 class="media-heading">{{ circlemessage.creator }} schrieb hier
-                                    am {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
-                                {{ circlemessage.text }}
-
-                                {% if circlemessage.creator == user %}
-                                    <div align="right">
-                                        <a class="btn btn-danger btn-xs"
-                                           href="{% url "delete_circlemessage" circlemessage.id %}">L&ouml;schen</a>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
+                        {% include "buzzit_messaging/includes/circle_message_reduced_answers.html" %}
                     {% endfor %}
                     <!-- /available messages of this user -->
+					
+					<!-- erscheint, wenn auf antworten geklickt wird -->
+					<div id="antworten" class="collapse">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="antworte hier...">
+							<span class="input-group-btn">
+							<button class="btn btn-info" type="submit">Senden</button>
+							</span>
+						</div>
+					</div>
 
                 </div>
 

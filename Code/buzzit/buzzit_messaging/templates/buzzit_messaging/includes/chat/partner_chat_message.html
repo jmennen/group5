@@ -1,0 +1,10 @@
+<div class="show_message">
+    <div class="theirmessage">
+        <a href="{% url "view_profile" message.creator.pk %}">
+            <img height="40" width="40" src="{% url "profile_picture_small" message.creator.pk %}" alt="Profilbild">
+            {{ message.creator.username }} schrieb:
+        </a>
+        ({{ message.created | date:'d.m.Y H:i' }})
+        <p>{{ message.text }}</p>
+    </div>
+</div>

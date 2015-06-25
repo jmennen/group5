@@ -1,4 +1,5 @@
-<!--a site which contains your circles. you are able to create a new circle.-->
+<!--a site which contains your circles. you are able to create a new circle or view
+	already existings ones-->
 {% extends "base.html" %}
 
 {% block title %}Kreisübersicht{% endblock %}
@@ -10,12 +11,12 @@
     <div class="container">
 
 
-        <h3>Your Circles</h3>
+        <h3>Deine Kreise</h3>
         <table class="table table-bordered">
             <tr>
                 <th>Name</th>
                 <th>Follower</th>
-                <th>Actions</th>
+                <th>Aktionen</th>
             </tr>
 
 
@@ -62,7 +63,7 @@
                             </div>
                         </td>
                         <td>
-						<!-- button to delete this circle -->
+						<!-- button to delete a single circle -->
                             <a class="btn btn-danger" href="{% url "delete_circle" slug=circle.pk %}"> Löschen</a>
                         </td>
                       

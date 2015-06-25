@@ -1,0 +1,90 @@
+<!-- site which contains the messages between the user and other users.
+	 system notifications will be sent through a system-user as direct message -->
+
+
+{% extends "base.html" %}
+
+{% block title %}Direktnachrichten{% endblock %}
+
+{% block content %}
+    {% include "includes/navbar.html" %}
+    {% load filters %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+			 <!-- a list of users you had direct messages with -->
+                <div class="list-group">
+				 <!-- system notifications will be shown via direct messages -->
+                    <a href="{% url "all_chats" %}?active_conversation=SYSTEM" class="list-group-item
+                        {% if "SYSTEM" == active_conversation_partner %}
+                        active
+                        {% endif %}
+                        " id="chat_SYSTEM">
+                        Notifications
+                        <span class="badge">{{ system_messages|keyval:"count" }}</span>
+                        <h6><i>{{ system_messages|keyval:"msg"|objval:"text" }}</i></h6>
+                    </a>
+                    {% for conversationpartner in chats_sorted %}
+					  <!-- last message in the conversation will be shown -->
+                        <a href="{% url "all_chats" %}?active_conversation={{ conversationpartner }}" class="list-group-item
+                        {% if conversationpartner == active_conversation_partner %}
+                        active
+                        {% endif %}
+                        " id="chat_{{ conversationpartner }}">
+                            {{ conversationpartner }}
+                            <span class="badge">{{ chatsMsgCount|keyval:conversationpartner }}</span>
+                            <h6><i>{{ chats|keyval:conversationpartner|objval:"text" }}</i></h6>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-9">
+               
+				<!-- the chat between the logged in user and an other one
+					 their messages are yellow, your messages are blue
+					 the chat intervall refresh is 5 seconds -->
+                <div class="area">
+                    {% if active_conversation_partner == "SYSTEM" %}
+                        {% for m in conversation %}
+                            {% if m.text|startswith:"I" %}
+                                {% include "buzzit_messaging/includes/notifications/info.html" with message=m %}
+                            {% elif m.text|startswith:"N" %}
+                                {% include "buzzit_messaging/includes/notifications/news.html" with message=m %}
+                            {% elif m.text|startswith:"D" %}
+                                {% include "buzzit_messaging/includes/notifications/danger.html" with message=m %}
+                            {% else %}
+                                {% include "buzzit_messaging/includes/notifications/info.html" with message=m slice=0 %}
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        {% for m in conversation %}
+                            {% if m.creator == user %}
+                                {% include "buzzit_messaging/includes/chat/own_chat_message.html" with message=m %}
+                            {% else %}
+                                {% include "buzzit_messaging/includes/chat/partner_chat_message.html" with message=m %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                {% if active_conversation_partner != "SYSTEM" %}
+                    <form method="post" action="{% url "chat" active_conversation_partner %}">
+                        {% csrf_token %}
+                        <div class="textfield">
+                            <textarea class="form-control" name="text" rows="3"></textarea>
+                            <button id="messagebutton" type="submit" class="btn btn-default">Senden</button>
+                        </div>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('a.active').find('.badge').fadeOut();
+        });
+        var objDiv = document.getElementsByClassName("area")[0];
+        objDiv.scrollTop = objDiv.scrollHeight;
+        {% include "buzzit_messaging/includes/chat/chat_polling.js" %}
+        start_chat_polling("{{ active_conversation_partner }}");
+    </script>
+{% endblock %}

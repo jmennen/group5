@@ -27,8 +27,8 @@
             </form>
             <table class="table table-bordered">
                 <tr>
-                    <th>Members<h6></h6></th>
-                    <th>Actions</th>
+                    <th>Mitglieder<h6></h6></th>
+                    <th>Aktionen</th>
                 </tr>
                 {% for user in circle.members.all %}
                     <tr>
@@ -37,12 +37,12 @@
                             <a href="{% url "view_profile" user.pk %}">{{ user.username }}</a>
                         </td>
                         <td>
-                            <!-- remove user from this circle -->
+                            <!-- button to remove user from this circle -->
                             <form action="{% url "remove_user_from_circle" user.pk circle.pk %}">
                                 <div class="btn-group">
-                                    <button class="btn btn-info" type="button">
+                                    <a href="{% url "all_chats" %}?active_conversation={{ user.username }}" class="btn btn-info" type="button">
                                         <span class="glyphicon glyphicon-envelope"></span>
-                                    </button>
+                                    </a>
                                     <button class="btn btn-danger" type="submit">Entfernen</button>
                                 </div>
                             </form>
@@ -55,43 +55,22 @@
             <div class="row">
                 <div class="col-md-12">
                     <h3>Kreisnachrichten</h3>
-                    <!-- nachricht nur in diesen kreis schreiben -->
-                    <form role="form" method="post" action="{% url "new_circlemessage" %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="circles" value="{{ circle.pk }}">
-                        <div class="input-group">
-                            <!-- inputfield for the messages you are going to send -->
-                            <input required type="text" name="text" id="text" class="form-control"
-                                   placeholder="Kreisnachricht...">
-
-                            <div class="input-group-btn">
-                                <button class="btn btn-info" type="submit">Senden</button>
-                            </div>
-
-                        </div>
-                    </form>
+                    <!-- post a single message to this circle alone -->
+                    {% include "buzzit_messaging/includes/new_tweet_form_one_circle.html" %}
+                    {% load messagefilters %}
                     <!-- space for circle messages from this circle -->
                     {% for circlemessage in circle.messages.all %}
-                        <div class="media">
-                        <div class="media-left">
-                            <a href="#">
-                                <img height="64" width="64" class="media-object"
-                                     src="{{ circlemessage.creator.profile.profile_picture }}" alt="Profilbild">
-                            </a>
-                        </div>
-                        <div class="media-body">
-                            <h4 class="media-heading">{{ circlemessage.creator }} schrieb hier
-                                am {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
-                            {{ circlemessage.text }}
-
-                            {% if circlemessage.creator == user %}
-                                <div align="right">
-                                    <a class="btn btn-danger btn-xs"
-                                       href="{% url "delete_circlemessage" circlemessage.id %}">Löschen</a>
-                                </div>
-                            {% endif %}
-                        </div>
+                        {% include "buzzit_messaging/includes/circle_message_reduced_answers.html" with circlemessage=circlemessage %}
                     {% endfor %}
+
+                    <!-- an text input collapses to write a reply to a circle message -->
+                    <div id="antworten" class="collapse">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="antworte hier...">
+							<span class="input-group-btn">
+							<button class="btn btn-info" type="submit">Senden</button>
+							</span>
+                        </div>
                     </div>
                 </div>
             </div>
