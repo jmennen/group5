@@ -29,6 +29,7 @@ Qi Yang | Frontend Entwicklung | flouza@hotmail.de
  - In den Beschreibungen (oder Kommentaren) der Issues sind detailiertere Informationen zu den Stories zu finden.
  - Change Requests sind mit dem Label CHANGE versehen. Die Beschreibung der Änderung findet in den Kommentaren statt.
  - Auch einsehbar unter: https://waffle.io/jmennen/group5
+* Das Github Wiki dieses Repositories. Dort finden Sie die Dokumentation aller Funktionen des sozialen Netzwerks Buzzit.
 * Das Google Docs Sheet:
  - Dort zu finden sind die Tasks für sämtliche Sprints mit einem Status und eventuell dem Fertigstellungsdatum.
  - Das Glossar
