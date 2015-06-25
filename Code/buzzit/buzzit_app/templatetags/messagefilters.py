@@ -28,16 +28,16 @@ register.filter('messagefilter', messagefilter)
 def notificationfilter(message_text):
     # [.....] <POST:123> [...]
     # => [.....] <a href="link_zum_post">Post</a>
-    post_ids = re.finditer("\<(POST):(?P<id>[0-9]+)\>", message_text)
+    post_ids = re.finditer("\<\bPOST\b:(?P<id>[0-9]+)\>", message_text)
     for post_id in post_ids:
         id = post_id.groupdict()["id"]
         link_to_post = reverse("one_circlemessage", args=(id,))
-        message_text = re.sub("\<(POST):[0-9]+\>", "<a href='%s'>(link)</a>" % link_to_post, message_text)
-    user_ids = re.finditer("\<(USER):(?P<id>[0-9]+)\>", message_text)
+        message_text = re.sub("\<\bPOST\b:[0-9]+\>", "<a href='%s'>(link)</a>" % link_to_post, message_text)
+    user_ids = re.finditer("\<\bUSER\b:(?P<id>[0-9]+)\>", message_text)
     for user_id in user_ids:
         id = user_id.groupdict()["id"]
         link_to_post = reverse("view_profile", args=(id,))
-        message_text = re.sub("\<(USER):[0-9]+\>", "<a href='%s'>(link)</a>" % link_to_post, message_text)
+        message_text = re.sub("\<\bUSER\b:[0-9]+\>", "<a href='%s'>(link)</a>" % link_to_post, message_text)
     # ersetze user
     return message_text
 
