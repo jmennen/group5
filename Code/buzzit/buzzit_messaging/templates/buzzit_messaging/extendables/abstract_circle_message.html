@@ -7,9 +7,9 @@
                  alt="Profilbild">
         </a>
     </div>
-    {% if circlemessage.original_message %}
-        <div class="media-body">
-            <!-- the creator of the message as well as the date will be shown -->
+    <div class="media-body">
+        <!-- the creator of the message as well as the date will be shown -->
+        {% if circlemessage.original_message %}
             <div class="media repost">
                 <div class="media-left">
                     <a href="{% url "view_profile" circlemessage.original_message.creator.profile.pk %}">
@@ -29,32 +29,32 @@
                     {{ circlemessage.original_message | messagefilter | safe }}
                 </div>
             </div>
-        </div>
-    {% endif %}
-    <h4 class="media-heading">
-        <a href="{% url "view_profile" circlemessage.creator.pk %}">{{ circlemessage.creator }}</a>
-        {% if circlemessage.original_message %} repostete am
-        {% else %} schrieb am
         {% endif %}
-        {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
-    {{ circlemessage | messagefilter | safe }}
+        <h4 class="media-heading">
+            <a href="{% url "view_profile" circlemessage.creator.pk %}">{{ circlemessage.creator }}</a>
+            {% if circlemessage.original_message %} repostete am
+            {% else %} schrieb am
+            {% endif %}
+            {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
+        {{ circlemessage | messagefilter | safe }}
 
-    <div align="right">
-        <a class="btn btn-info btn-xs" href="{% url "one_circlemessage" circlemessage.id %}">
-            <span class="glyphicon glyphicon-share-alt"></span>
-            Antworten
-        </a>
-        <a class="btn btn-info btn-xs"
-           href="{% url "repost_circlemessage" circlemessage.pk %}"><span
-                class="glyphicon glyphicon-retweet"></span> Retweet</a>
-        <!-- if you are the creator of the message, a delete button will be shown -->
-        {% if circlemessage.creator == user %}
-            <a class="btn btn-danger btn-xs"
-               href="{% url "delete_circlemessage" circlemessage.id %}"><span
-                    class="glyphicon glyphicon-remove"></span> Löschen</a>
-        {% endif %}
+        <div align="right">
+            <a class="btn btn-info btn-xs" href="{% url "one_circlemessage" circlemessage.id %}">
+                <span class="glyphicon glyphicon-share-alt"></span>
+                Antworten
+            </a>
+            <a class="btn btn-info btn-xs"
+               href="{% url "repost_circlemessage" circlemessage.pk %}"><span
+                    class="glyphicon glyphicon-retweet"></span> Retweet</a>
+            <!-- if you are the creator of the message, a delete button will be shown -->
+            {% if circlemessage.creator == user %}
+                <a class="btn btn-danger btn-xs"
+                   href="{% url "delete_circlemessage" circlemessage.id %}"><span
+                        class="glyphicon glyphicon-remove"></span> Löschen</a>
+            {% endif %}
+        </div>
+        <!-- the answers-->
+        {% block answers %}
+        {% endblock %}
     </div>
-    <!-- the answers-->
-    {% block answers %}
-    {% endblock %}
 </div>
