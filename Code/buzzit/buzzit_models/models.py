@@ -48,3 +48,14 @@ class Settings(models.Model):
 class AccountActivation(models.Model):
     username = models.OneToOneField(User, to_field="username", null=False, blank=False, primary_key=True)
     token = models.CharField(max_length=40, null=False, blank=False)
+
+class Report(Message):
+    closed = models.BooleanField(null=False, blank=False, default=False) # gibt an, ob die meldung bearbeitet wurde
+    valid = models.BooleanField(null=False, blank=False, default=False) # wenn report geschlossen, wird hier true gesetzt, wenn die meldung gueltig was
+    issuer = models.ForeignKey(User, null=True, blank=True) # der admin, der die meldung bearbeitet
+
+class UserReport(Report):
+    reported_user = models.OneToOneField(User, null=False, blank=False)
+
+class CircleMessageReport(Report):
+    reported_message = models.OneToOneField(Circle_message, null=False, blank=False)
