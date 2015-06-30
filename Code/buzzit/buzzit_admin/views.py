@@ -8,7 +8,7 @@ class AdminFrontpageView():
 class UserReportDetailsView():
 
 
-class PostReportDetailsView():
+class MessageReportDetailsView():
 
 
 class AdminOverviewView():
@@ -31,8 +31,9 @@ def report_user():
 
 
 @login_required
-def report_post():
+def report_message():
 
 
 @login_required
 def ban_user():
+
