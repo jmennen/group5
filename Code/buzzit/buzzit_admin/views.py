@@ -1,39 +1,39 @@
 from django.shortcuts import render
-
-# Create your views here.
+from buzzit_models.models import *
+from django.contrib.auth.decorators import login_required
+import json
 
 class AdminFrontpageView():
 
 
-class UserReportDetailsView():
+class UserReportDetailsView(ListView):
 
 
-class MessageReportDetailsView():
+class MessageReportDetailsView(ListView):
 
 
-class AdminOverviewView():
-
-
-@login_required
-def delete_reported_post():
+class AdminOverviewView(ListView):
 
 
 @login_required
-def promote_user_to_admin():
+def delete_reported_post(request, message_id):
 
 
 @login_required
-def demote_admin_to_user():
+def promote_user_to_admin(request, user_id):
 
 
 @login_required
-def report_user():
+def demote_admin_to_user(request, user_id):
 
 
 @login_required
-def report_message():
+def report_user(request, user_id):
 
 
 @login_required
-def ban_user():
+def report_message(request, message_id):
 
+
+@login_required
+def ban_user(request, user_id):
