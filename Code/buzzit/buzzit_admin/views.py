@@ -32,3 +32,7 @@ def report_user():
 
 @login_required
 def report_post():
+
+
+@login_required
+def ban_user():
