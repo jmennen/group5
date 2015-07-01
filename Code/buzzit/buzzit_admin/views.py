@@ -3,7 +3,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render
 from django.utils.datetime_safe import datetime
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, CreateView, DeleteView
+from django.views.generic import ListView
 from django.http import HttpResponseRedirect, JsonResponse
 from buzzit_messaging.views import __send_system__message__
 from buzzit_models.models import *
@@ -29,11 +29,11 @@ def report_user(request,user_id):
         report_text = request.POST.get["text"]
         if not report_text:
             render(request,"home",{"error: Zum Benutzermelden ist Meldungstext notwendig."})
-    report_message = Report(creator=request.user,created=datetime.now(),text=report_text)
-    report_message.save()
-    messages.INFO("Sie haben den <User:%s> Benutzer gemeldet" %reported_user)
+        report_message = Report(creator=request.user,created=datetime.now(),text=report_text)
+        report_message.save()
+        messages.INFO("Sie haben den <User:%s> Benutzer gemeldet" %reported_user)
 
-    #send notifacations to system users
+    # send notifications to system users
     system_user = User.objects.get(username="SYSTEM")
     __send_system__message__(system_user.pk, "<Report:%s> Neue Meldung " % report_message)
 
@@ -43,8 +43,13 @@ def report_user(request,user_id):
 def report_user_details():
     pass
 
-class UserReportDetailsView(ListView):
-    pass
+class UserReportDetailsView(SuccessMessageMixin,ListView):
+    """
+    display the report text and reported user
+    """
+    model = Report
+    template_name = "logged_in/user_report_deatails"
+
 
 @login_required
 def delete_reported_post(request, message_id):
