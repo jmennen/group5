@@ -42,3 +42,14 @@ def report_user(request,user_id):
 @login_required()
 def report_user_details():
     pass
+
+class UserReportDetailsView(ListView):
+    pass
+
+@login_required
+def delete_reported_post(request, message_id):
+    pass
+
+@login_required
+def report_message(request, message_id):
+    pass
