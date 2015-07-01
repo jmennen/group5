@@ -30,6 +30,8 @@ def report_user(request,user_id):
         if not report_text:
             render(request,"home",{"error: Zum Benutzermelden ist Meldungstext notwendig."})
     report_message = Report(creator=request.user,created=datetime.now(),text=report_text)
+    report_message.save()
+    messages.INFO("Sie haben den <User:%s> Benutzer gemeldet" %reported_user)
 
     #send notifacations to system users
     system_user = User.objects.get(username="SYSTEM")
