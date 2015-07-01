@@ -49,7 +49,13 @@ class UserReportDetailsView(SuccessMessageMixin,ListView):
     """
     model = Report
     template_name = "logged_in/user_report_deatails"
+    context_object_name = "all_reports"
 
+    def get_queryset(self):
+        pass
+
+    def get_context_data(self, **kwargs):
+        pass
 
 @login_required
 def delete_reported_post(request, message_id):
