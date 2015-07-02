@@ -91,17 +91,19 @@ def delete_reported_post(request, message_id):
     """
     delete reported message from admin, check if the message also has answers,
     reported message with all answers would be delete, else delete only message
-    TODO was ist, wenn eine Nachricht rebuzz wurde
+    TODO was ist, wenn eine Nachricht rebuzzed wurde
     :param request:
     :param message_id:
     :return:
     """
     try:
-        post=CircleMessageReport.objects.get(pk=message_id)
+        post=Circle_message.objects.get(pk=message_id)
     except ObjectDoesNotExist:
         messages.error(request,"Die Nachrichte existiert nicht")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
-
+    #if the reported post has anwsers, delete all
+    if (Circle_message.objects.filter(answer_to=post).count > 0):
+        pass
 
 @login_required
 def promote_user_to_admin(request, user_id):
