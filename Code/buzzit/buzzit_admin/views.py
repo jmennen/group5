@@ -60,9 +60,20 @@ class UserReportDetailsView(SuccessMessageMixin,ListView):
         return UserReport.objects.filter(reported_user=reported_user).order_by("created").all()
 
     def get_context_data(self, **kwargs):
-        pass
 
-		
+        try:
+            reported_user=self.kwargs.get["user_id"]
+        except ObjectDoesNotExist:
+            messages.error(self.request,"Benutzer existiert nicht")
+            return HttpResponseRedirect(reverse_lazy("home"))
+
+            reported_user_profile = reported_user.profile
+            context=super(UserReportDetailsView, self).get_context_data(**kwargs)
+            context["all_user_reports"]=UserReport.objects.filter(reported_user=user)
+            context["reported_user_profile"]= reported_user_profile
+
+            return context
+
 class AdminFrontpageView():
     pass
 
