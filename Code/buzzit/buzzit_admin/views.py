@@ -10,6 +10,10 @@ from buzzit_models.models import *
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse, reverse_lazy
 import django.contrib.messages as messages
+from django.views.generic import ListView
+from buzzit_models.models import *
+from django.contrib.auth.decorators import login_required
+import json
 
 @login_required()
 def report_user(request,user_id):
@@ -39,10 +43,6 @@ def report_user(request,user_id):
 
     return HttpResponseRedirect(reverse_lazy('home'))
 
-@login_required()
-def report_user_details():
-    pass
-
 class UserReportDetailsView(SuccessMessageMixin,ListView):
     """
     display the report text and reported user
@@ -57,10 +57,38 @@ class UserReportDetailsView(SuccessMessageMixin,ListView):
     def get_context_data(self, **kwargs):
         pass
 
+		
+class AdminFrontpageView():
+    pass
+
+
+class MessageReportDetailsView(ListView):
+    pass
+
+
+class AdminOverviewView(ListView):
+    pass
+
 @login_required
 def delete_reported_post(request, message_id):
     pass
 
+	
+@login_required
+def promote_user_to_admin(request, user_id):
+    pass
+
+
+@login_required
+def demote_admin_to_user(request, user_id):
+    pass
+
+
 @login_required
 def report_message(request, message_id):
+    pass
+
+
+@login_required
+def ban_user(request, user_id):
     pass
