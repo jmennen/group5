@@ -14,6 +14,7 @@ from django.views.generic import ListView
 from buzzit_models.models import *
 from django.contrib.auth.decorators import login_required
 import json
+from django.core.mail import send_mail
 
 @login_required()
 def report_user(request,user_id):
@@ -56,7 +57,7 @@ class UserReportDetailsView(SuccessMessageMixin,ListView):
             reported_user = self.kwargs.get["user_id"]
         except ObjectDoesNotExist:
             messages.error(self.request,"Benutzer existiert nicht")
-            return HttpResponseRedirect(reverse_lazy("home"))
+            return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
         return UserReport.objects.filter(reported_user=reported_user).order_by("created").all()
 
     def get_context_data(self, **kwargs):
@@ -65,14 +66,14 @@ class UserReportDetailsView(SuccessMessageMixin,ListView):
             reported_user=self.kwargs.get["user_id"]
         except ObjectDoesNotExist:
             messages.error(self.request,"Benutzer existiert nicht")
-            return HttpResponseRedirect(reverse_lazy("home"))
+            return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
-            reported_user_profile = reported_user.profile
-            context=super(UserReportDetailsView, self).get_context_data(**kwargs)
-            context["all_user_reports"]=UserReport.objects.filter(reported_user=user)
-            context["reported_user_profile"]= reported_user_profile
+        reported_user_profile = reported_user.profile
+        context=super(UserReportDetailsView, self).get_context_data(**kwargs)
+        context["all_user_reports"]=UserReport.objects.filter(reported_user=reported_user)
+        context["reported_user_profile"]= reported_user_profile
 
-            return context
+        return context
 
 class AdminFrontpageView():
     pass
@@ -87,7 +88,19 @@ class AdminOverviewView(ListView):
 
 @login_required
 def delete_reported_post(request, message_id):
-    pass
+    """
+    delete reported message from admin, check if the message also has answers,
+    reported message with all answers would be delete, else delete only message
+    TODO was ist, wenn eine Nachricht rebuzz wurde
+    :param request:
+    :param message_id:
+    :return:
+    """
+    try:
+        post=CircleMessageReport.objects.get(pk=message_id)
+    except ObjectDoesNotExist:
+        messages.error(request,"Die Nachrichte existiert nicht")
+        return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
 
 @login_required
