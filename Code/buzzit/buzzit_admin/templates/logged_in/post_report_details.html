@@ -10,7 +10,7 @@
 <div class="container">
 
 <h3>Post melden: </h3>
-
+<!-- reported post-->
 <div class="well">
 
 		 <!-- one single clicked post with its replys -->
@@ -18,10 +18,12 @@
 		
         
 </div>
-
+<!-- reason for the report -->
 <h4> Grund für die Meldung: {{circlemessagereport.reason}}</h4>
+<!-- user who reported -->
 <h5> Gemeldet von: <a href="{% url "view_profile" circlemessagereport.creator.profile.pk %}"></h5>
 
+<!-- the admin can either delete the reported post, reset the report or ignore the report -->
 <button class="btn btn-danger" type="button">Post löschen</button>
 <button class="btn btn-success" type="button">Meldung zurücksetzen</button>
 <button class="btn btn-default" type="button">Ignorieren</button>

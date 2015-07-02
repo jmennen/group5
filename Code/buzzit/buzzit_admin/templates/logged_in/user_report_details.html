@@ -11,7 +11,7 @@
 <div class="container">
 
 <h3>Gemeldeter Benutzer: </h3>
-
+<!-- profile of the reported user -->
 <div class="container">
         <h3> {{ profile.user.username }}
         </h3>
@@ -35,10 +35,13 @@
                 </div>
             </div>
 			
-	 <div class="col-md-7">		
+	 <div class="col-md-7">	
+		<!-- reason for the report-->
 		<h4> Grund für die Meldung: {{userreport.reason}}</h4>
+		<!-- user who reported -->
 		<h5> Gemeldet von: <a href="{% url "view_profile" userreport.creator.profile.pk %}"></h5>
 
+		<!-- the admin can either deactivate the reported user, reset the report or ignore the report -->
 		<button class="btn btn-danger" type="button">Benutzer deaktivieren</button>
 		<button class="btn btn-success" type="button">Meldung zurücksetzen</button>
 		<button class="btn btn-default" type="button">Ignorieren</button>
