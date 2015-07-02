@@ -117,7 +117,12 @@ def demote_admin_to_user(request, user_id):
 
 @login_required
 def report_message(request, message_id):
-    pass
+    """
+    user report message to admin
+    :param request:
+    :param message_id:
+    :return:
+    """
 
 
 @login_required
