@@ -1,1 +1,33 @@
 <!-- a plain circlemessage report form with a text input for an optional report reason, report will be sent to admins -->
+{% extends "base.html" %}
+
+{% block title %}Kreisübersicht{% endblock %}
+{% load messagefilters %}
+{% block content %}
+
+    {% include "includes/navbar.html" %}
+
+<div class="container">
+
+<h3>Post melden: </h3>
+
+<div class="well">
+
+		 <!-- one single clicked post with its replys -->
+         {% include "buzzit_messaging/includes/circle_message_all_answers.html" %}
+		
+        
+</div>
+<h4> Grund für die Meldung:</h4>
+		<div class="input-group">
+					<input type="text" class="form-control" placeholder="Meldegrund eintragen...">
+					<span class="input-group-btn">
+					<button class="btn btn-success" type="submit">Melden</button>
+					</span>
+		</div>
+
+
+
+</div>
+
+{% endblock %}

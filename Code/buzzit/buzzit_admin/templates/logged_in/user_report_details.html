@@ -1,1 +1,50 @@
 <!-- a single reported user with his profile and the report reason, possiblity to block the user or close the case -->
+
+{% extends "base.html" %}
+
+{% block title %}Kreisübersicht{% endblock %}
+{% load messagefilters %}
+{% block content %}
+
+    {% include "includes/navbar.html" %}
+
+<div class="container">
+
+<h3>Gemeldeter Benutzer: </h3>
+
+<div class="container">
+        <h3> {{ profile.user.username }}
+        </h3>
+        </div>
+        <div>
+            <div class="col-md-5">
+
+                <div class="thumbnail">
+                    <img class="img-responsive" src="{% url "profile_picture_small" profile.pk %}" alt="Profilbild">
+                </div>
+
+                <div class="well">
+                    <p>Vorname: {{ profile.user.first_name }}</p>
+                    <hr>
+                    <p>Nachname: {{ profile.user.last_name }}</p>
+                    <hr>
+                    <p>Beschreibung: {{ profile.description }}</p>
+                    <hr>
+
+ 
+                </div>
+            </div>
+			
+	 <div class="col-md-7">		
+		<h4> Grund für die Meldung: {{userreport.reason}}</h4>
+		<h5> Gemeldet von: <a href="{% url "view_profile" userreport.creator.profile.pk %}"></h5>
+
+		<button class="btn btn-danger" type="button">Benutzer deaktivieren</button>
+		<button class="btn btn-success" type="button">Meldung zurücksetzen</button>
+		<button class="btn btn-default" type="button">Ignorieren</button>
+
+	</div>
+
+</div>
+
+{% endblock %}
