@@ -32,7 +32,8 @@ def report_user(request,user_id):
     if request.method == "POST":
         report_text = request.POST.get["text"]
         if not report_text:
-            render(request,"home",{"error: Zum Benutzermelden ist Meldungstext notwendig."})
+            messages.error(request,"Text zum Benutzermelden ist zu geben")
+            return HttpResponseRedirect(reverse_lazy("home"))
         report_message = Report(creator=request.user,created=datetime.now(),text=report_text)
         report_message.save()
         messages.INFO("Sie haben den <User:%s> Benutzer gemeldet" %reported_user)
