@@ -1,0 +1,26 @@
+.admin-bg{
+	background-color: #FFA74A;
+	position:fixed;
+    width: 100%;
+    height: 100%;
+}
+
+.admin-area{
+	padding:10px;
+	margin-left:100px;
+	max-height:450px;
+
+}
+
+
+#report-name{
+	padding:10px;
+	margin-left:100px;
+}
+
+
+#reported{
+padding:10px
+	background-color: #FFA74A;
+
+}

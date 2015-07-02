@@ -1,1 +1,125 @@
 <!-- admin overview with link references to reported users and circlemessages -->
+<!--{% extends "base.html" %}
+
+{% block title %}Admin-Dashboard{% endblock %}
+
+{% block content %}
+    {% include "includes/navbar.html" %}-->
+<html>
+	<head>
+	<link rel="stylesheet" href="admin.css">
+	<link rel="stylesheet" href="base.css">
+	<link rel="stylesheet" href="bootstrap.min.css">
+	<link rel="stylesheet" href="direct_message.css">
+	</head>
+	
+	
+	<body>
+	<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url "start" %}">buzzit!</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+			<!--search field for user profiles -->
+            <form class="navbar-form navbar-left" role="search" method="get" action="{% url "search_user" %}">
+                <div class="input-group">
+                    <input name="q" type="text" class="form-control" placeholder="finde andere Nutzer...">
+					<span class="input-group-btn">
+						<button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search"
+                                                                         aria-hidden="true"></span>
+                        </button>
+					</span>
+                    </input>
+                </div>
+            </form>
+
+			
+            <ul class="nav navbar-nav">
+				<!--leads to home site -->
+                <li><a href="{% url "view_profile" user.pk %}">Profil</a></li>
+                <li><a href="{% url "my_followers" %}">Follower</a></li>
+				<!--leads to circle site -->
+                <li><a href="{% url "circle_overview" %}">Kreise</a></li>
+				<!--leads to messages site -->
+                <li><a href="{% url "all_chats" %}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Nachrichten<span class="notification_count badge">0</span></a>
+                </li>
+
+            </ul>
+			
+			
+            <ul class="nav navbar-nav navbar-right">
+				<!--leads to edit_own_userdata site -->
+                <li><a href="{% url "update_userdata" %}"><span class="glyphicon glyphicon-wrench"></span> Einstellungen</a>
+                </li>
+				<!-- logs out the user -->
+                <li><a href="{% url "logout" %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            </ul>
+
+
+        </div>
+    </div>
+</nav>
+	
+	<div class="admin-bg">
+	<h3> Admin-Dashboard</h3>
+	<div class="row">
+	<div class="col-md-5">
+	<div id="report-name"">
+	<h4><b>gemeldete Nutzer</b></h4>
+	</div>
+			<div class="admin-area">			
+			<ul class="list-group" id="reported">
+			  <li class="list-group-item">Cras justo odio</li>
+			  <li class="list-group-item">Dapibus ac facilisis in</li>
+			  <li class="list-group-item">Morbi leo risus</li>
+			  <li class="list-group-item">Porta ac consectetur ac</li>
+			  <li class="list-group-item">Vestibulum at eros</li>
+			  <li class="list-group-item">Vestibulum at eros</li>
+			  <li class="list-group-item">Vestibulum at eros</li>
+			  <li class="list-group-item">Vestibulum at eros</li>
+			  <li class="list-group-item">Vestibulum at eros</li>
+			  <li class="list-group-item">Vestibulum at eros</li>
+			  <li class="list-group-item">Vestibulum at eros</li>
+			  <li class="list-group-item">Vestibulum at eros</li>
+			  <li class="list-group-item">Vestibulum at eros</li>
+			  <li class="list-group-item">Vestibulum at eros</li>
+			  <li class="list-group-item">Vestibulum at eros</li>
+			  <li class="list-group-item">Vestibulum at eros</li>
+			  <li class="list-group-item">Vestibulum at eros</li>
+			</ul>
+			</div>
+	</div>
+			
+			<div class="col-md-5">
+			<div id="report-name"">
+	<h4><b>gemeldete Beiträge</b></h4>
+	</div>
+			
+			<div class="admin-area">
+			
+			<ul class="list-group">
+			  <li class="list-group-item">Cras justo odio</li>
+			  <li class="list-group-item">Dapibus ac facilisis in</li>
+			  <li class="list-group-item">Dapibus ac facilisis in</li>
+			  <li class="list-group-item">Dapibus ac facilisis in</li>
+			  <li class="list-group-item">Dapibus ac facilisis in</li>
+			  <li class="list-group-item">Dapibus ac facilisis in</li>
+			  <li class="list-group-item">Dapibus ac facilisis in</li>
+			  <li class="list-group-item">Dapibus ac facilisis in</li>
+			  <li class="list-group-item">Dapibus ac facilisis in</li>
+			  <li class="list-group-item">Morbi leo risus</li>
+			  <li class="list-group-item">Porta ac consectetur ac</li>
+			  <li class="list-group-item">Vestibulum at eros</li>
+			</ul>
+			</div>
+	
+	</div>
+	</body>
+	
+</html>
