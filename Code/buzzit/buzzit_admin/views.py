@@ -34,9 +34,9 @@ def report_user(request,user_id):
         if not report_text:
             messages.error(request,"Text zum Benutzermelden ist zu geben")
             return HttpResponseRedirect(reverse_lazy("home"))
-        report_message = Report(creator=request.user,created=datetime.now(),text=report_text)
+        report_message = UserReport(creator=request.user,created=datetime.now(),text=report_text,reported_user=reported_user)
         report_message.save()
-        messages.INFO("Sie haben den <User:%s> Benutzer gemeldet" %reported_user)
+        messages.info("Sie haben den <User:%s> Benutzer gemeldet" %reported_user)
 
     # send notifications to system users
     system_user = User.objects.get(username="SYSTEM")
@@ -50,7 +50,6 @@ class UserReportDetailsView(SuccessMessageMixin,ListView):
     """
     model = Report
     template_name = "logged_in/user_report_deatails"
-    context_object_name = "all_reports"
 
     def get_queryset(self):
         pass
@@ -74,7 +73,7 @@ class AdminOverviewView(ListView):
 def delete_reported_post(request, message_id):
     pass
 
-	
+
 @login_required
 def promote_user_to_admin(request, user_id):
     pass
