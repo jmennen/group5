@@ -38,7 +38,7 @@ def report_user(request,user_id):
         report_message.save()
         messages.info("Sie haben den <User:%s> Benutzer gemeldet" %reported_user)
 
-    # send notifications to system users
+    #bTODO send messages to admin user, not to SYSTEM user
     system_user = User.objects.get(username="SYSTEM")
     __send_system__message__(system_user.pk, "<Report:%s> Neue Meldung " % report_message)
 
@@ -52,7 +52,12 @@ class UserReportDetailsView(SuccessMessageMixin,ListView):
     template_name = "logged_in/user_report_deatails"
 
     def get_queryset(self):
-        pass
+        try:
+            reported_user = self.kwargs.get["user_id"]
+        except ObjectDoesNotExist:
+            messages.error(self.request,"Benutzer existiert nicht")
+            return HttpResponseRedirect(reverse_lazy("home"))
+        return UserReport.objects.filter(reported_user=reported_user).order_by("created").all()
 
     def get_context_data(self, **kwargs):
         pass
