@@ -120,14 +120,18 @@ def delete_reported_post(request, message_id):
     :return:
     """
     try:
-        post=Circle_message.objects.get(pk=message_id)
+        post_to_del=Circle_message.objects.get(pk=message_id)
     except ObjectDoesNotExist:
         messages.error(request,"Die Nachrichte existiert nicht")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
     #if the reported post has anwsers, delete all
-    #answers_to_post=Circle_message.objects.filter(answer_to=post)
-    if (Circle_message.objects.filter(answer_to=post).count > 0):
-        pass
+
+    answers=Circle_message.objects.filter(answer_to=post_to_del)
+    answers.delete()
+    post_to_del.delete()
+    messages.success(request,"Die Nachrichte wurde erfolgreich geloescht")
+    return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
+
 
 @login_required
 def promote_user_to_admin(request, user_id):
