@@ -49,7 +49,7 @@ class UserReportDetailsView(SuccessMessageMixin,ListView):
     """
     display the report text and reported user
     """
-    model = Report
+    model = UserReport
     template_name = "logged_in/user_report_deatails"
 
     def get_queryset(self):
@@ -69,9 +69,11 @@ class UserReportDetailsView(SuccessMessageMixin,ListView):
             return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
         reported_user_profile = reported_user.profile
+        report = UserReport.objects.get(reported_user=reported_user)
         context=super(UserReportDetailsView, self).get_context_data(**kwargs)
-        context["all_user_reports"]=UserReport.objects.filter(reported_user=reported_user)
+        #context["all_user_reports"]=UserReport.objects.filter(reported_user=reported_user)
         context["reported_user_profile"]= reported_user_profile
+        context["report_text"]=report.text
 
         return context
 
