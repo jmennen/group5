@@ -31,12 +31,17 @@ def report_user(request,user_id):
         messages.error(request,"Der Benutzer existiert nicht.")
         return HttpResponseRedirect(reverse_lazy("home"))
     if request.method == "POST":
+        report_message = UserReport()
         report_text = request.POST.get["text",False]
-        if not report_text:
-            if len(report_text) < 1:
+
+        report_message.creator=request.user
+        report_message.created=datetime.now()
+        report_message.text=report_text
+        report_message.reported_user=reported_user
+
+        if len(report_message.text) < 1:
                 messages.error(request,"Text zum Benutzermelden ist zu geben")
                 return HttpResponseRedirect(reverse_lazy("home"))
-        report_message = UserReport(creator=request.user,created=datetime.now(),text=report_text,reported_user=reported_user.pk)
         report_message.save()
         messages.info("Sie haben den <User:%s> Benutzer gemeldet" %reported_user)
 
@@ -72,7 +77,6 @@ class UserReportDetailsView(SuccessMessageMixin,ListView):
         reported_user_profile = reported_user.profile
         report = UserReport.objects.get(reported_user=reported_user)
         context=super(UserReportDetailsView, self).get_context_data(**kwargs)
-        #context["all_user_reports"]=UserReport.objects.filter(reported_user=reported_user)
         context["reported_user_profile"]= reported_user_profile
         context["report_text"]=report.text
 
@@ -121,6 +125,7 @@ def delete_reported_post(request, message_id):
         messages.error(request,"Die Nachrichte existiert nicht")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
     #if the reported post has anwsers, delete all
+    #answers_to_post=Circle_message.objects.filter(answer_to=post)
     if (Circle_message.objects.filter(answer_to=post).count > 0):
         pass
 
@@ -142,7 +147,25 @@ def report_message(request, message_id):
     :param message_id:
     :return:
     """
+    try:
+        message=Circle_message.objects.get(pk=message_id)
+    except ObjectDoesNotExist:
+        messages.error(request,"Die Nachrichte existiert nicht")
+        return HttpResponseRedirect(reverse_lazy("home"))
+    text=request.POST.get["text",False]
+    if text:
+        if len(text) < 1:
+            messages.error(request,"Es wurde keinen Text gegeben")
+            return HttpResponseRedirect(reverse_lazy("home"))
+        report_message=CircleMessageReport()
+        report_message.creator=request.user
+        report_message.created=datetime.now()
+        report_message.reported_message=message
+        report_message.text=text
+        report_message.save()
 
+    messages.info(request,"Die Nachrichte <Circle_message:%s> wurde gemeldet" %message)
+    return HttpResponseRedirect(reverse_lazy("home"))
 
 @login_required
 def ban_user(request, user_id):
