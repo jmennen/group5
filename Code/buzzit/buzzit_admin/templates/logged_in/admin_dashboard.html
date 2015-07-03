@@ -11,10 +11,11 @@
                     <h3>Gemeldet Benutzer</h3>
                     <!--space for creating a circle messages-->
                     <hr>
-                    {% for user in all_user_reports %}
+                    {% for report in all_user_reports %}
                         <!-- messagefeed for the messages that are visible to you -->
-                        {{ user.name }}
+
                         <hr>
+                        {{ report.reported_user.name }}
                     {% endfor %}
                 </div>
             </div>
