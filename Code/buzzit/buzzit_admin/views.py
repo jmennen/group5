@@ -80,6 +80,19 @@ class UserReportDetailsView(SuccessMessageMixin,ListView):
 class AdminFrontpageView():
     pass
 
+def adminFrontPage(request):
+    """
+    show all user and post reports at the page
+    :param request:
+    :return:
+    """
+    all_user_reports =[]
+    all_post_reports=[]
+
+    all_user_reports = UserReport.objects.all()
+    all_post_reports = CircleMessageReport.objects.all()
+
+    return render(request,"logged_in/admin_dashboard.html",{"user_reports":all_user_reports,"post_reports":all_post_reports})
 
 class MessageReportDetailsView(ListView):
     pass

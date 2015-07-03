@@ -1,1 +1,23 @@
 <!-- admin overview with link references to reported users and circlemessages -->
+{% extends "base.html" %}
+{% block title %}Profil bearbeiten{% endblock %}
+{% block content %}
+<!--imports the navigation bar-->
+{% include "includes/navbar.html" %}
+    <div class="container">
+        <div class="col-md-9">
+
+                <div class="well">
+                    <h3>Gemeldet Benutzer</h3>
+                    <!--space for creating a circle messages-->
+                    <hr>
+                    {% for user in all_user_reports %}
+                        <!-- messagefeed for the messages that are visible to you -->
+                        {{ user.name }}
+                        <hr>
+                    {% endfor %}
+                </div>
+            </div>
+
+    </div>
+{% endblock %}
