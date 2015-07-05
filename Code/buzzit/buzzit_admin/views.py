@@ -191,16 +191,16 @@ def report_message(request, message_id):
         messages.error(request,"Die Nachrichte existiert nicht")
         return HttpResponseRedirect(reverse_lazy("home"))
     text=request.POST.get["text",False]
-    if text:
-        if len(text) < 1:
-            messages.error(request,"Es wurde keinen Text gegeben")
-            return HttpResponseRedirect(reverse_lazy("home"))
-        report_message=CircleMessageReport()
-        report_message.creator=request.user
-        report_message.created=datetime.now()
-        report_message.reported_message=message
-        report_message.text=text
-        report_message.save()
+
+    if len(text) < 1:
+        messages.error(request,"Es wurde keinen Text gegeben")
+        return HttpResponseRedirect(reverse_lazy("home"))
+    report_message=CircleMessageReport()
+    report_message.creator=request.user
+    report_message.created=datetime.now()
+    report_message.reported_message=message
+    report_message.text=text
+    report_message.save()
 
     messages.info(request,"Die Nachrichte <Circle_message:%s> wurde gemeldet" %message)
     return HttpResponseRedirect(reverse_lazy("home"))
