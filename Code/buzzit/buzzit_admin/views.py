@@ -157,8 +157,25 @@ def promote_user_to_admin(request, user_id):
 
 @login_required
 def demote_admin_to_user(request, user_id):
-    pass
+    """
+    check if user exists, check if user is adminUser
+    :param request:
+    :param user_id:
+    :return:
+    """
+    try:
+        demote_user=User.objects.get(pk=user_id)
+    except ObjectDoesNotExist:
+        messages.error(request,"Der Benutzer existiert nicht")
+        return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
+    if not(demote_user.is_staff):
+        messages.error(request,"Der Benutzer ist kein Admin ")
+        return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
+
+    demote_user.is_staff=False
+    messages.info(request,"Die Adminrechte von dem Benutzer wird entziehen")
+    return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
 @login_required
 def report_message(request, message_id):
