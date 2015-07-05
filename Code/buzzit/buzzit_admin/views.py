@@ -207,4 +207,27 @@ def report_message(request, message_id):
 
 @login_required
 def ban_user(request, user_id):
-    pass
+    """
+    ban user and send email to him with reason,TODO provides ban user contact infos
+    :param request:
+    :param user_id:
+    :return:
+    """
+    try:
+        user_to_be_ban=User.objects.get(pk=user_id)
+    except ObjectDoesNotExist:
+        messages.error(request,"Der Benutzer existiert nicht")
+        return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
+
+    if not(user_to_be_ban.is_active):
+        messages.info(request,"Der Benutzer ist bereits deaktiviert")
+        return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
+
+    message_for_ban=request.GET.get["text",False]
+    user_to_be_ban.is_active=False
+    send_mail("Deaktivieren dein Account", message= "Grund zum Deaktivieren: '%s'" % message_for_ban,
+                      html_message="<html><h3>um Deinen Account zu wieder aktivieren, kontaktieren Sie bitte :</h3>" +
+                                   "<a href='%s'>Klicke hier um den Account wieder zu aktivieren!</a>."  +
+                                   "</html>" ,from_email="AccountAktivierung@vps146949.ovh.net", recipient_list=(user_to_be_ban.email,))
+    messages.info(request,"Der Benutzer ist deaktiviert")
+    return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
