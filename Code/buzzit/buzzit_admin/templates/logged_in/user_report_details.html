@@ -6,8 +6,9 @@
 {% load messagefilters %}
 {% block content %}
 
-    {% include "includes/navbar.html" %}
+    {% include "includes/admin-nav.html" %}
 
+<div class="admin-bg">
 <div class="container">
 
 <h3>Gemeldeter Benutzer: </h3>
@@ -16,7 +17,7 @@
         <h3> {{ profile.user.username }}
         </h3>
         </div>
-        <div>
+
             <div class="col-md-5">
 
                 <div class="thumbnail">
@@ -48,6 +49,7 @@
 
 	</div>
 
+</div>
 </div>
 
 {% endblock %}
