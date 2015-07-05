@@ -208,7 +208,7 @@ def report_message(request, message_id):
 @login_required
 def ban_user(request, user_id):
     """
-    ban user and send email to him with reason,TODO provides ban user contact infos
+    set ban user and send email to him with reason,TODO provides ban user information to contact with admin user
     :param request:
     :param user_id:
     :return:
