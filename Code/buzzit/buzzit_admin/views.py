@@ -86,7 +86,24 @@ def demote_admin_to_user(request, user_id):
 
 @login_required
 def report_message(request, message_id):
-    pass
+    try:
+        reported_message = Circle_message(pk=message_id)
+    except Exception:
+        messages.error(request, "Die Nachricht existiert nicht")
+        return HttpResponseRedirect(reverse("home"))
+    if request.method == "POST":
+        report = CircleMessageReport()
+        report.reported_message = reported_message
+        report.text = request.POST.get("text", False)
+        if not report.text or len(report.text)<1:
+            messages.error(request, "Keine Begruendung angegeben")
+            return HttpResponseRedirect(reverse("home"))
+        report.creator = request.user
+        report.created = datetime.now()
+        report.save()
+        messages.success(request, "Nachricht wurde gemeldet")
+        return HttpResponseRedirect(reverse("home"))
+    return render(request, "logged_in/report_user.html", {"message" : reported_message})
 
 
 @login_required
