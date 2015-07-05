@@ -33,15 +33,19 @@ def report_user(request,user_id):
     if request.method == "POST":
         report_message = UserReport()
         report_text = request.POST.get["text",False]
+        try:
+            if report_text:
+                report_message.text=report_text
+        except ObjectDoesNotExist:
+            messages.error(request,"Fehler")
+
+        if len(report_message.text) < 1:
+            messages.error(request,"Text zum Benutzermelden ist zu geben")
+            return HttpResponseRedirect(reverse_lazy("home"))
 
         report_message.creator=request.user
         report_message.created=datetime.now()
-        report_message.text=report_text
         report_message.reported_user=reported_user
-
-        if len(report_message.text) < 1:
-                messages.error(request,"Text zum Benutzermelden ist zu geben")
-                return HttpResponseRedirect(reverse_lazy("home"))
         report_message.save()
         messages.info("Sie haben den <User:%s> Benutzer gemeldet" %reported_user)
 
