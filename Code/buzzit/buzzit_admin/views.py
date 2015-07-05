@@ -45,11 +45,11 @@ def report_user(request,user_id):
         report_message.save()
         messages.info("Sie haben den <User:%s> Benutzer gemeldet" %reported_user)
 
-    #bTODO send messages to admin user, not to SYSTEM user
-    #system_user = User.objects.get(username="SYSTEM")
-    #__send_system__message__(system_user.pk, "<Report:%s> Neue Meldung " % report_message)
+    #TODO send messages to admin user, not to SYSTEM user
+    admin_user = User.objects.filter(is_staff=True)
+    __send_system__message__(admin_user.pk, "<Report:%s> Neue Meldung " % report_message)
 
-    #return HttpResponseRedirect(reverse_lazy('home'))
+    return HttpResponseRedirect(reverse_lazy('home'))
 
 class UserReportDetailsView(SuccessMessageMixin,ListView):
     """
@@ -90,7 +90,7 @@ class AdminFrontpageView():
 
 def adminFrontPage(request):
     """
-    show all user and post reports at the page
+    show all user and post reports at the page, only for self test
     :param request:
     :return:
     """
@@ -112,7 +112,7 @@ class AdminOverviewView(ListView):
 @login_required
 def delete_reported_post(request, message_id):
     """
-    delete reported message from admin, check if the message also has answers,
+    delete reported message from admin, check if the message has answers,
     reported message with all answers would be delete, else delete only message
     TODO was ist, wenn eine Nachricht rebuzzed wurde
     :param request:
