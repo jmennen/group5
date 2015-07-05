@@ -86,6 +86,17 @@ def demote_admin_to_user(request, user_id):
 
 @login_required
 def report_message(request, message_id):
+    """
+    Report a circlemessage with given <message_id>, if that exists.
+    If that does not exist, then an error for the user is returned and he gets redirected to home.
+    If that message exists,
+        then the report will be created, if an reason (report.text) was given.
+            The report is saved then.
+        if there is no reason, an error will be created and the user is redirected to home.
+    :param request:
+    :param message_id:
+    :return:
+    """
     try:
         reported_message = Circle_message(pk=message_id)
     except Exception:
