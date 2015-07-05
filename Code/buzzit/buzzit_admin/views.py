@@ -19,7 +19,7 @@ from django.core.mail import send_mail
 @login_required()
 def report_user(request,user_id):
     """
-    current user report other user, and gives the reason which would not be empty
+    current user report other user, and gives the reason which should not be empty
     :param request:
     :param user_id:
     :return:
@@ -49,7 +49,7 @@ def report_user(request,user_id):
     #system_user = User.objects.get(username="SYSTEM")
     #__send_system__message__(system_user.pk, "<Report:%s> Neue Meldung " % report_message)
 
-    return HttpResponseRedirect(reverse_lazy('home'))
+    #return HttpResponseRedirect(reverse_lazy('home'))
 
 class UserReportDetailsView(SuccessMessageMixin,ListView):
     """
@@ -135,8 +135,25 @@ def delete_reported_post(request, message_id):
 
 @login_required
 def promote_user_to_admin(request, user_id):
-    pass
+    """
+    check if user exists, then check if user is active
+    :param request:
+    :param user_id:
+    :return:
+    """
+    try:
+        admin_user=User.objects.get(pk=user_id)
+    except ObjectDoesNotExist:
+        messages.error(request,"Der Benuzer existiert nicht")
+        return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
+    if not(admin_user.is_active):
+        messages.info(request,"Der Benutzer ist deaktiviert")
+        return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
+
+    admin_user.is_staff=True
+    messages.info(request,"Der Benutzer ist als AdminUser hinzugefuegt")
+    return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
 @login_required
 def demote_admin_to_user(request, user_id):
