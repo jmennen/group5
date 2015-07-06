@@ -7,30 +7,33 @@
 
     {% include "includes/navbar.html" %}
 
-<div class="container">
+    <div class="container">
 
-<h3>Post melden: </h3>
+        <h3>Post melden: </h3>
 
-<!-- reported post -->
-<div class="well">
+        <!-- reported post -->
+        <div class="well">
 
-		 <!-- one single clicked post with its replys -->
-         {% include "buzzit_messaging/includes/circle_message_all_answers.html" %}
-		
-        
-</div>
+            <!-- one single clicked post with its replys -->
+            {% include "buzzit_messaging/includes/circle_message_all_answers.html" %}
 
-<!-- input field for the report reason -->
-<h4> Grund für die Meldung:</h4>
-		<div class="input-group">
-					<input type="text" class="form-control" placeholder="Meldegrund eintragen...">
+
+        </div>
+
+        <!-- input field for the report reason -->
+        <h4> Grund für die Meldung:</h4>
+
+        <form action="{% url "report_message" circlemessage.pk %}" method="post">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="text" name="text" class="form-control" placeholder="Meldegrund eintragen...">
 					<span class="input-group-btn">
 					<button class="btn btn-success" type="submit">Melden</button>
 					</span>
-		</div>
+            </div>
+        </form>
 
 
-
-</div>
+    </div>
 
 {% endblock %}

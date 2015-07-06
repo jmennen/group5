@@ -10,7 +10,7 @@ from buzzit_models.models import *
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse, reverse_lazy
 import django.contrib.messages as messages
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from buzzit_models.models import *
 from django.contrib.auth.decorators import login_required
 import json
@@ -24,36 +24,43 @@ def report_user(request,user_id):
     :param user_id:
     :return:
     """
-
-    try:
-        reported_user = User.objects.get(pk=user_id)
-    except ObjectDoesNotExist:
-        messages.error(request,"Der Benutzer existiert nicht.")
-        return HttpResponseRedirect(reverse_lazy("home"))
     if request.method == "POST":
-        report_message = UserReport()
-        report_text = request.POST.get["text",False]
         try:
-            if report_text:
-                report_message.text=report_text
+            reported_user = User.objects.get(pk=user_id)
         except ObjectDoesNotExist:
-            messages.error(request,"Fehler")
-
-        if len(report_message.text) < 1:
-            messages.error(request,"Text zum Benutzermelden ist zu geben")
+            messages.error(request,"Der Benutzer existiert nicht.")
             return HttpResponseRedirect(reverse_lazy("home"))
+        if request.method == "POST":
+            report_message = UserReport()
+            report_text = request.POST.get["text",False]
+            try:
+                if report_text:
+                    report_message.text=report_text
+            except ObjectDoesNotExist:
+                messages.error(request,"Fehler")
 
-        report_message.creator=request.user
-        report_message.created=datetime.now()
-        report_message.reported_user=reported_user
-        report_message.save()
-        messages.info("Sie haben den <User:%s> Benutzer gemeldet" %reported_user)
+            if len(report_message.text) < 1:
+                messages.error(request,"Text zum Benutzermelden ist zu geben")
+                return HttpResponseRedirect(reverse_lazy("home"))
 
-    #TODO send messages to admin user, not to SYSTEM user
-    admin_user = User.objects.filter(is_staff=True)
-    __send_system__message__(admin_user.pk, "<Report:%s> Neue Meldung " % report_message)
+            report_message.creator=request.user
+            report_message.created=datetime.now()
+            report_message.reported_user=reported_user
+            report_message.save()
+            messages.info("Sie haben den <User:%s> Benutzer gemeldet" %reported_user)
 
-    return HttpResponseRedirect(reverse_lazy('home'))
+            #TODO send messages to admin user, not to SYSTEM user
+            admin_user = User.objects.filter(is_staff=True)
+            __send_system__message__(admin_user.pk, "<Report:%s> Neue Meldung " % report_message)
+
+            return HttpResponseRedirect(reverse_lazy('home'))
+    else:
+        try:
+            reported_profile = Profile.objects.get(pk=user_id)
+        except ObjectDoesNotExist:
+            messages.error(request,"Der Benutzer existiert nicht.")
+            return HttpResponseRedirect(reverse_lazy("home"))
+        return render(request, "logged_in/report_user.html", {"profile":reported_profile})
 
 class UserReportDetailsView(SuccessMessageMixin,ListView):
     """
@@ -109,17 +116,23 @@ def adminFrontPage(request):
      else:
          messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
          return HttpResponseRedirect(reverse("home"))
-		 
 
-class MessageReportDetailsView(ListView):
-    pass
+
+class MessageReportDetailsView(DetailView):
+    model = CircleMessageReport
+    slug_field = "id"
+    template_name = "logged_in/post_report_details.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(MessageReportDetailsView, self).dispatch(request, args, kwargs)
 
 
 class AdminOverviewView(ListView):
     pass
 
 @login_required
-def delete_reported_post(request, message_id):
+def delete_reported_post(request, report_id):
     """
     delete reported message from admin, check if the message has answers,
     reported message with all answers would be delete, else delete only message
@@ -129,15 +142,19 @@ def delete_reported_post(request, message_id):
     :return:
     """
     try:
-        post_to_del=Circle_message.objects.get(pk=message_id)
+        report = CircleMessageReport.objects.get(pk = report_id)
     except ObjectDoesNotExist:
-        messages.error(request,"Die Nachrichte existiert nicht")
+        messages.error(request,"Der Report existiert nicht")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
     #if the reported post has anwsers, delete all
 
+    post_to_del=report.reported_message
     answers=Circle_message.objects.filter(answer_to=post_to_del)
     answers.delete()
     post_to_del.delete()
+    report.issuer = request.user
+    report.valid = True
+    report.closed = True
     messages.success(request,"Die Nachrichte wurde erfolgreich geloescht")
     return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
@@ -200,7 +217,7 @@ def report_message(request, message_id):
     :return:
     """
     try:
-        reported_message = Circle_message(pk=message_id)
+        reported_message = Circle_message.objects.get(pk=message_id)
     except Exception:
         messages.error(request, "Die Nachricht existiert nicht")
         return HttpResponseRedirect(reverse("home"))
@@ -216,7 +233,8 @@ def report_message(request, message_id):
         report.save()
         messages.success(request, "Nachricht wurde gemeldet")
         return HttpResponseRedirect(reverse("home"))
-    return render(request, "logged_in/report_user.html", {"message" : reported_message})
+    reported_profile = Profile.objects.get(pk = reported_message.creator.pk)
+    return render(request, "logged_in/report_post.html", {"profile" : reported_profile, "circlemessage" : reported_message})
 
 @login_required
 def ban_user(request, user_id):
