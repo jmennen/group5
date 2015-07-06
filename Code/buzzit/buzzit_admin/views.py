@@ -57,21 +57,25 @@ class UserReportDetailsView(SuccessMessageMixin,ListView):
     def get_context_data(self, **kwargs):
         pass
 
- @login_required
- def adminFrontPage(request):
+
+@login_required
+def adminFrontPage(request):
      """
      show all userreports and
      postreports
      :param request:
      :return:
      """
-     userreports =[]
-     postreports=[]
-     userreports = UserReport.objects.all()
-     postreports =CircleMessageReport.objects.all()
+     if request.user.is_superuser:
+        userreports =[]
+        postreports=[]
+        userreports = UserReport.objects.all()
+        postreports =CircleMessageReport.objects.all()
 
-     return render(request,"logged_in/admin_dashboard.html",{"user_reports":user_reports,"post_reports":postreports})
-
+        return render(request,"logged_in/admin_dashboard.html",{"user_reports":userreports,"post_reports":postreports})
+     else:
+         messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
+         return HttpResponseRedirect(reverse("home"))
 
 
 class MessageReportDetailsView(ListView):
