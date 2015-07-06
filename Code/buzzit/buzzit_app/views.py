@@ -68,13 +68,7 @@ def start(request):
     return render(request, "guest/start.html", {"form": form})
 
 
-@login_required
-def home(request):
-    """
-    The start page of logged in users.
-    :param request: The request object.
-    :return: the home.html template rendered with a user object "user" and a profile object "profile"
-    """
+def __get_home_posts__(request):
     circles_of_which_we_are_member = Circle.objects.filter(members=request.user.pk)
     message_list = []
     # nachrichten von usern denen, wir folgen, und in deren kreis wir sind:
@@ -92,6 +86,17 @@ def home(request):
         message_list += Circle_message.objects.filter(creator=request.user, answer_to=None).all()
 
     message_list.sort(key=lambda m: m.created, reverse=True)
+    return message_list
+
+
+@login_required
+def home(request):
+    """
+    The start page of logged in users.
+    :param request: The request object.
+    :return: the home.html template rendered with a user object "user" and a profile object "profile"
+    """
+    message_list = __get_home_posts__(request)
 
     return render(request, "logged_in/home.html", {"user": request.user,
                                                    "profile": Profile.objects.get(user=request.user.pk),
