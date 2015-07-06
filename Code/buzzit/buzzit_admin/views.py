@@ -57,18 +57,20 @@ class UserReportDetailsView(SuccessMessageMixin,ListView):
     def get_context_data(self, **kwargs):
         pass
 
-def adminFrontPage(request):
-    """
-    show all userreports and postreports
-    :param request:
-    :return:
-    """
-    userreports =[]
-    postreports=[]
-    userreports = UserReport.objects.all()
-    postreports = CircleMessageReport.objects.all()
+ @login_required
+ def adminFrontPage(request):
+     """
+     show all userreports and
+     postreports
+     :param request:
+     :return:
+     """
+     userreports =[]
+     postreports=[]
+     userreports = UserReport.objects.all()
+     postreports =CircleMessageReport.objects.all()
 
-    return render(request,"logged_in/admin_dashboard.html",{"user_reports":user_reports,"post_reports":postreports})
+     return render(request,"logged_in/admin_dashboard.html",{"user_reports":user_reports,"post_reports":postreports})
 
 
 
