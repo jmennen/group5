@@ -2,7 +2,7 @@ from django.conf.urls import include, url
 from . import views
 
 urlpatterns = [
-    url(r'^admin/$', views.AdminFrontpageView, name="admin_frontpage"),
+    url(r'^admin/$', views.adminFrontPage, name="admin_frontpage"),
     url(r'^reportdetails/(?P<user_id>[0-9]+)/$', views.UserReportDetailsView, name="user_report_details"),
     url(r'^reportdetails/(?P<message_id>[0-9]+)/$', views.MessageReportDetailsView, name="message_report_details"),
     url(r'^admins/$', views.AdminOverviewView, name="admins_overview"),

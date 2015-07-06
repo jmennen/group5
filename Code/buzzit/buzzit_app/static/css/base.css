@@ -1,5 +1,6 @@
 body {
-    padding-top: 70px;
+	background-color: #D9E9FF;
+    padding-top: 50px;
 }
 
 span.glyphicon-envelope {
@@ -23,6 +24,7 @@ span.glyphicon-envelope {
     display: table;
     border: solid grey;
     border-width: thin;
+	background-color:#FFFFFF;
 
 }
 
