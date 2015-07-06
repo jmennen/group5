@@ -57,9 +57,21 @@ class UserReportDetailsView(SuccessMessageMixin,ListView):
     def get_context_data(self, **kwargs):
         pass
 
-		
-class AdminFrontpageView():
-    pass
+ @login_required
+ def adminFrontPage(request):
+     """
+     show all userreports and
+     postreports
+     :param request:
+     :return:
+     """
+     userreports =[]
+     postreports=[]
+     userreports = UserReport.objects.all()
+     postreports =CircleMessageReport.objects.all()
+
+     return render(request,"logged_in/admin_dashboard.html",{"user_reports":user_reports,"post_reports":postreports})
+
 
 
 class MessageReportDetailsView(ListView):
@@ -73,7 +85,7 @@ class AdminOverviewView(ListView):
 def delete_reported_post(request, message_id):
     pass
 
-	
+
 @login_required
 def promote_user_to_admin(request, user_id):
     pass
