@@ -1,24 +1,44 @@
 <!-- admin overview with link references to reported users and circlemessages -->
 {% extends "base.html" %}
-{% block title %}Profil bearbeiten{% endblock %}
+
+{% block title %}Admin-Dashboard{% endblock %}
+
 {% block content %}
-<!--imports the navigation bar-->
-{% include "includes/navbar.html" %}
-    <div class="container">
-        <div class="col-md-9">
+<!-- imports the admin navbar -->
+    {% include "includes/admin-nav.html" %}
 
-                <div class="well">
-                    <h3>Gemeldet Benutzer</h3>
-                    <!--space for creating a circle messages-->
-                    <hr>
-                    {% for report in all_user_reports %}
-                        <!-- messagefeed for the messages that are visible to you -->
+	<!-- this div changes the color of the background through css -->
+	<div class="admin-bg">
+		<div class="container">
+			<h3> Admin-Dashboard</h3>
+				<div class="row">				
+				<div class="col-md-5">				
+					<div id="report-name">
+						<h4><b>gemeldete Nutzer</b></h4>
+					</div>					
+					<div class="admin-area">
+					<!-- list of reported users, links refers to the reported details page -->
+						{% for userreport in reportlist %}
+						<ul class="list-group" id="reported">
+							<li class="list-group-item">{{ userreport }}</li>
 
-                        <hr>
-                        {{ report }}
-                    {% endfor %}
-                </div>
-            </div>
-
-    </div>
+						</ul>
+					</div>
+				</div>
+			
+				<div class="col-md-5">
+					<div id="report-name">
+						<h4><b>gemeldete Beiträge</b></h4>
+					</div>					
+					<div class="admin-area">
+						<!-- list of reported circlemessages, links refers to the reported details page -->					
+						{% for messagereport in reportlist %}
+						<ul class="list-group" id="reported">
+							<li class="list-group-item">{{ messagereport }}</li>
+						</ul>
+					</div>
+				</div>
+				</div>
+		</div>
+	</div>
 {% endblock %}
