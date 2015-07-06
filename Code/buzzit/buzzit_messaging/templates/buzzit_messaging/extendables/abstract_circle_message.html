@@ -25,7 +25,9 @@
                         <a href="{% url "view_profile" circlemessage.original_message.creator.pk %}">
                             <span class="glyphicon glyphicon-retweet"></span>
                             {{ circlemessage.original_message.creator }}</a>
-                        {{ circlemessage.original_message.created | date:'d.m.Y H:i' }}:</h4>
+                        {{ circlemessage.original_message.created | date:'d.m.Y H:i' }}:
+						
+					</h4>
                     {{ circlemessage.original_message | messagefilter | safe }}
                 </div>
             </div>
@@ -35,7 +37,16 @@
             {% if circlemessage.original_message %} repostete am
             {% else %} schrieb am
             {% endif %}
-            {{ circlemessage.created | date:'d.m.Y H:i' }}:</h4>
+            {{ circlemessage.created | date:'d.m.Y H:i' }}:
+		
+			<!-- report button-->
+			<span style="float:right;">
+				<a class="btn btn-success btn-xs" href="{% url "one_circlemessagereport" circlemessagereport.id %}">
+					<span class="glyphicon glyphicon-flag"></span>
+				</a>
+			</span>				
+		
+		</h4>
         {{ circlemessage | messagefilter | safe }}
 
         <div align="right">

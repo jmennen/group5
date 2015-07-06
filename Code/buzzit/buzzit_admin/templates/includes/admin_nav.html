@@ -1,0 +1,30 @@
+<!-- navigation bar which is included in the templates from the buzzit_admin app -->
+<nav class="admin-nav navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a id="linkname" class="navbar-brand">buzzit!</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+			
+            <ul class="nav navbar-nav">
+				<!--leads to admin dashboard site with reported users and messages -->
+                <li><a id="linkname" href="{% url "admins_frontpage"%}">Admin-Dashboard</a></li>
+				<!-- leads to the admin list site with the possibility to elect new admins -->
+                <li><a id="linkname" href="{% url "admins_overview" %}">Admin-Liste</a></li>
+            </ul>
+			
+			
+            <ul class="nav navbar-nav navbar-right">
+				<!-- leaves the admin section back to the logged_in user's home -->
+                <li><a id="linkname" href="{% url "start" %}"><span class="glyphicon glyphicon-log-out"></span> Adminbereich verlassen</a></li>
+            </ul>
+
+
+        </div>
+    </div>
+</nav>

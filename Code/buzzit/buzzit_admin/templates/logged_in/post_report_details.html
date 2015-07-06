@@ -1,1 +1,37 @@
 <!-- a single reported circlemessage with the possibility to delete the message, block the user or close the case -->
+% extends "base.html" %}
+
+{% block title %}Kreisübersicht{% endblock %}
+{% load messagefilters %}
+{% block content %}
+
+    {% include "includes/admin-nav.html" %}
+
+<div class="admin-bg">
+<div class="container">
+
+<h3>Post melden: </h3>
+<!-- reported post-->
+<div class="well">
+
+		 <!-- one single clicked post with its replys -->
+         {% include "buzzit_messaging/includes/circle_message_all_answers.html" %}
+		
+        
+</div>
+<!-- reason for the report -->
+<h4> Grund für die Meldung: {{circlemessagereport.reason}}</h4>
+<!-- user who reported -->
+<h5> Gemeldet von: <a href="{% url "view_profile" circlemessagereport.creator.profile.pk %}"></h5>
+
+<!-- the admin can either delete the reported post, reset the report or ignore the report -->
+<button class="btn btn-danger" type="button">Post löschen</button>
+<button class="btn btn-success" type="button">Meldung zurücksetzen</button>
+<button class="btn btn-default" type="button">Ignorieren</button>
+
+
+
+</div>
+</div>
+
+{% endblock %}
