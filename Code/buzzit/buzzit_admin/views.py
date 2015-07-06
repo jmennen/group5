@@ -189,30 +189,34 @@ def demote_admin_to_user(request, user_id):
 @login_required
 def report_message(request, message_id):
     """
-    user report message to admin
+    Report a circlemessage with given <message_id>, if that exists.
+    If that does not exist, then an error for the user is returned and he gets redirected to home.
+    If that message exists,
+        then the report will be created, if an reason (report.text) was given.
+            The report is saved then.
+        if there is no reason, an error will be created and the user is redirected to home.
     :param request:
     :param message_id:
     :return:
     """
     try:
-        message=Circle_message.objects.get(pk=message_id)
-    except ObjectDoesNotExist:
-        messages.error(request,"Die Nachrichte existiert nicht")
-        return HttpResponseRedirect(reverse_lazy("home"))
-    text=request.POST.get["text",False]
-
-    if len(text) < 1:
-        messages.error(request,"Es wurde keinen Text gegeben")
-        return HttpResponseRedirect(reverse_lazy("home"))
-    report_message=CircleMessageReport()
-    report_message.creator=request.user
-    report_message.created=datetime.now()
-    report_message.reported_message=message
-    report_message.text=text
-    report_message.save()
-
-    messages.info(request,"Die Nachrichte <Circle_message:%s> wurde gemeldet" %message)
-    return HttpResponseRedirect(reverse_lazy("home"))
+        reported_message = Circle_message(pk=message_id)
+    except Exception:
+        messages.error(request, "Die Nachricht existiert nicht")
+        return HttpResponseRedirect(reverse("home"))
+    if request.method == "POST":
+        report = CircleMessageReport()
+        report.reported_message = reported_message
+        report.text = request.POST.get("text", False)
+        if not report.text or len(report.text)<1:
+            messages.error(request, "Keine Begruendung angegeben")
+            return HttpResponseRedirect(reverse("home"))
+        report.creator = request.user
+        report.created = datetime.now()
+        report.save()
+        messages.success(request, "Nachricht wurde gemeldet")
+        return HttpResponseRedirect(reverse("home"))
+    return render(request, "logged_in/report_user.html", {"message" : reported_message})
 
 @login_required
 def ban_user(request, user_id):
