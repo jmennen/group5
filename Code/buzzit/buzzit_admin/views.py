@@ -16,7 +16,7 @@ from django.contrib.auth.decorators import login_required
 import json
 from django.core.mail import send_mail
 
-@login_required()
+@login_required
 def report_user(request,user_id):
     """
     current user report other user, and gives the reason which should not be empty
