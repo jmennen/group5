@@ -54,7 +54,7 @@
             $("#user_search").autocomplete({
                 source: function (request, response) {
                     $.get(
-                            "/messaging/search/user/" + request.term + "/json",
+                            "//messaging/search/user/" + request.term + "/json",
                             null,
                             function (data) {
                                 response(data);
