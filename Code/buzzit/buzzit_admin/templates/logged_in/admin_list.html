@@ -53,14 +53,12 @@
         $(document).ready(function () {
             $("#user_search").autocomplete({
                 source: function (request, response) {
-                    console.log(request.term);
-                    $.get({
-                        url: "/messaging/search/user/" + request.term + "/json",
-                        dataType: "json",
-                        success: function (data) {
-                            response(data);
-                        }
-                    });
+                    $.get(
+                            "/messaging/search/user/" + request.term + "/json",
+                            null,
+                            function (data) {
+                                response(data);
+                            });
                 },
             });
         });
