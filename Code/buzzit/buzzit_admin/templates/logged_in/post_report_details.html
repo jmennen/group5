@@ -31,7 +31,7 @@
                 {% csrf_token %}
                 <button class="btn btn-danger" type="submit">Post löschen</button>
             </form>
-            <button class="btn btn-success" type="button">Meldung als falsch kennzeichen</button>
+            <a href="{% url "ignore_report" circlemessagereport.pk %}" class="btn btn-success" type="button">Meldung als falsch kennzeichen</a>
             <a href="{% url "admin_frontpage" %}" class="btn btn-default" type="button">Abbrechen</a>
 
 
