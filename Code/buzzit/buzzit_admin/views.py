@@ -51,10 +51,6 @@ def report_user(request,user_id):
             report_message.save()
             messages.info(request, "Sie haben den <User:%s> Benutzer gemeldet" %reported_user)
 
-            #TODO send messages to admin user, not to SYSTEM user
-            admin_user = User.objects.filter(is_superuser=True)
-            __send_system__message__(admin_user.pk, "<Report:%s> Neue Meldung " % report_message)
-
             return HttpResponseRedirect(reverse_lazy('home'))
     else:
         try:
