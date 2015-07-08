@@ -19,7 +19,8 @@
                 <div class="input-group">
                     <input id="user_search" type="text" class="form-control" placeholder="ernenne User zum Admin...">
 			<span class="input-group-btn">
-				<a class="btn btn-default disabled"><span id="new_admin_username"></span><span id="text"></span></a>
+				<a href="#" id="new_admin_link" class="btn btn-default disabled"><span
+                        id="new_admin_username"></span><span id="info_text">W&auml;hle einen User</span></a>
 			</span>
                     </input>
                 </div>
@@ -58,11 +59,18 @@
                             null,
                             function (data) {
                                 var users = [];
-                                data.list.forEach(function(e) {
-                                    users.push({value:e.name, id: e.id});
+                                data.list.forEach(function (e) {
+                                    users.push({value: e.name, id: e.id});
                                 });
                                 response(users);
                             });
+                },
+                focus: function (event, ui) {
+                    $("#new_admin_username").text(ui.item.value);
+                    $("#new_admin_link").prop("href", ui.item.id);
+                    $("#new_admin_link").removeClass("disabled");
+                    $("#info_text").text(" zum Admin machen");
+                    return false;
                 },
             });
         });
