@@ -110,8 +110,8 @@ def adminFrontPage(request):
     :return:
     """
     if request.user.is_superuser:
-        userreports = UserReport.objects.all(closed=False)
-        postreports = CircleMessageReport.objects.all(closed=False)
+        userreports = UserReport.objects.filter(closed=False).all()
+        postreports = CircleMessageReport.objects.filter(closed=False).all()
 
         return render(request, "logged_in/admin_dashboard.html",
                       {"user_reports": userreports, "post_reports": postreports})
