@@ -146,6 +146,11 @@ def delete_reported_post(request, report_id):
     except ObjectDoesNotExist:
         messages.error(request,"Der Report existiert nicht")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
+
+    if not(request.user.is_superuser):
+        messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
+        return HttpResponseRedirect(reverse("home"))
+    
     #if the reported post has anwsers, delete all
 
     post_to_del=report.reported_message
@@ -156,6 +161,25 @@ def delete_reported_post(request, report_id):
     report.valid = True
     report.closed = True
     messages.success(request,"Die Nachrichte wurde erfolgreich geloescht")
+    return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
+
+@login_required
+def dismiss_report(request, report_id):
+    try:
+        report = CircleMessageReport.objects.get(pk = report_id)
+    except ObjectDoesNotExist:
+        messages.error(request,"Der Report existiert nicht")
+        return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
+    
+    if not(request.user.is_superuser):
+        messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
+        return HttpResponseRedirect(reverse("home"))
+    
+    post_to_del=report.reported_message
+    report.issuer = request.user
+    report.valid = False
+    report.closed = True
+    messages.success(request,"Der Report wurde erfolgreich bearbeitet")
     return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
 
