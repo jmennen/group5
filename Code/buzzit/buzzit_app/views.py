@@ -160,16 +160,15 @@ class EditProfileView(SuccessMessageMixin, UpdateView):
         :return: True on success, False else
         """
         profile = request.user.profile
-        outfile = profile.profile_picture_full.url + "_sm"
+        outfile = profile.profile_picture_full.path + "_sm"
         try:
-            im = Image.open(request.user.profile.profile_picture_full.url)
+            im = Image.open(request.user.profile.profile_picture_full.path)
             im.thumbnail((128, 128))
-            #thumb_io = BytesIO()
-            im._save
-            #thumb_file = InMemoryUploadedFile(thumb_io, None, 'pp.jpg', 'image/jpeg',
-            #                                  thumb_io.getbuffer().nbytes, None)
-            #
-            profile.profile_picture_small = im.url
+            thumb_io = BytesIO()
+            im.save(thumb_io, format='JPEG')
+            thumb_file = InMemoryUploadedFile(thumb_io, None, 'pp.jpg', 'image/jpeg',
+                                              thumb_io.getbuffer().nbytes, None)
+            profile.profile_picture_small = thumb_file
             profile.save()
             return True
         except IOError:
@@ -265,10 +264,10 @@ class UserSearchResultsView(ListView):
 def register(request):
     """
     Handle user registration and create profile for the user.
-    use the registration form and check all the fields , with valid infos create object user and store
-    all the attributes
+    use the registration form and check all the fields , with valid infos create object user and store 
+    all the attributes 
     param: request
-    return object of httpresponse
+    return object of httpresponse 
     """
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -358,9 +357,9 @@ def profilepicture_full(request, slug):
     except ObjectDoesNotExist:
         return __create_dummy_pic_response__()
     if profile.profile_picture_full:
-        image = profile.profile_picture_full.url
+        image = profile.profile_picture_full.path
     else:
-        image = Profile.objects.get(user__username="SYSTEM").profile_picture_full.url
+        image = Profile.objects.get(user__username="SYSTEM").profile_picture_full.path
     try:
         with open(image, "rb") as f:
             return HttpResponse(f.read(), content_type="image/jpeg")
@@ -381,9 +380,9 @@ def profilepicture_small(request, slug):
     except ObjectDoesNotExist:
         return __create_dummy_pic_response__()
     if profile.profile_picture_small:
-        image = profile.profile_picture_small.url
+        image = profile.profile_picture_small.path
     else:
-        image = Profile.objects.get(user__username="SYSTEM").profile_picture_small.url
+        image = Profile.objects.get(user__username="SYSTEM").profile_picture_small.path
     try:
         with open(image, "rb") as f:
             return HttpResponse(f.read(), content_type="image/jpeg")
