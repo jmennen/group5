@@ -12,6 +12,10 @@ import django.contrib.messages as messages
 import json
 from bleach import clean as html_clean
 from django.db.models import Q
+from django.contrib.auth import authenticate
+from django.views.decorators.csrf import csrf_exempt
+from buzzit_app.views import __get_home_posts__
+from django.forms.models import model_to_dict
 
 
 @login_required
@@ -70,8 +74,11 @@ def listfollows(request):
                   )
 
 
-@login_required
-def postCirclemessage(request):
+def __post_circle_message__(request, is_api_call=False):
+    if is_api_call:
+        if request.method == "GET":
+            return False, {"error": "Nur POST ist erlaubt"}
+        jsondata = {}
     if request.method == "POST":
         newPost = Circle_message()
         ans = request.POST.get("answer_to", False)
@@ -82,20 +89,33 @@ def postCirclemessage(request):
             if rep:
                 newPost.original_message = Circle_message.objects.get(pk=rep)
         except ObjectDoesNotExist:
-            messages.error(request, "Fehler")
-            return HttpResponseRedirect(reverse("home"))
+            err = "Fehler"
+            if is_api_call:
+                return False, {"error": err}
+            else:
+                messages.error(request, err)
+                return HttpResponseRedirect(reverse("home"))
+        # TODO: big bug! CHECK IF REPOSTED MESSAGE IS AVAILABLE FOR THE CREATOR OF REPOST
         if newPost.original_message:
             if newPost.original_message.original_message:
                 newPost.original_message = newPost.original_message.original_message
             if newPost.answer_to:
-                messages.error(request, "Antworten koennen nicht repostet werden")
-                return HttpResponseRedirect(reverse("home"))
+                err = "Antworten koennen nicht repostet werden"
+                if is_api_call:
+                    return False, {"error": err}
+                else:
+                    messages.error(request, err)
+                    return HttpResponseRedirect(reverse("home"))
         newPost.creator = request.user
         newPost.created = datetime.now()
         newPost.text = html_clean(request.POST.get("text"), tags=[])
         if len(newPost.text) < 1:
-            messages.error("Es wurde kein Text angegeben")
-            return HttpResponseRedirect(reverse("home"))
+            err = "Es wurde kein Text angegeben"
+            if is_api_call:
+                return False, {"error": err}
+            else:
+                messages.error(request, err)
+                return HttpResponseRedirect(reverse("home"))
         newPost.save()  # save, to generate primary key to use RELs
 
         # now that we have a pk in the newPost, we can push it to the circles
@@ -104,6 +124,7 @@ def postCirclemessage(request):
         if len(circle_ids) > 0:
             # not public
             for circle_id in circle_ids:
+                # TODO: big bug! check if circle is circle of user
                 circle = Circle.objects.get(pk=circle_id)
                 circle.messages.add(newPost)
         else:
@@ -129,7 +150,14 @@ def postCirclemessage(request):
             theme["name"] = html_clean(theme["name"], tags=[])
             theme_mentioned, created = Theme.objects.get_or_create(pk=theme["name"])
             if created:
-                messages.info(request, "Du hast ein neues Thema erstellt: %s" % theme_mentioned.name)
+                info = "Du hast ein neues Thema erstellt: %s" % theme_mentioned.name
+                if is_api_call:
+                    if jsondata["info"]:
+                        jsondata["info"].append(info)
+                    else:
+                        jsondata["info"] = [info]
+                else:
+                    messages.info(request, info)
             newPost.themes.add(theme_mentioned)
 
         # save all changes
@@ -142,9 +170,35 @@ def postCirclemessage(request):
             original_message = Circle_message.objects.get(pk=rep)
             __send_system__message__(original_message.creator.pk,
                                      "Dein Post <POST:%s> wurde repostet" % original_message.pk)
-
+        if is_api_call:
+            return True, jsondata
         return HttpResponseRedirect(reverse("home"))
     return render(request, "buzzit_models/circle_message_form.html")
+
+
+@csrf_exempt
+def postCirclemessage_json(request):
+    if request.method == "POST":
+        username = request.POST.get("username", False)
+        password = request.POST.get("password", False)
+        if not (username and password):
+            return JsonResponse({"result": False, "data": {"error": "Benutzername und/oder Passwort nicht angegeben"}})
+        user = authenticate(username=username, password=password)
+        if not user:
+            return JsonResponse({"result": False, "data": {"error": "Benutzername und/oder Passwort stimmen nicht"}})
+        request.user = user
+        result, data = __post_circle_message__(request, True)
+        if result:
+            return JsonResponse({"result": True, "data": data})
+        else:
+            return JsonResponse({"result": False, "data": data})
+    else:
+        return JsonResponse({"error": "Nur POST ist erlaubt"})
+
+
+@login_required
+def postCirclemessage(request):
+    return __post_circle_message__(request, False)
 
 
 @login_required
@@ -171,6 +225,7 @@ class DeleteCirclemessageView(DeleteView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(DeleteCirclemessageView, self).dispatch(request, *args, **kwargs)
+
 
 def RemoveCircleView(request, slug):
     """
@@ -531,6 +586,7 @@ class PostDetailsView(ListView):
     template_name = "buzzit_messaging/logged_in/post_details.html"
     context_object_name = "answer_list"
 
+    # TODO: big bug! you can view hidden messages with this
     def get_context_data(self, **kwargs):
         try:
             context = super(PostDetailsView, self).get_context_data(**kwargs)
@@ -721,3 +777,22 @@ def __send_system__message__(receiver, message, level="info"):
     except KeyError:
         sysMsg.text = level_msgs["info"] % message
     sysMsg.save()
+
+
+def get_all_circlemessages_json(request):
+    if request.method == "GET":
+        username = request.GET.get("username", False)
+        password = request.GET.get("password", False)
+        if not (username and password):
+            return JsonResponse({"result": False, "data": {"error": "Benutzername und/oder Passwort nicht angegeben"}})
+        user = authenticate(username=username, password=password)
+        if not user:
+            return JsonResponse({"result": False, "data": {"error": "Benutzername und/oder Passwort stimmen nicht"}})
+        request.user = user
+        message_list = __get_home_posts__(request)
+        message_list_dicts = []
+        for m in message_list:
+            message_list_dicts.append(model_to_dict(m))
+        return JsonResponse({"result": True, "data": message_list_dicts})
+    else:
+        return JsonResponse({"error": "Nur GET ist erlaubt"})

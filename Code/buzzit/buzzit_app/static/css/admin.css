@@ -1,0 +1,39 @@
+.admin-nav{
+background-color: #FFA74A;
+color: black;
+
+}
+
+#linkname{
+color:#1F1F1F;
+}
+
+.admin-bg{
+
+	background-color: #FFBE7D;
+    width: 100%;
+    height: 100%;
+	overflow:auto;
+
+}
+
+.admin-area{
+
+	padding:10px;
+	margin-left:100px;
+	max-height:450px;
+
+}
+
+
+#report-name{
+	padding:10px;
+	margin-left:100px;
+}
+
+
+#reported{
+padding:10px
+	background-color: #FFA74A;
+
+}

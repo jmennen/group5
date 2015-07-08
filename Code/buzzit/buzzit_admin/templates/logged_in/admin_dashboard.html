@@ -1,0 +1,55 @@
+<!-- admin overview with link references to reported users and circlemessages -->
+{% extends "base.html" %}
+
+{% block title %}Admin-Dashboard{% endblock %}
+
+{% block content %}
+    <!-- imports the admin navbar -->
+    {% include "includes/admin_nav.html" %}
+
+    <!-- this div changes the color of the background through css -->
+    <div class="admin-bg">
+        <div class="container">
+            <h3> Admin-Dashboard</h3>
+
+            <div class="row">
+                <div class="col-md-5">
+                    <div id="report-name">
+                        <h4><b>gemeldete Nutzer</b></h4>
+                    </div>
+                    <div class="admin-area">
+                        <!-- list of reported users, links refers to the reported details page -->
+                            {% for userreport in user_reports %}
+                                <li class="list-group-item">
+                                    <a href="{% url "user_report_details" userreport.pk %}">
+                                        {{ userreport.creator.username }} hat den Benutzer
+                                        {{ userreport.reported_user.username }} gemeldet.
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-5">
+                    <div id="report-name">
+                        <h4><b>gemeldete Beiträge</b></h4>
+                    </div>
+                    <div class="admin-area">
+                        <!-- list of reported circlemessages, links refers to the reported details page -->
+                        <ul class="list-group" id="reported">
+                            {% for messagereport in post_reports %}
+                                <li class="list-group-item">
+                                    <a href="{% url "message_report_details" messagereport.pk %}">
+                                        {{ messagereport.creator.username }} hat die Nachricht
+                                        mit der id={{ messagereport.reported_message.pk }} gemeldet.
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
