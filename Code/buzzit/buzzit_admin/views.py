@@ -280,8 +280,9 @@ def ban_user(request, user_id):
         messages.info(request, "Der Benutzer ist bereits deaktiviert")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
-    message_for_ban = request.GET.get["text", False]
+    message_for_ban = request.GET.get("text", False)
     user_to_be_ban.is_active = False
+    user_to_be_ban.save()
     send_mail("Deaktivieren dein Account", message="Grund zum Deaktivieren: '%s'" % message_for_ban,
               html_message="<html><h3>um Deinen Account zu wieder aktivieren, kontaktieren Sie bitte :</h3>" +
                            "<a href='%s'>Klicke hier um den Account wieder zu aktivieren!</a>." +
