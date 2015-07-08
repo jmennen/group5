@@ -67,7 +67,7 @@ class UserReportDetailsView(SuccessMessageMixin, ListView):
     display the report text and reported user
     """
     model = UserReport
-    template_name = "logged_in/user_report_deatails"
+    template_name = "logged_in/user_report_details.html"
 
     def get_queryset(self):
         report_id = self.kwargs.get("report_id")
