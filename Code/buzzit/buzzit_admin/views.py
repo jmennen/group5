@@ -77,7 +77,7 @@ class UserReportDetailsView(SuccessMessageMixin,ListView):
         except ObjectDoesNotExist:
             messages.error(self.request,"Benutzer existiert nicht")
             return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
-        return UserReport.objects.filter(reported_user=reported_user).order_by("created").all()
+        return UserReport.objects.filter(reported_user=reported_user).order_by("created")
 
     def get_context_data(self, **kwargs):
         try:
