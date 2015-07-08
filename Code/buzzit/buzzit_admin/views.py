@@ -34,7 +34,7 @@ def report_user(request,user_id):
             return HttpResponseRedirect(reverse_lazy("home"))
         if request.method == "POST":
             report_message = UserReport()
-            report_text = request.POST.get["text",False]
+            report_text = request.POST.get("text",False)
             try:
                 if report_text:
                     report_message.text=report_text
