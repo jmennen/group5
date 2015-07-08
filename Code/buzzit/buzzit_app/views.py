@@ -164,11 +164,11 @@ class EditProfileView(SuccessMessageMixin, UpdateView):
         try:
             im = Image.open(request.user.profile.profile_picture_full.url)
             im.thumbnail((128, 128))
-            #thumb_io = BytesIO()
+            thumb_io = BytesIO()
             im._save
-            #thumb_file = InMemoryUploadedFile(thumb_io, None, 'pp.jpg', 'image/jpeg',
-            #                                  thumb_io.getbuffer().nbytes, None)
-            #
+            thumb_file = InMemoryUploadedFile(thumb_io, None, 'pp.jpg', 'image/jpeg',
+                                              thumb_io.getbuffer().nbytes, None)
+            
             profile.profile_picture_small = im.url
             profile.save()
             return True
