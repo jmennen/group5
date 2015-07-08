@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'^report/(?P<user_id>[0-9]+)/user/', views.report_user, name="report_user"),
     url(r'^report/(?P<user_id>[0-9]+)/user/save$', views.UserReportDetailsView.as_view(), name="save_report_user"),
     url(r'^report/(?P<message_id>[0-9]+)/message$', views.report_message, name="report_message"),
-    url(r'^ban/(?P<user_id>[0-9]+)/$', views.ban_user, name="ban_user")
+    url(r'^ban/(?P<user_id>[0-9]+)/$', views.ban_user, name="ban_user"),
+    url(r'^report/(?P<report_id>[0-9]+)/ignore$', views.setIgnoreReport, name="ignore_report"),
     ]
