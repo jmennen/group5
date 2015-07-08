@@ -18,8 +18,9 @@ from django.contrib.auth.decorators import login_required
 import json
 from django.core.mail import send_mail
 
+
 @login_required
-def report_user(request,user_id):
+def report_user(request, user_id):
     """
     current user report other user, and gives the reason which should not be empty
     :param request:
@@ -30,37 +31,38 @@ def report_user(request,user_id):
         try:
             reported_user = User.objects.get(pk=user_id)
         except ObjectDoesNotExist:
-            messages.error(request,"Der Benutzer existiert nicht.")
+            messages.error(request, "Der Benutzer existiert nicht.")
             return HttpResponseRedirect(reverse_lazy("home"))
         if request.method == "POST":
             report_message = UserReport()
-            report_text = request.POST.get("text",False)
+            report_text = request.POST.get("text", False)
             try:
                 if report_text:
-                    report_message.text=report_text
+                    report_message.text = report_text
             except ObjectDoesNotExist:
-                messages.error(request,"Fehler")
+                messages.error(request, "Fehler")
 
             if len(report_message.text) < 1:
-                messages.error(request,"Text zum Benutzermelden ist zu geben")
+                messages.error(request, "Text zum Benutzermelden ist zu geben")
                 return HttpResponseRedirect(reverse_lazy("home"))
 
-            report_message.creator=request.user
-            report_message.created=datetime.now()
-            report_message.reported_user=reported_user
+            report_message.creator = request.user
+            report_message.created = datetime.now()
+            report_message.reported_user = reported_user
             report_message.save()
-            messages.info(request, "Sie haben den <User:%s> Benutzer gemeldet" %reported_user)
+            messages.info(request, "Sie haben den <User:%s> Benutzer gemeldet" % reported_user)
 
             return HttpResponseRedirect(reverse_lazy('home'))
     else:
         try:
             reported_profile = Profile.objects.get(pk=user_id)
         except ObjectDoesNotExist:
-            messages.error(request,"Der Benutzer existiert nicht.")
+            messages.error(request, "Der Benutzer existiert nicht.")
             return HttpResponseRedirect(reverse_lazy("home"))
-        return render(request, "logged_in/report_user.html", {"profile":reported_profile})
+        return render(request, "logged_in/report_user.html", {"profile": reported_profile})
 
-class UserReportDetailsView(SuccessMessageMixin,ListView):
+
+class UserReportDetailsView(SuccessMessageMixin, ListView):
     """
     display the report text and reported user
     """
@@ -71,49 +73,53 @@ class UserReportDetailsView(SuccessMessageMixin,ListView):
         try:
             reported_user = self.kwargs.get["user_id"]
         except ObjectDoesNotExist:
-            messages.error(self.request,"Benutzer existiert nicht")
+            messages.error(self.request, "Benutzer existiert nicht")
             return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
         return UserReport.objects.filter(reported_user=reported_user).order_by("created")
 
     def get_context_data(self, **kwargs):
         try:
-            reported_user=self.kwargs.get["user_id"]
+            reported_user = self.kwargs.get["user_id"]
         except ObjectDoesNotExist:
-            messages.error(self.request,"Benutzer existiert nicht")
+            messages.error(self.request, "Benutzer existiert nicht")
             return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
         reported_user_profile = reported_user.profile
         report = UserReport.objects.get(reported_user=reported_user)
-        context=super(UserReportDetailsView, self).get_context_data(**kwargs)
-        context["reported_user_profile"]= reported_user_profile
-        context["report_text"]=report.text
+        context = super(UserReportDetailsView, self).get_context_data(**kwargs)
+        context["reported_user_profile"] = reported_user_profile
+        context["report_text"] = report.text
 
         return context
+
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        return super(UserReportDetailsView, self).dispatch(request,args,kwargs)
+        return super(UserReportDetailsView, self).dispatch(request, args, kwargs)
+
 
 class AdminFrontpageView():
     pass
-	
+
+
 @login_required
 def adminFrontPage(request):
-     """
-     show all userreports and
-     postreports
-     :param request:
-     :return:
-     """
-     if request.user.is_superuser:
-        userreports =[]
-        postreports=[]
+    """
+    show all userreports and
+    postreports
+    :param request:
+    :return:
+    """
+    if request.user.is_superuser:
+        userreports = []
+        postreports = []
         userreports = UserReport.objects.all()
-        postreports =CircleMessageReport.objects.all()
+        postreports = CircleMessageReport.objects.all()
 
-        return render(request,"logged_in/admin_dashboard.html",{"user_reports":userreports,"post_reports":postreports})
-     else:
-         messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
-         return HttpResponseRedirect(reverse("home"))
+        return render(request, "logged_in/admin_dashboard.html",
+                      {"user_reports": userreports, "post_reports": postreports})
+    else:
+        messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
+        return HttpResponseRedirect(reverse("home"))
 
 
 class MessageReportDetailsView(DetailView):
@@ -130,11 +136,12 @@ class MessageReportDetailsView(DetailView):
 def AdminOverviewView(request):
     if request.user.is_superuser:
         adminlist = []
-        adminlist = User.objects.filter(is_superuser = True)
+        adminlist = User.objects.filter(is_superuser=True)
         return render(request, "logged_in/admin_list.html", {"userlist": adminlist})
     else:
         messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
         return HttpResponseRedirect(reverse("home"))
+
 
 @login_required
 def delete_reported_post(request, report_id):
@@ -147,22 +154,22 @@ def delete_reported_post(request, report_id):
     :return:
     """
     try:
-        report = CircleMessageReport.objects.get(pk = report_id)
+        report = CircleMessageReport.objects.get(pk=report_id)
     except ObjectDoesNotExist:
-        messages.error(request,"Der Report existiert nicht")
+        messages.error(request, "Der Report existiert nicht")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
-    #if the reported post has anwsers, delete all
-    if not(request.user.is_superuser):
+    # if the reported post has anwsers, delete all
+    if not (request.user.is_superuser):
         messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
         return HttpResponseRedirect(reverse("home"))
-    post_to_del=report.reported_message
-    answers=Circle_message.objects.filter(answer_to=post_to_del)
+    post_to_del = report.reported_message
+    answers = Circle_message.objects.filter(answer_to=post_to_del)
     answers.delete()
     post_to_del.delete()
     report.issuer = request.user
     report.valid = True
     report.closed = True
-    messages.success(request,"Die Nachrichte wurde erfolgreich geloescht")
+    messages.success(request, "Die Nachrichte wurde erfolgreich geloescht")
     return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
 
@@ -175,22 +182,23 @@ def promote_user_to_admin(request, user_id):
     :return:
     """
     try:
-        admin_user=User.objects.get(pk=user_id)
+        admin_user = User.objects.get(pk=user_id)
     except ObjectDoesNotExist:
-        messages.error(request,"Der Benuzer existiert nicht")
+        messages.error(request, "Der Benuzer existiert nicht")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
-    if not(request.user.is_superuser):
+    if not (request.user.is_superuser):
         messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
         return HttpResponseRedirect(reverse("home"))
-        
-    if not(admin_user.is_active):
-        messages.info(request,"Der Benutzer ist deaktiviert")
+
+    if not (admin_user.is_active):
+        messages.info(request, "Der Benutzer ist deaktiviert")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
-    admin_user.is_superuser=True
+    admin_user.is_superuser = True
     admin_user.save()
-    messages.info(request,"Der Benutzer %s ist als AdminUser hinzugefuegt" % (admin_user.username,))
+    messages.info(request, "Der Benutzer %s ist als AdminUser hinzugefuegt" % (admin_user.username,))
     return HttpResponseRedirect(reverse_lazy("admins_overview"))
+
 
 @login_required
 def demote_admin_to_user(request, user_id):
@@ -201,22 +209,23 @@ def demote_admin_to_user(request, user_id):
     :return:
     """
     try:
-        demote_user=User.objects.get(pk=user_id)
+        demote_user = User.objects.get(pk=user_id)
     except ObjectDoesNotExist:
-        messages.error(request,"Der Benutzer existiert nicht")
-        return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
-        
-    if not(request.user.is_superuser):
-        messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
-        return HttpResponseRedirect(reverse("home"))
-    if not(demote_user.is_superuser):
-        messages.error(request,"Der Benutzer ist kein Admin ")
+        messages.error(request, "Der Benutzer existiert nicht")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
-    demote_user.is_superuser=False
+    if not (request.user.is_superuser):
+        messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
+        return HttpResponseRedirect(reverse("home"))
+    if not (demote_user.is_superuser):
+        messages.error(request, "Der Benutzer ist kein Admin ")
+        return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
+
+    demote_user.is_superuser = False
     demote_user.save()
-    messages.info(request,"Die Adminrechte von dem Benutzer wird entziehen")
+    messages.info(request, "Die Adminrechte von dem Benutzer wird entziehen")
     return HttpResponseRedirect(reverse_lazy("admins_overview"))
+
 
 @login_required
 def report_message(request, message_id):
@@ -240,7 +249,7 @@ def report_message(request, message_id):
         report = CircleMessageReport()
         report.reported_message = reported_message
         report.text = request.POST.get("text", False)
-        if not report.text or len(report.text)<1:
+        if not report.text or len(report.text) < 1:
             messages.error(request, "Keine Begruendung angegeben")
             return HttpResponseRedirect(reverse("home"))
         report.creator = request.user
@@ -248,8 +257,10 @@ def report_message(request, message_id):
         report.save()
         messages.success(request, "Nachricht wurde gemeldet")
         return HttpResponseRedirect(reverse("home"))
-    reported_profile = Profile.objects.get(pk = reported_message.creator.pk)
-    return render(request, "logged_in/report_post.html", {"profile" : reported_profile, "circlemessage" : reported_message})
+    reported_profile = Profile.objects.get(pk=reported_message.creator.pk)
+    return render(request, "logged_in/report_post.html",
+                  {"profile": reported_profile, "circlemessage": reported_message})
+
 
 @login_required
 def ban_user(request, user_id):
@@ -260,23 +271,42 @@ def ban_user(request, user_id):
     :return:
     """
     try:
-        user_to_be_ban=User.objects.get(pk=user_id)
+        user_to_be_ban = User.objects.get(pk=user_id)
     except ObjectDoesNotExist:
-        messages.error(request,"Der Benutzer existiert nicht")
-        return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
-        
-    if not(request.user.is_superuser):
-        messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
-        return HttpResponseRedirect(reverse("home"))
-    if not(user_to_be_ban.is_active):
-        messages.info(request,"Der Benutzer ist bereits deaktiviert")
+        messages.error(request, "Der Benutzer existiert nicht")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
-    message_for_ban=request.GET.get["text",False]
-    user_to_be_ban.is_active=False
-    send_mail("Deaktivieren dein Account", message= "Grund zum Deaktivieren: '%s'" % message_for_ban,
-                      html_message="<html><h3>um Deinen Account zu wieder aktivieren, kontaktieren Sie bitte :</h3>" +
-                                   "<a href='%s'>Klicke hier um den Account wieder zu aktivieren!</a>."  +
-                                   "</html>" ,from_email="AccountAktivierung@vps146949.ovh.net", recipient_list=(user_to_be_ban.email,))
-    messages.info(request,"Der Benutzer ist deaktiviert")
+    if not (request.user.is_superuser):
+        messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
+        return HttpResponseRedirect(reverse("home"))
+    if not (user_to_be_ban.is_active):
+        messages.info(request, "Der Benutzer ist bereits deaktiviert")
+        return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
+
+    message_for_ban = request.GET.get["text", False]
+    user_to_be_ban.is_active = False
+    send_mail("Deaktivieren dein Account", message="Grund zum Deaktivieren: '%s'" % message_for_ban,
+              html_message="<html><h3>um Deinen Account zu wieder aktivieren, kontaktieren Sie bitte :</h3>" +
+                           "<a href='%s'>Klicke hier um den Account wieder zu aktivieren!</a>." +
+                           "</html>", from_email="AccountAktivierung@vps146949.ovh.net",
+              recipient_list=(user_to_be_ban.email,))
+    messages.info(request, "Der Benutzer ist deaktiviert")
     return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
+
+
+@login_required
+def setIgnoreReport(request, report_id):
+    if not (request.user.is_superuser):
+        messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
+        return HttpResponseRedirect(reverse("home"))
+    try:
+        report = Report.objects.get(pk=report_id)
+    except:
+        messages.error(request, "Report existiert nicht")
+        return HttpResponseRedirect(reverse("admin_frontpage"))
+    report.closed = True
+    report.valid = False
+    report.issuer = request.user
+    report.save()
+    messages.success(request, "Report wurde ignoriert")
+    return HttpResponseRedirect(reverse("admin_frontpage"))
