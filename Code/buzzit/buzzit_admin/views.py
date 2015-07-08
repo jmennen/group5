@@ -1,3 +1,4 @@
+from filecmp import demo
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render
@@ -215,6 +216,7 @@ def demote_admin_to_user(request, user_id):
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
     demote_user.is_superuser=False
+    demote_admin_to_user.save()
     messages.info(request,"Die Adminrechte von dem Benutzer wird entziehen")
     return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
