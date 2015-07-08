@@ -37,7 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_s3_storage',
+    'storages',
     'buzzit_models',
     'buzzit_app',
     'buzzit_messaging',
@@ -130,8 +130,12 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
 )
 
-AWS_REGION = "eu-west-1"
-AWS_S3_BUCKET_NAME = 'buzzit-media'
+AWS_HEADERS = {  # see http://developer.yahoo.com/performance/rules.html#expires
+        'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
+        'Cache-Control': 'max-age=94608000',
+    }
+
+AWS_STORAGE_BUCKET_NAME = 'buzzit-media'
 AWS_ACCESS_KEY_ID = 'AKIAIQ4X4I5XIIRZ2EXA'
 AWS_SECRET_ACCESS_KEY = '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'
 
@@ -139,12 +143,11 @@ AWS_SECRET_ACCESS_KEY = 'lkGQZT1zd8Ww0s1q6rxGRBV6MvpXdUT39kIBiVFT'
 # it simple - just use this domain plus the path. (If this isn't set, things get complicated).
 # This controls how the `static` template tag from `staticfiles` gets expanded, if you're using it.
 # We also use it in the next setting.
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_S3_BUCKET_NAME
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
+#old
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'pp')
 
-MEDIA_ROOT = '/media/'
 MEDIAFILES_LOCATION = 'media'
 MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
-
-#MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
-DEFAULT_FILE_STORAGE = 'django_s3_storage.storage.S3Storage'
+DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
