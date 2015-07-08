@@ -162,14 +162,13 @@ class EditProfileView(SuccessMessageMixin, UpdateView):
         profile = request.user.profile
         outfile = profile.profile_picture_full.url + "_sm"
         try:
-            im = Image.open(request.user.profile.profile_picture_full.url)
+            im = Image.open(request.user.profile.profile_picture_full.open)
             im.thumbnail((128, 128))
-            #thumb_io = BytesIO()
-            im._save
-            #thumb_file = InMemoryUploadedFile(thumb_io, None, 'pp.jpg', 'image/jpeg',
-            #                                  thumb_io.getbuffer().nbytes, None)
-            #
-            profile.profile_picture_small = im.url
+            thumb_io = BytesIO()
+            im.save(thumb_io, format='JPEG')
+            thumb_file = InMemoryUploadedFile(thumb_io, None, 'pp.jpg', 'image/jpeg',
+                                              thumb_io.getbuffer().nbytes, None)
+            profile.profile_picture_small = thumb_file
             profile.save()
             return True
         except IOError:
