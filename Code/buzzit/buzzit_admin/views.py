@@ -50,7 +50,7 @@ def report_user(request,user_id):
             messages.info("Sie haben den <User:%s> Benutzer gemeldet" %reported_user)
 
             #TODO send messages to admin user, not to SYSTEM user
-            admin_user = User.objects.filter(is_staff=True)
+            admin_user = User.objects.filter(is_superuser=True)
             __send_system__message__(admin_user.pk, "<Report:%s> Neue Meldung " % report_message)
 
             return HttpResponseRedirect(reverse_lazy('home'))
@@ -128,8 +128,15 @@ class MessageReportDetailsView(DetailView):
         return super(MessageReportDetailsView, self).dispatch(request, args, kwargs)
 
 
-class AdminOverviewView(ListView):
-    pass
+@login_required
+def AdminOverviewView(request):
+    if request.user.is_superuser:
+        adminlist = []
+        adminlist = User.objects.filter(is_superuser = True)
+        return render(request, "logged_in/admin_list.html", {"userlist": adminlist})
+    else:
+        messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
+        return HttpResponseRedirect(reverse("home"))
 
 @login_required
 def delete_reported_post(request, report_id):
@@ -182,7 +189,7 @@ def promote_user_to_admin(request, user_id):
         messages.info(request,"Der Benutzer ist deaktiviert")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
-    admin_user.is_staff=True
+    admin_user.is_superuser=True
     messages.info(request,"Der Benutzer ist als AdminUser hinzugefuegt")
     return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
@@ -203,11 +210,11 @@ def demote_admin_to_user(request, user_id):
     if not(request.user.is_superuser):
         messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
         return HttpResponseRedirect(reverse("home"))
-    if not(demote_user.is_staff):
+    if not(demote_user.is_superuser):
         messages.error(request,"Der Benutzer ist kein Admin ")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
-    demote_user.is_staff=False
+    demote_user.is_superuser=False
     messages.info(request,"Die Adminrechte von dem Benutzer wird entziehen")
     return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
