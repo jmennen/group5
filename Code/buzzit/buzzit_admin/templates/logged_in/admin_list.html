@@ -14,17 +14,15 @@
             <h3> Admin-Liste</h3>
 
             <!-- an input field to give the entered user admin privileges -->
-            <form class="" method="post" action="{% url "promote_user" user.pk %}">
-                {% csrf_token %}
-                <div class="input-group">
-                    <input id="user_search" type="text" class="form-control" placeholder="ernenne User zum Admin...">
+            <div class="input-group">
+                <input id="user_search" type="text" class="form-control" placeholder="ernenne User zum Admin..."/>
 			<span class="input-group-btn">
-				<a href="#" id="new_admin_link" class="btn btn-default disabled"><span
-                        id="new_admin_username"></span><span id="info_text">W&auml;hle einen User</span></a>
+				<a href="#" id="new_admin_link" class="btn btn-default disabled">
+                    <span id="new_admin_username"></span>
+                    <span id="info_text">W&auml;hle einen User</span>
+                </a>
 			</span>
-                    </input>
-                </div>
-            </form>
+            </div>
             <!-- list with current admins and the possibility to remove their admin privileges -->
             <table class="table table-bordered">
                 <tr>
@@ -52,7 +50,6 @@
     <script type="text/javascript" src="{% static "js/jqueryui/jquery-ui.min.js" %}"></script>
     <script>
         $(document).ready(function () {
-            $("form").submit(function(){return false;});
             $("#user_search").autocomplete({
                 source: function (request, response) {
                     $.get(
