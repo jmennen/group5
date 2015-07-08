@@ -193,7 +193,7 @@ def promote_user_to_admin(request, user_id):
 
     admin_user.is_superuser=True
     admin_user.save()
-    messages.info(request,"Der Benutzer ist als AdminUser hinzugefuegt")
+    messages.info(request,"Der Benutzer %s ist als AdminUser hinzugefuegt" % (admin_user.username,))
     return HttpResponseRedirect(reverse_lazy("admins_overview"))
 
 @login_required
