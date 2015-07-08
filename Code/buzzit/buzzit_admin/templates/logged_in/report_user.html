@@ -1,0 +1,53 @@
+<!-- a plain user report form with a text input for an optional report reason, report will be sent to admins -->
+{% extends "base.html" %}
+
+{% block title %}Kreisübersicht{% endblock %}
+{% load messagefilters %}
+{% block content %}
+
+    {% include "includes/navbar.html" %}
+
+    <div class="container">
+
+    <h3>Benutzer melden: </h3>
+    <!-- profile of user who will be reported -->
+    <div class="container">
+        <h3> {{ profile.user.username }}
+        </h3>
+    </div>
+    <div>
+        <div class="col-md-5">
+
+            <div class="thumbnail">
+                <img class="img-responsive" src="{% url "profile_picture_small" profile.pk %}" alt="Profilbild">
+            </div>
+
+            <div class="well">
+                <p>Vorname: {{ profile.user.first_name }}</p>
+                <hr>
+                <p>Nachname: {{ profile.user.last_name }}</p>
+                <hr>
+                <p>Beschreibung: {{ profile.description }}</p>
+                <hr>
+
+
+            </div>
+        </div>
+        <!-- input field for the report reason -->
+        <div class="col-md-7">
+            <form method="post" action="{% url "report_user" profile.pk %}">
+                {% csrf_token %}
+                <h4> Grund für die Meldung:</h4>
+
+                <div class="input-group">
+                    <input name="text" type="text" class="form-control" placeholder="Meldegrund eintragen...">
+					<span class="input-group-btn">
+					<button class="btn btn-success" type="submit">Melden</button>
+					</span>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,61 @@
+<!-- a single reported user with his profile and the report reason, possiblity to block the user or close the case -->
+
+{% extends "base.html" %}
+
+{% block title %}Kreisübersicht{% endblock %}
+{% load messagefilters %}
+{% block content %}
+
+    {% include "includes/admin_nav.html" %}
+
+    <div class="admin-bg">
+        <div class="container">
+
+            <h3>Gemeldeter Benutzer: </h3>
+            <!-- profile of the reported user -->
+            <div class="container">
+                <h3> {{ profile.user.username }}
+                </h3>
+            </div>
+
+            <div class="col-md-5">
+
+                <div class="thumbnail">
+                    <img class="img-responsive" src="{% url "profile_picture_small" profile.pk %}" alt="Profilbild">
+                </div>
+
+                <div class="well">
+                    <p>Vorname: {{ profile.user.first_name }}</p>
+                    <hr>
+                    <p>Nachname: {{ profile.user.last_name }}</p>
+                    <hr>
+                    <p>Beschreibung: {{ profile.description }}</p>
+                    <hr>
+
+
+                </div>
+            </div>
+
+            <div class="col-md-7">
+                <!-- reason for the report-->
+                <h4> Grund für die Meldung: {{ userreport.text }}</h4>
+                <!-- user who reported -->
+                <h5> Gemeldet von: <a
+                        href="{% url "view_profile" userreport.creator.profile.pk %}">{{ userreport.creator.username }}</a>
+                </h5>
+
+                <!-- the admin can either deactivate the reported user, reset the report or ignore the report -->
+                <form action="{% url "ban_user" userreport.reported_user.pk %}" method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-danger" type="submit">Benutzer deaktivieren</button>
+                </form>
+                <a href="{% url "ignore_report" userreport.pk %}" class="btn btn-success" type="button">Meldung
+                    als falsch kennzeichen</a>
+                <a href="{% url "admin_frontpage" %}" class="btn btn-default" type="button">Abbrechen</a>
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

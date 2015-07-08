@@ -1,5 +1,15 @@
 body {
-    padding-top: 70px;
+	background-color:#EDF6F7;
+    padding-top: 50px;
+}
+
+#buzzit-png{
+ height:36px;
+ width:45px;
+ margin-top:-8px;
+ margin-right:-18px;
+ margin-left:-19px;
+
 }
 
 span.glyphicon-envelope {
@@ -23,6 +33,7 @@ span.glyphicon-envelope {
     display: table;
     border: solid grey;
     border-width: thin;
+	background-color:#FFFFFF;
 
 }
 

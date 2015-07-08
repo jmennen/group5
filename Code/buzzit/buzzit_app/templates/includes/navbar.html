@@ -7,10 +7,10 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{% url "start" %}">buzzit!</a>
+            <a class="navbar-brand" href="{% url "start" %}"><img alt="Buzzit" id="buzzit-png" src="../../static/img/buzzit.png"></a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
-			<!--search field for user profiles -->
+            <!--search field for user profiles -->
             <form class="navbar-form navbar-left" role="search" method="get" action="{% url "search_user" %}">
                 <div class="input-group">
                     <input name="q" type="text" class="form-control" placeholder="finde andere Nutzer...">
@@ -23,25 +23,30 @@
                 </div>
             </form>
 
-			
+
             <ul class="nav navbar-nav">
-				<!--leads to home site -->
+                <!--leads to home site -->
                 <li><a href="{% url "view_profile" user.pk %}">Profil</a></li>
                 <li><a href="{% url "my_followers" %}">Follower</a></li>
-				<!--leads to circle site -->
+                <!--leads to circle site -->
                 <li><a href="{% url "circle_overview" %}">Kreise</a></li>
-				<!--leads to messages site -->
-                <li><a href="{% url "all_chats" %}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Nachrichten<span class="notification_count badge">0</span></a>
+                <!--leads to messages site -->
+                <li><a href="{% url "all_chats" %}"><span class="glyphicon glyphicon-envelope"
+                                                          aria-hidden="true"></span> Nachrichten<span
+                        class="notification_count badge">0</span></a>
                 </li>
 
             </ul>
-			
-			
+
+
             <ul class="nav navbar-nav navbar-right">
-				<!--leads to edit_own_userdata site -->
+                {% if user.is_superuser %}
+                    <li><a href="{% url "admin_frontpage" %}">AdminArea</a></li>
+                {% endif %}
+                <!--leads to edit_own_userdata site -->
                 <li><a href="{% url "update_userdata" %}"><span class="glyphicon glyphicon-wrench"></span> Einstellungen</a>
                 </li>
-				<!-- logs out the user -->
+                <!-- logs out the user -->
                 <li><a href="{% url "logout" %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
 

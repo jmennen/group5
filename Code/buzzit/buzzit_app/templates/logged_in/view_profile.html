@@ -36,6 +36,7 @@
                         <a href="{% url "all_chats" %}?active_conversation={{ profile.user.username }}" class="btn btn-info" type="button"><span class="glyphicon glyphicon-envelope"></span>
                         </a>
 
+						<!--button for following/unfollowing this user-->
                         {% if profile.user != user %}
                             {% if profile.i_am_following %}
                                 <a class="btn btn-danger" role="form-control" method="post"
@@ -47,6 +48,10 @@
                                 </a>
                             {% endif %}
                         {% endif %}
+						
+						<!--button for reporting this user-->
+						<a href="{% url "report_user" profile.pk %}" class="btn btn-success" type="button"><span class="glyphicon glyphicon-flag"></span>
+                        </a>
                     </form>
 
                 </div>

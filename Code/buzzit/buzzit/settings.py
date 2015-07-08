@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'buzzit_models',
     'buzzit_app',
     'buzzit_messaging',
+	'buzzit_admin',
 )
 
 MIDDLEWARE_CLASSES = (

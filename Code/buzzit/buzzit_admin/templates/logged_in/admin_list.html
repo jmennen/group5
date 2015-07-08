@@ -1,0 +1,76 @@
+<!-- list of current admins, possibility to appoint new admins, deprive admins of their rights -->
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}Admin-Liste{% endblock %}
+
+{% block content %}
+    <!-- imports the admin navbar -->
+    {% include "includes/admin_nav.html" %}
+
+    <!-- this div changes the color of the background through css -->
+    <div class="admin-bg">
+        <div class="container">
+            <h3> Admin-Liste</h3>
+
+            <!-- an input field to give the entered user admin privileges -->
+            <div class="input-group">
+                <input id="user_search" type="text" class="form-control" placeholder="ernenne User zum Admin..."/>
+			<span class="input-group-btn">
+				<a href="#" id="new_admin_link" class="btn btn-default disabled">
+                    <span id="new_admin_username"></span>
+                    <span id="info_text">W&auml;hle einen User</span>
+                </a>
+			</span>
+            </div>
+            <!-- list with current admins and the possibility to remove their admin privileges -->
+            <table class="table table-bordered">
+                <tr>
+                    <th>Admins<h6></h6></th>
+                    <th>Aktionen</th>
+                </tr>
+                {% for user in userlist %}
+                    <tr>
+                        <!--the name links to the admin's user profile-->
+                        <td>
+                            <a href="{% url "view_profile" user.pk %}">{{ user.username }}</a>
+                        </td>
+                        <td>
+                            <!-- button to remove admin privileges from this user -->
+                            <form action="{% url "demote_admin" user.pk %}">
+                                <button class="btn btn-danger" type="submit">Entfernen</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <link href="{% static "js/jqueryui/jquery-ui.min.css" %}" rel="stylesheet">
+    <script type="text/javascript" src="{% static "js/jqueryui/jquery-ui.min.js" %}"></script>
+    <script>
+        $(document).ready(function () {
+            $("#user_search").autocomplete({
+                source: function (request, response) {
+                    $.get(
+                            "/messaging/search/user/" + request.term + "/json",
+                            null,
+                            function (data) {
+                                var users = [];
+                                data.list.forEach(function (e) {
+                                    users.push({value: e.name, id: e.id});
+                                });
+                                response(users);
+                            });
+                },
+                focus: function (event, ui) {
+                    $("#new_admin_username").text(ui.item.value);
+                    $("#new_admin_link").prop("href", "/admincontrol/admins/" + ui.item.id + "/addadmin");
+                    $("#new_admin_link").removeClass("disabled");
+                    $("#info_text").text(" zum Admin machen");
+                    return false;
+                },
+            });
+        });
+    </script>
+{% endblock %}

@@ -27,4 +27,7 @@ urlpatterns = [
     url(r'^search/user/(?P<query>[a-zA-Z0-9]+)/json$', views.search_user_json, name="search_user_json"),
     url(r'^search/theme/(?P<query>[a-zA-Z0-9]+)/json$', views.search_theme_json, name="search_theme_json"),
     url(r'^search/theme/(?P<theme>[a-zA-Z0-9]+)', views.showPostsToTheTheme, name="search_theme"),
+    #new sind sprint 5
+    url(r'^circlemessage/new/json$', views.postCirclemessage_json, name="new_circlemessage_json"),
+    url(r'^circlemessage/getall/json$', views.get_all_circlemessages_json, name="get_circlemessages_json"),
 ]
