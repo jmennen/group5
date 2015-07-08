@@ -78,15 +78,14 @@ class UserReportDetailsView(SuccessMessageMixin, ListView):
             return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
     def get_context_data(self, **kwargs):
+        context = super(UserReportDetailsView, self).get_context_data(**kwargs)
+        report_id = self.kwargs.get("report_id")
         try:
-            reported_user = self.kwargs.get("user_id")
+            report = UserReport.objects.get(pk=report_id)
         except ObjectDoesNotExist:
             messages.error(self.request, "Benutzer existiert nicht")
             return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
-
-        reported_user_profile = reported_user.profile
-        report = UserReport.objects.get(reported_user=reported_user)
-        context = super(UserReportDetailsView, self).get_context_data(**kwargs)
+        reported_user_profile = report.reported_user.profile
         context["reported_user_profile"] = reported_user_profile
         context["report_text"] = report.text
 
