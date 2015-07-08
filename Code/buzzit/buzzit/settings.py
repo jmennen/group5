@@ -91,17 +91,6 @@ if 'RDS_DB_NAME' in os.environ:
             'PORT': os.environ['RDS_PORT'],
         }
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'aaalh1wsxr0q3r',
-            'USER': 'buzzituser',
-            'PASSWORD': 'buzzitbuzzit',
-            'HOST': 'aaalh1wsxr0q3r.cloclkfo9rsg.eu-west-1.rds.amazonaws.com',
-            'PORT': '3306',
-        }
-    }
 
 
 
