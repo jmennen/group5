@@ -6,6 +6,7 @@ urlpatterns = [
     url(r'^reportdetails/(?P<user_id>[0-9]+)/user$', views.UserReportDetailsView.as_view(), name="user_report_details"),
     url(r'^reportdetails/(?P<slug>[0-9]+)/message$', views.MessageReportDetailsView.as_view(), name="message_report_details"),
     url(r'^reportdetails/(?P<report_id>[0-9]+)/message/delete$', views.delete_reported_post, name="delete_reported_post"),
+    url(r'^reportdetails/(?P<report_id>[0-9]+)/message/dismiss$', views.delete_reported_post, name="dismiss_report"),
     url(r'^admins/$', views.AdminOverviewView, name="admins_overview"),
     url(r'^admins/(?P<user_id>[0-9]+)/addadmin/$', views.promote_user_to_admin, name="promote_user"),
     url(r'^admins/(?P<user_id>[0-9]+)/removeadmin/$', views.demote_admin_to_user, name="demote_admin"),
