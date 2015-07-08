@@ -70,16 +70,16 @@ class UserReportDetailsView(SuccessMessageMixin, ListView):
     template_name = "logged_in/user_report_deatails"
 
     def get_queryset(self):
+        report_id = self.kwargs.get("report_id")
         try:
-            reported_user = self.kwargs.get["user_id"]
+            return UserReport.objects.filter(pk=report_id).order_by("created")
         except ObjectDoesNotExist:
             messages.error(self.request, "Benutzer existiert nicht")
             return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
-        return UserReport.objects.filter(reported_user=reported_user).order_by("created")
 
     def get_context_data(self, **kwargs):
         try:
-            reported_user = self.kwargs.get["user_id"]
+            reported_user = self.kwargs.get("user_id")
         except ObjectDoesNotExist:
             messages.error(self.request, "Benutzer existiert nicht")
             return HttpResponseRedirect(reverse_lazy("admin_frontpage"))

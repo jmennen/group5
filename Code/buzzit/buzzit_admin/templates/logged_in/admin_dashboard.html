@@ -19,9 +19,13 @@
                     </div>
                     <div class="admin-area">
                         <!-- list of reported users, links refers to the reported details page -->
-                        <ul class="list-group" id="reported">
                             {% for userreport in user_reports %}
-                                <li class="list-group-item">{{ userreport }}</li>
+                                <li class="list-group-item">
+                                    <a href="{% url "user_report_details" userreport.pk %}">
+                                        {{ userreport.creator.username }} hat den Benutzer
+                                        {{ userreport.reported_user.username }} gemeldet.
+                                    </a>
+                                </li>
                             {% endfor %}
                         </ul>
                     </div>
