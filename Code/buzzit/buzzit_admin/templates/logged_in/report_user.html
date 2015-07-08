@@ -36,6 +36,7 @@
         <!-- input field for the report reason -->
         <div class="col-md-7">
             <form method="post" action="{% url "report_user" profile.pk %}">
+                {% csrf_token %}
                 <h4> Grund für die Meldung:</h4>
 
                 <div class="input-group">
