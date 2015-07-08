@@ -257,7 +257,10 @@ def ban_user(request, user_id):
     except ObjectDoesNotExist:
         messages.error(request,"Der Benutzer existiert nicht")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
-
+        
+    if not(request.user.is_superuser):
+        messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
+        return HttpResponseRedirect(reverse("admin_frontpage"))
     if not(user_to_be_ban.is_active):
         messages.info(request,"Der Benutzer ist bereits deaktiviert")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
