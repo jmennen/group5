@@ -67,7 +67,7 @@
                 },
                 focus: function (event, ui) {
                     $("#new_admin_username").text(ui.item.value);
-                    $("#new_admin_link").prop("href", ui.item.id);
+                    $("#new_admin_link").prop("href", "/admincontrol/admins/" + ui.item.id + "/addadmin");
                     $("#new_admin_link").removeClass("disabled");
                     $("#info_text").text(" zum Admin machen");
                     return false;
