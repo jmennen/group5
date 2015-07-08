@@ -1,4 +1,5 @@
 from filecmp import demo
+from django.conf.app_template import admin
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render
@@ -191,6 +192,7 @@ def promote_user_to_admin(request, user_id):
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
     admin_user.is_superuser=True
+    admin_user.save()
     messages.info(request,"Der Benutzer ist als AdminUser hinzugefuegt")
     return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
