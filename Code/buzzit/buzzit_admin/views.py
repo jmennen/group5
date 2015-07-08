@@ -86,8 +86,8 @@ class UserReportDetailsView(SuccessMessageMixin, ListView):
             messages.error(self.request, "Benutzer existiert nicht")
             return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
         reported_user_profile = report.reported_user.profile
-        context["reported_user_profile"] = reported_user_profile
-        context["report_text"] = report.text
+        context["profile"] = reported_user_profile
+        context["userreport"] = report
 
         return context
 
