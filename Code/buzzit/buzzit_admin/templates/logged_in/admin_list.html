@@ -57,6 +57,10 @@
                             "/messaging/search/user/" + request.term + "/json",
                             null,
                             function (data) {
+                                var users = [];
+                                data.list.forEach(function(e) {
+                                    users.push[e.name];
+                                });
                                 response(data);
                             });
                 },
