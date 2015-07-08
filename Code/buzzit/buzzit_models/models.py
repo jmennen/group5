@@ -55,7 +55,7 @@ class Report(Message):
     issuer = models.ForeignKey(User, null=True, blank=True) # der admin, der die meldung bearbeitet
 
 class UserReport(Report):
-    reported_user = models.OneToOneField(User, null=False, blank=False)
+    reported_user = models.ForeignKey(User, null=False, blank=False)
 
 class CircleMessageReport(Report):
     reported_message = models.OneToOneField(Circle_message, null=False, blank=False)
