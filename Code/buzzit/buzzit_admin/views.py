@@ -93,9 +93,9 @@ class UserReportDetailsView(SuccessMessageMixin,ListView):
         context["report_text"]=report.text
 
         return context
-
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        return super(UserReportDetailsView, self).dispatch(request,*args,**kwargs)
+        return super(UserReportDetailsView, self).dispatch(request,args,kwargs)
 
 class AdminFrontpageView():
     pass
