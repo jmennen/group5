@@ -147,7 +147,9 @@ def delete_reported_post(request, report_id):
         messages.error(request,"Der Report existiert nicht")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
     #if the reported post has anwsers, delete all
-
+    if not(request.user.is_superuser):
+        messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
+        return HttpResponseRedirect(reverse("admin_frontpage"))
     post_to_del=report.reported_message
     answers=Circle_message.objects.filter(answer_to=post_to_del)
     answers.delete()
@@ -172,7 +174,10 @@ def promote_user_to_admin(request, user_id):
     except ObjectDoesNotExist:
         messages.error(request,"Der Benuzer existiert nicht")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
-
+    if not(request.user.is_superuser):
+        messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
+        return HttpResponseRedirect(reverse("admin_frontpage"))
+        
     if not(admin_user.is_active):
         messages.info(request,"Der Benutzer ist deaktiviert")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
@@ -194,7 +199,10 @@ def demote_admin_to_user(request, user_id):
     except ObjectDoesNotExist:
         messages.error(request,"Der Benutzer existiert nicht")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
-
+        
+    if not(request.user.is_superuser):
+        messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
+        return HttpResponseRedirect(reverse("admin_frontpage"))
     if not(demote_user.is_staff):
         messages.error(request,"Der Benutzer ist kein Admin ")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
