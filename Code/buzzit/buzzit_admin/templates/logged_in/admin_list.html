@@ -59,7 +59,7 @@
                             function (data) {
                                 var users = [];
                                 data.list.forEach(function(e) {
-                                    users.push[e.name];
+                                    users.push[{value:e.name, id: e.id}];
                                 });
                                 response(users);
                             });
