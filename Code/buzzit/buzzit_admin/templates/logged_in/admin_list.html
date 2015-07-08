@@ -52,6 +52,7 @@
     <script type="text/javascript" src="{% static "js/jqueryui/jquery-ui.min.js" %}"></script>
     <script>
         $(document).ready(function () {
+            $("form").submit(function(){return false;});
             $("#user_search").autocomplete({
                 source: function (request, response) {
                     $.get(
