@@ -220,7 +220,7 @@ def demote_admin_to_user(request, user_id):
     demote_user.is_superuser=False
     demote_user.save()
     messages.info(request,"Die Adminrechte von dem Benutzer wird entziehen")
-    return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
+    return HttpResponseRedirect(reverse_lazy("admins_overview"))
 
 @login_required
 def report_message(request, message_id):
