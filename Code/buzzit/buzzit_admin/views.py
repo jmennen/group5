@@ -49,7 +49,7 @@ def report_user(request,user_id):
             report_message.created=datetime.now()
             report_message.reported_user=reported_user
             report_message.save()
-            messages.info("Sie haben den <User:%s> Benutzer gemeldet" %reported_user)
+            messages.info(request, "Sie haben den <User:%s> Benutzer gemeldet" %reported_user)
 
             #TODO send messages to admin user, not to SYSTEM user
             admin_user = User.objects.filter(is_superuser=True)
