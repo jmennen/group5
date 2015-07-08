@@ -40,7 +40,7 @@
 		<!-- reason for the report-->
 		<h4> Grund für die Meldung: {{userreport.text}}</h4>
 		<!-- user who reported -->
-		<h5> Gemeldet von: <a href="{% url "view_profile" userreport.creator.profile.pk %}"></h5>
+		<h5> Gemeldet von: <a href="{% url "view_profile" userreport.creator.profile.pk %}">{{ userreport.creator.username }}</a></h5>
 
 		<!-- the admin can either deactivate the reported user, reset the report or ignore the report -->
 		<button class="btn btn-danger" type="button">Benutzer deaktivieren</button>
