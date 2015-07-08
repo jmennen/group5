@@ -4,47 +4,63 @@
 {% block title %}Admin-Liste{% endblock %}
 
 {% block content %}
-<!-- imports the admin navbar -->
+    <!-- imports the admin navbar -->
     {% include "includes/admin_nav.html" %}
-	
-	<!-- this div changes the color of the background through css -->
-	<div class="admin-bg">
-	<div class="container">
-	<h3> Admin-Liste</h3>
 
-	<!-- an input field to give the entered user admin privileges -->
-	<form class="" method="post" action="{% url "promote_user" user.pk %}">
-		{% csrf_token %}
-	    <div class="input-group">
-			<input type="text" class="form-control" placeholder="ernenne User zum Admin...">
+    <!-- this div changes the color of the background through css -->
+    <div class="admin-bg">
+        <div class="container">
+            <h3> Admin-Liste</h3>
+
+            <!-- an input field to give the entered user admin privileges -->
+            <form class="" method="post" action="{% url "promote_user" user.pk %}">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input id="user_search" type="text" class="form-control" placeholder="ernenne User zum Admin...">
 			<span class="input-group-btn">
-				<button class="btn btn-default" type="submit">Speichern</button>
+				<a class="btn btn-default disabled"><span id="new_admin_username"></span><span id="text"></span></a>
 			</span>
-			</input>
-		</div>
-    </form>
-	<!-- list with current admins and the possibility to remove their admin privileges -->
-	<table class="table table-bordered">
-		<tr>
-			<th>Admins<h6></h6></th>
-			<th>Aktionen</th>
-		</tr>
-		{% for user in userlist %}
-		<tr>
-			<!--the name links to the admin's user profile-->
-			<td>
-				<a href="{% url "view_profile" user.pk %}">{{ user.username }}</a>
-			</td>
-			<td>
-				<!-- button to remove admin privileges from this user -->
-				<form action="{% url "demote_admin" user.pk %}">				   
-						<button class="btn btn-danger" type="submit">Entfernen</button>
-				</form>
-			</td>
-		</tr>
-        {% endfor %}
-    </table>
-	
-	</div>
-	</div>
+                    </input>
+                </div>
+            </form>
+            <!-- list with current admins and the possibility to remove their admin privileges -->
+            <table class="table table-bordered">
+                <tr>
+                    <th>Admins<h6></h6></th>
+                    <th>Aktionen</th>
+                </tr>
+                {% for user in userlist %}
+                    <tr>
+                        <!--the name links to the admin's user profile-->
+                        <td>
+                            <a href="{% url "view_profile" user.pk %}">{{ user.username }}</a>
+                        </td>
+                        <td>
+                            <!-- button to remove admin privileges from this user -->
+                            <form action="{% url "demote_admin" user.pk %}">
+                                <button class="btn btn-danger" type="submit">Entfernen</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <style rel="stylesheet" type="text/css" src="{% static "js/jqueryui/jquery-ui.min.css" %}"></style>
+    <script type="text/javascript" src="{% static "js/jqueryui/jquery-ui.min.css" %}"></script>
+    <script>
+        $(document).ready(function () {
+            $("#user_search").autocomplete({
+                source: function (request, response) {
+                    $.get({
+                        url: "//messaging/search/user/" + request.term + "/json",
+                        dataType: "json",
+                        success: function (data) {
+                            response(data);
+                        }
+                    });
+                },
+            });
+        });
+    </script>
 {% endblock %}
