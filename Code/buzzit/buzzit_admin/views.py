@@ -149,7 +149,7 @@ def delete_reported_post(request, report_id):
     #if the reported post has anwsers, delete all
     if not(request.user.is_superuser):
         messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
-        return HttpResponseRedirect(reverse("admin_frontpage"))
+        return HttpResponseRedirect(reverse("home"))
     post_to_del=report.reported_message
     answers=Circle_message.objects.filter(answer_to=post_to_del)
     answers.delete()
@@ -176,7 +176,7 @@ def promote_user_to_admin(request, user_id):
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
     if not(request.user.is_superuser):
         messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
-        return HttpResponseRedirect(reverse("admin_frontpage"))
+        return HttpResponseRedirect(reverse("home"))
         
     if not(admin_user.is_active):
         messages.info(request,"Der Benutzer ist deaktiviert")
@@ -202,7 +202,7 @@ def demote_admin_to_user(request, user_id):
         
     if not(request.user.is_superuser):
         messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
-        return HttpResponseRedirect(reverse("admin_frontpage"))
+        return HttpResponseRedirect(reverse("home"))
     if not(demote_user.is_staff):
         messages.error(request,"Der Benutzer ist kein Admin ")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
@@ -260,7 +260,7 @@ def ban_user(request, user_id):
         
     if not(request.user.is_superuser):
         messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
-        return HttpResponseRedirect(reverse("admin_frontpage"))
+        return HttpResponseRedirect(reverse("home"))
     if not(user_to_be_ban.is_active):
         messages.info(request,"Der Benutzer ist bereits deaktiviert")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
