@@ -160,11 +160,13 @@ class EditProfileView(SuccessMessageMixin, UpdateView):
         :return: True on success, False else
         """
         profile = request.user.profile
-        #outfile = profile.profile_picture_small
+        outfile = profile.profile_picture_small
         try:
             im = Image.open(request.user.profile.profile_picture_full)
             logging.error(im)
-            im.thumbnail((128, 128))
+            size = 128, 128
+            logging.error("size = 128, 128")
+            im.thumbnail(size)
             logging.error("im.thumbnail((128, 128))")
             thumb_io = BytesIO()
             logging.error("thumb_io = BytesIO()")
@@ -177,7 +179,7 @@ class EditProfileView(SuccessMessageMixin, UpdateView):
             logging.error("profile.profile_picture_small = thumb_file")
             profile.save()
             return True
-        except IOError:
+        except IOError as e:
             logging.error("Fehler beim speichern des thumbnails")
             #try:
                 #os.remove(outfile)
