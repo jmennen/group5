@@ -237,11 +237,11 @@ def RemoveCircleView(request, slug):
         messages_to_del = circle_to_del.messages.all()
         for m in messages_to_del:
             if (not (Circle.objects.filter(messages=m).count() > 1)):
-                # TODO: achtung - wenn nachricht retweetet, dann nicht löschen!!
+                # TODO: achtung - wenn nachricht retweetet, dann nicht loeschen!!
                 # if not (Circle_message.objects.filter(original_message = m).count() > 0):
-                # antworten müssen gelöscht werden:
+                # antworten muessen geloescht werden:
                 # Circle_message.objects.filter(answer_to = m).delete()
-                m.delete()  # TODO: muss später eingerückt werden
+                m.delete()  # TODO: muss spaeter eingerueckt werden
         circle_to_del.delete()
     except Exception:
         messages.error(request, "Fehler beim loeschen")
