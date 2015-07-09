@@ -1,7 +1,7 @@
 <!-- a plain user report form with a text input for an optional report reason, report will be sent to admins -->
 {% extends "base.html" %}
 
-{% block title %}Kreisübersicht{% endblock %}
+{% block title %}Kreisbersicht{% endblock %}
 {% load messagefilters %}
 {% block content %}
 
@@ -37,7 +37,7 @@
         <div class="col-md-7">
             <form method="post" action="{% url "report_user" profile.pk %}">
                 {% csrf_token %}
-                <h4> Grund für die Meldung:</h4>
+                <h4> Grund fr die Meldung:</h4>
 
                 <div class="input-group">
                     <input name="text" type="text" class="form-control" placeholder="Meldegrund eintragen...">

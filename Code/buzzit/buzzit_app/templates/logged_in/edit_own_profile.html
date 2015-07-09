@@ -14,10 +14,10 @@
             {% csrf_token %}
 			
 			<!--radio buttons for choosing the gender-->
-            <p>Geschlecht auswählen:</p>
+            <p>Geschlecht auswhlen:</p>
 
             <label class="radio-inline">
-                <input type="radio" name="gender" value="m" {% if profile.gender == "m" %}checked{% endif %}>männlich
+                <input type="radio" name="gender" value="m" {% if profile.gender == "m" %}checked{% endif %}>mnnlich
             </label>
             <label class="radio-inline">
                 <input type="radio" name="gender" value="f" {% if profile.gender == "f" %}checked{% endif %}>weiblich
@@ -28,7 +28,7 @@
             <div class="col-md-5">
 				
 				<!--current profile picture and input field for uploading the new profile picture-->
-                <label>Profilbild ändern:</label>
+                <label>Profilbild ndern:</label>
 
                 <div class="thumbnail">
                     <img class="img-responsive" height="128" style="width: auto;" src="{% url "profile_picture_small" profile.pk %}" alt="">
