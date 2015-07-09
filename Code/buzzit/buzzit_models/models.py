@@ -58,4 +58,4 @@ class UserReport(Report):
     reported_user = models.ForeignKey(User, null=False, blank=False)
 
 class CircleMessageReport(Report):
-    reported_message = models.OneToOneField(Circle_message, null=False, blank=False)
+    reported_message = models.ForeignKey(Circle_message, null=False, blank=False)
