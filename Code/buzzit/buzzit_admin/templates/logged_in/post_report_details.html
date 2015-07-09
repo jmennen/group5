@@ -1,7 +1,7 @@
 <!-- a single reported circlemessage with the possibility to delete the message, block the user or close the case -->
 {% extends "base.html" %}
 
-{% block title %}Kreisbersicht{% endblock %}
+{% block title %}Kreisübersicht{% endblock %}
 {% load messagefilters %}
 {% block content %}
 
@@ -20,7 +20,7 @@
 
             </div>
             <!-- reason for the report -->
-            <h4> Grund fr die Meldung: {{ circlemessagereport.reason }}</h4>
+            <h4> Grund für die Meldung: {{ circlemessagereport.reason }}</h4>
             <!-- user who reported -->
             <h5> Gemeldet von: <a
                     href="{% url "view_profile" circlemessagereport.creator.profile.pk %}">{{ circlemessagereport.creator.username }}</a>
@@ -29,7 +29,7 @@
             <!-- the admin can either delete the reported post, reset the report or ignore the report -->
             <form action="{% url "delete_reported_post" circlemessagereport.pk %}" method="post">
                 {% csrf_token %}
-                <button class="btn btn-danger" type="submit">Post lschen</button>
+                <button class="btn btn-danger" type="submit">Post löschen</button>
             </form>
             <a href="{% url "ignore_report" circlemessagereport.pk %}" class="btn btn-success" type="button">Meldung als falsch kennzeichen</a>
             <a href="{% url "admin_frontpage" %}" class="btn btn-default" type="button">Abbrechen</a>

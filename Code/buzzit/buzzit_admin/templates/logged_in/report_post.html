@@ -1,7 +1,7 @@
 <!-- a plain circlemessage report form with a text input for an optional report reason, report will be sent to admins -->
 {% extends "base.html" %}
 
-{% block title %}Kreisbersicht{% endblock %}
+{% block title %}Kreisübersicht{% endblock %}
 {% load messagefilters %}
 {% block content %}
 
@@ -21,7 +21,7 @@
         </div>
 
         <!-- input field for the report reason -->
-        <h4> Grund fr die Meldung:</h4>
+        <h4> Grund für die Meldung:</h4>
 
         <form action="{% url "report_message" circlemessage.pk %}" method="post">
             {% csrf_token %}

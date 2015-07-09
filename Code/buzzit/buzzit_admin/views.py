@@ -115,7 +115,7 @@ def adminFrontPage(request):
         return render(request, "logged_in/admin_dashboard.html",
                       {"user_reports": userreports, "post_reports": postreports})
     else:
-        messages.error(request, "Sie haben nicht die noetigen Zugangsrechte!")
+        messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
         return HttpResponseRedirect(reverse("home"))
 
 
@@ -136,7 +136,7 @@ def AdminOverviewView(request):
         adminlist = User.objects.filter(is_superuser=True)
         return render(request, "logged_in/admin_list.html", {"userlist": adminlist})
     else:
-        messages.error(request, "Sie haben nicht die noetigen Zugangsrechte!")
+        messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
         return HttpResponseRedirect(reverse("home"))
 
 
@@ -157,7 +157,7 @@ def delete_reported_post(request, report_id):
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
     # if the reported post has anwsers, delete all
     if not (request.user.is_superuser):
-        messages.error(request, "Sie haben nicht die noetigen Zugangsrechte!")
+        messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
         return HttpResponseRedirect(reverse("home"))
     post_to_del = report.reported_message
     answers = Circle_message.objects.filter(answer_to=post_to_del)
@@ -184,7 +184,7 @@ def promote_user_to_admin(request, user_id):
         messages.error(request, "Der Benuzer existiert nicht")
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
     if not (request.user.is_superuser):
-        messages.error(request, "Sie haben nicht die noetigen Zugangsrechte!")
+        messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
         return HttpResponseRedirect(reverse("home"))
 
     if not (admin_user.is_active):
@@ -212,7 +212,7 @@ def demote_admin_to_user(request, user_id):
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
     if not (request.user.is_superuser):
-        messages.error(request, "Sie haben nicht die noetigen Zugangsrechte!")
+        messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
         return HttpResponseRedirect(reverse("home"))
     if not (demote_user.is_superuser):
         messages.error(request, "Der Benutzer ist kein Admin ")
@@ -274,7 +274,7 @@ def ban_user(request, user_id):
         return HttpResponseRedirect(reverse_lazy("admin_frontpage"))
 
     if not (request.user.is_superuser):
-        messages.error(request, "Sie haben nicht die ntigen Zugangsrechte!")
+        messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
         return HttpResponseRedirect(reverse("home"))
     if not (user_to_be_ban.is_active):
         messages.info(request, "Der Benutzer ist bereits deaktiviert")
@@ -295,7 +295,7 @@ def ban_user(request, user_id):
 @login_required
 def setIgnoreReport(request, report_id):
     if not (request.user.is_superuser):
-        messages.error(request, "Sie haben nicht die noetigen Zugangsrechte!")
+        messages.error(request, "Sie haben nicht die nötigen Zugangsrechte!")
         return HttpResponseRedirect(reverse("home"))
     try:
         report = Report.objects.get(pk=report_id)
