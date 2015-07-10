@@ -605,13 +605,13 @@ class PostDetailsView(ListView):
         circles_in_which_i_am_a_member=Circle.objects.filter(members=self.request.user.pk)
         messages_from_the_circles=[]
         for circle in circles_in_which_i_am_a_member:
-            messages_from_the_circles+=circle.messages.objects.all()
+            messages_from_the_circles += circle.messages.objects.all()
         for message in messages_from_the_circles:
             if circlrmessage == message:
                 context["circlemessage"]=message
                 return context
         messages.error(self.request,"Sie haben keine Zugangsrechte fuer die Kreisnachrichte")
-        return HttpResponseRedirect(reverse_lazy("home"))
+        return context
 
     def get_queryset(self):
         return HttpResponseRedirect(reverse_lazy("home"))
