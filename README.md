@@ -9,6 +9,10 @@ Das Repository von Gruppe 5 des Praktikums Soziale Netzwerke an der TU Berlin
 
 --
 
+######**Demoinstallation**
+Eine Demoinstallation is unter folgendem Link erreichbar:
+http://ec2-52-18-19-172.eu-west-1.compute.amazonaws.com/
+
 ######**Projektteam** 
 Name | Aufgabenbereich | E-Mail
 :----- | :---------------------------------- | :--------------------------------
@@ -69,7 +73,8 @@ Dieses Projekt steht unter der BSD-Lizenz. Siehe Licence.md
 <li>Install MySQLClient (pip install mysqlclient) -- MySQL DB-Connector</li>
 <li>Install Bleach (pip install bleach)</li>
 <li>Download this project</li>
-<li>Create a folder pp in the parent folder of the django project called "buzzit". 
+<li>Create a folder pp in the parent folder of the django project called "buzzit".
+<li>Create a file mysql.py in the folder "buzzit/buzzit" (where the settings file is). This file should contain the information about your MySQL Database
 <li>Register a user called "SYSTEM". 
 <li>Have Fun</li>
 </ul>
