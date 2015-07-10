@@ -65,10 +65,11 @@ Dieses Projekt steht unter der BSD-Lizenz. Siehe Licence.md
 <ul>
 <li>Install Python (3.3+) incl. PIP or find the packages another way</li>
 <li>Install Django (pip install django) -- The Django Framework</li>
-<li>Install Pillow (pip install pillow) -- Image Manipulation Library</li>
+<li>Install Pillow (pip install pillow) with jpeg support -- Image Manipulation Library</li>
 <li>Install MySQLClient (pip install mysqlclient) -- MySQL DB-Connector</li>
 <li>Install Bleach (pip install bleach)</li>
 <li>Download this project</li>
 <li>Create a folder pp in the parent folder of the django project called "buzzit". 
+<li>Register a user called "SYSTEM". 
 <li>Have Fun</li>
 </ul>
