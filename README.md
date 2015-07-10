@@ -9,9 +9,12 @@ Das Repository von Gruppe 5 des Praktikums Soziale Netzwerke an der TU Berlin
 
 --
 
-######**Demoinstallation**
+######**Demoinstallation und Interface**
 Eine Demoinstallation is unter folgendem Link erreichbar:
 http://ec2-52-18-19-172.eu-west-1.compute.amazonaws.com/
+
+Die Dokumentation des Interface der Demoinstallation ist unter folgendem Link zu finde:
+https://github.com/jmennen/group5/wiki/Interface
 
 ######**Projektteam** 
 Name | Aufgabenbereich | E-Mail
