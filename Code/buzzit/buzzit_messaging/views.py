@@ -596,12 +596,22 @@ class PostDetailsView(ListView):
         currentcirclemessageid = self.kwargs.get("slug")
         # add <circlemessage> to the templates context
         try:
-            context["circlemessage"] = Circle_message.objects.get(pk=currentcirclemessageid)
+            circlrmessage = Circle_message.objects.get(pk=currentcirclemessageid)
         except Exception:
             messages.error(self.request, "Post existiert nicht")
             context["answer_list"] = []
             return context
-        return context
+        #obtain all circles in which i am a member and then query all the circle messages
+        circles_in_which_i_am_a_member=Circle.objects.filter(members=self.request.user.pk)
+        messages_from_the_circles=[]
+        for circle in circles_in_which_i_am_a_member:
+            messages_from_the_circles+=circle.messages.objects.all()
+        for message in messages_from_the_circles:
+            if circlrmessage == message:
+                context["circlemessage"]=message
+                return context
+        messages.error(self.request,"Sie haben keine Zugangsrechte fuer die Kreisnachrichte")
+        return HttpResponseRedirect(reverse_lazy("home"))
 
     def get_queryset(self):
         return HttpResponseRedirect(reverse_lazy("home"))
