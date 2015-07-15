@@ -1,21 +1,14 @@
-from filecmp import demo
-from django.conf.app_template import admin
-from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render
 from django.utils.datetime_safe import datetime
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView
-from django.http import HttpResponseRedirect, JsonResponse
-from buzzit_messaging.views import __send_system__message__
-from buzzit_models.models import *
+from django.http import HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse, reverse_lazy
 import django.contrib.messages as messages
 from django.views.generic import ListView, DetailView
 from buzzit_models.models import *
 from django.contrib.auth.decorators import login_required
-import json
 from django.core.mail import send_mail
 
 

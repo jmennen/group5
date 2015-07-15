@@ -35,8 +35,8 @@ class Circle_message(Message):
 
 class Circle(models.Model):
     owner = models.ForeignKey(User, blank=False, null=False, related_name="owner_of_circle")  # User erstellt Kreis
-    messages = models.ManyToManyField(Circle_message, symmetrical=False)  # Kreis enthält Nachrichten
-    members = models.ManyToManyField(User, symmetrical=False)  # Kreis enthält User
+    messages = models.ManyToManyField(Circle_message, symmetrical=False)  # Kreis enthaelt Nachrichten
+    members = models.ManyToManyField(User, symmetrical=False)  # Kreis enthaelt User
     name = models.CharField(max_length=40, null=False, blank=False)
 
 

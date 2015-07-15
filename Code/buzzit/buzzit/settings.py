@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'buzzit_app',
     'buzzit_messaging',
 	'buzzit_admin',
+    'django.contrib.admindocs'
 )
 
 MIDDLEWARE_CLASSES = (
