@@ -1,0 +1,10 @@
+branch-defaults:
+  default:
+    environment: buzzit-test-dev
+global:
+  application_name: buzzit_test
+  default_ec2_keyname: AWS_EC2_Test1
+  default_platform: Python 3.4
+  default_region: eu-west-1
+  profile: null
+  sc: null
