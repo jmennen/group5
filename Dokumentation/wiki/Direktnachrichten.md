@@ -1,0 +1,2 @@
+User können sich gegenseitig private Nachrichten schreiben, welche nur vom Sender und Empfänger einer Nachricht eingesehen werden können. Dabei ist der Nachrichtenverlauf klar erkennbar und es kann direkt auf eine empfangene Nachricht geantwortet werden. Nach dem ersten Öffnen einer Nachricht wird diese als gelesen markiert.
+Zudem existiert eine Übersichtseite über alle privaten Konversationen die man gerade führt.

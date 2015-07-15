@@ -1,0 +1,1 @@
+Bereits registrierte User können sich durch Eingabe ihres Benutzernamens und Passwortes beim sozialen Netzwerk buzzit einloggen. Erst nach dem Log-In ist der Zugriff auf die Funktionen von buzzit möglich.

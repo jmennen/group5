@@ -1,0 +1,1 @@
+Über das Suchfeld ist über die Eingabe eines Namens die Suche nach anderen Benutzern möglich. Als Ergebnis wird eine Liste an Usern angezeigt. Über diese Liste ist es möglich zu den Profilen der angezeigte  User zu gelangen, diesen zu Folgen und das Folgen zu beenden.  

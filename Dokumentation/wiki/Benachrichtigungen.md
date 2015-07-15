@@ -1,0 +1,1 @@
+Man erhält Benachrichtigungen wenn man in einem Post erwähnt wird oder einem ein neuer User folgt. Benachrichtigungen werden deutlich in der Navigationsbar angezeigt. Details werden durch einen Klick auf das zugehörige Symbol sichtbar. Nach einmaligem öffnen werden Benachrichtigungen als gelesen markiert. 

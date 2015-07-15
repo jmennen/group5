@@ -1,0 +1,2 @@
+Admins können im Adminbereich Meldungen von Posts abarbeiten. Dabei ist die Begründung und der Post selbst sichtbar.
+Der Admin kann nun entscheiden, ob er den Post löschen möchte oder die Meldung ignogiert. Beim Löschen des Posts wird der Verfasser benachrichtigt.

@@ -1,0 +1,1 @@
+Das Profil enthält ein Profilbild, das Geschlecht und eine kurze Beschreibung. Alle diese Informationen können geändert werden.

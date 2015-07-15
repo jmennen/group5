@@ -1,0 +1,1 @@
+Die Startseite für angemeldete Benutzer von Buzzit enthält einen Stream mit allen an diese gerichteten Kreisnachrichten. Außerdem werden das eigene Profil sowie Links zu nahezu allen anderen Funktionen des sozialen Netzwerkes angezeigt.

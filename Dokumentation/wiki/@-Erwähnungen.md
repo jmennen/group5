@@ -1,0 +1,1 @@
+User können beim schreiben von Posts durch die Benutzung des @-Symbols einen anderen User erwähnen. Dieser User wird über die Erwähnung Benachrichtigt. Es können nur User markiert werden die zu den eigenen Followern gehören. Nach eingeben des @ Zeichens werden einem User zum markieren vorgeschlagen.

@@ -1,0 +1,1 @@
+User können von anderen Usern gemeldet werden. Dabei ist das eingeben einer Begründung nötig. Ein gemeldeter User wird im Adminbereich angezeigt.

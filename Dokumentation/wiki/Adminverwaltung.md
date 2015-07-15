@@ -1,0 +1,1 @@
+Über die Adminverwaltung (welche vom Admindashboard aus zugänglich ist), können User zu Admins ernannt werden oder anderen Admins die Rechte entzogen werden.

@@ -1,0 +1,1 @@
+Über die Home Seite für nicht eingelogte Besucher von buzzit ist der Zugriff auf Log in und Registrierung möglich.

@@ -1,0 +1,1 @@
+Durch die Benutzung des "#"-Symbols und das anschließende schreiben eines Begriffes beim Verfassen einer Kreisnachricht, kann dieser ein Thema zugewiesen werden. Beim Anzeigen des Posts wird der genutzte Begriff verlinkt zu einer Übersichtseite auf welcher alle Posts zu diesem Thema zu finden sind die für einen selbst sichtbar sind.  

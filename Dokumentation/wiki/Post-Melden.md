@@ -1,0 +1,1 @@
+Posts können von Usern gemeldet werden. Dabei ist das eingeben einer Begründung nötig. Ein gemeldeter Post wird im Adminbereich angezeigt.

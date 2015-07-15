@@ -1,0 +1,1 @@
+Das Admindashboard ist nur für Administratoren zugänglich. Dort werden optisch voneinander getrennt alle Usermeldungen und Postmeldungen angezeigt und können von dort aus weiter bearbeitet werden. Außerdem ist die Rechteverwaltung von dort aus zugänglich.

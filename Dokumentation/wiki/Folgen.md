@@ -1,0 +1,3 @@
+Es ist möglich einem User zu folgen. Beim Folgen eines Users werden Posts von diesem im Stream auf meiner Startseite angezeigt.  Außerdem kann der User dem gefolgt wird, den Folgenden in seine Kreise einsortieren um ihm weitere Kreisnachrichten (Posts) zukommen zu lassen. Es ist zudem möglich die Verfolgung eines Users wieder zu beenden. Folgen (bzw. Entfolgen) Button sind auf den Profilseiten von Usern zu finden. 
+
+Darüber hinaus gibt es die Möglichkeit sich eine Liste der eigenen Follower und der User denen man selbst folgt anzeigen zu lassen.

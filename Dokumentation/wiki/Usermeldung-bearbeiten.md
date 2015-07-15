@@ -1,0 +1,2 @@
+Admins können im Adminbereich Meldungen von Usern abarbeiten. Dabei ist die Begründung und der Nutzerprofil selbst sichtbar. Der Admin kann nun entscheiden, ob er den User sperren möchte oder ob er die Meldung ignogiert. 
+Beim Sperren des Users wird dieser benachrichtigt. Gesperrte Nutzer können sich nicht mehr bei Buzzit einloggen.

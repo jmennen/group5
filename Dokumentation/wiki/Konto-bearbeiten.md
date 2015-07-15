@@ -1,0 +1,1 @@
+Vorname, Nachname, Mailadresse und Passwort können geändert werden. Bei einer Änderung des Passwortes muss das alte Passwort mit angegeben werden. Der Username kann nicht geändert werden.

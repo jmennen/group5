@@ -1,0 +1,1 @@
+Man kann Posts von anderen Usern weiterleiten, wobei der Originalpost eindeutig erkennbar bleibt. Beim weiterleiten ist wie beim schreiben von Posts wieder eine Auswahl von Kreisen möglich.
